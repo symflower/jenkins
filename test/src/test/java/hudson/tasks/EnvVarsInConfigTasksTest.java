@@ -9,10 +9,10 @@ import hudson.model.Result;
 import hudson.model.labels.LabelAtom;
 import hudson.slaves.DumbSlave;
 import hudson.tasks.Maven.MavenInstallation;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.ExtractResourceSCM;
@@ -34,7 +34,7 @@ public class EnvVarsInConfigTasksTest {
     @Rule
     public TemporaryFolder tmp = new TemporaryFolder();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         JDK defaultJDK = j.jenkins.getJDK(null);
         JDK varJDK = new JDK("varJDK", withVariable(defaultJDK.getHome()));

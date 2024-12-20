@@ -3,7 +3,7 @@ package hudson;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.thoughtworks.xstream.converters.ConversionException;
 import com.thoughtworks.xstream.io.StreamException;
@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import jenkins.model.Jenkins;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class XmlFileTest {
 

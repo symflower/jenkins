@@ -27,13 +27,13 @@ package jenkins.install;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import hudson.ExtensionList;
 import jenkins.model.Jenkins;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.SmokeTest;
@@ -44,7 +44,7 @@ import org.jvnet.hudson.test.SmokeTest;
  * honor Jenkins extension points and hooks, which may influence the behavior.
  * @author Oleg Nenashev
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class InstallStateTest {
 
     @Rule
@@ -58,8 +58,8 @@ public class InstallStateTest {
             // It also prevents occasional name duplications
             assertThat("State after the roundtrip must be equal to the original state",
                     afterRoundtrip, equalTo(state));
-            assertSame("State " + state + " should return the extension point instance after deserialization",
-                    afterRoundtrip, state);
+            assertSame(afterRoundtrip,
+                    state, "State " + state + " should return the extension point instance after deserialization");
         }
     }
 

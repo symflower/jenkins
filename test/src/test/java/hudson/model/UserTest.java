@@ -31,14 +31,14 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.ExtensionList;
 import hudson.security.ACL;
@@ -73,8 +73,8 @@ import org.htmlunit.html.HtmlPage;
 import org.htmlunit.util.WebConnectionWrapper;
 import org.jenkinsci.plugins.matrixauth.PermissionEntry;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.FakeChangeLogSCM;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -89,7 +89,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class UserTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
@@ -193,15 +193,15 @@ public class UserTest {
         User user = User.get("John Smith");
         User user2 = User.get("John Smith2");
         user2.setFullName("John Smith");
-        assertNotSame("Users should not have the same id.", user.getId(), user2.getId());
+        assertNotSame(user.getId(), user2.getId(), "Users should not have the same id.");
         }
         j.jenkins.reload();
         {
         User user3 = User.get("John Smith");
         user3.setFullName("Alice Smith");
-        assertEquals("What was this asserting exactly?", "John Smith", user3.getId());
+        assertEquals("John Smith", user3.getId(), "What was this asserting exactly?");
         User user4 = User.get("Marie", false, Collections.EMPTY_MAP);
-        assertNull("User should not be created because Marie does not exists.", user4);
+        assertNull(user4, "User should not be created because Marie does not exists.");
         }
     }
 
@@ -210,7 +210,7 @@ public class UserTest {
         j.jenkins.setSecurityRealm(new IdStrategySpecifyingSecurityRealm(new IdStrategy.CaseInsensitive()));
         User user = User.get("john smith");
         User user2 = User.get("John Smith");
-        assertSame("Users should have the same id.", user.getId(), user2.getId());
+        assertSame(user.getId(), user2.getId(), "Users should have the same id.");
     }
 
     @Test
@@ -218,7 +218,7 @@ public class UserTest {
         j.jenkins.setSecurityRealm(new IdStrategySpecifyingSecurityRealm(new IdStrategy.CaseSensitive()));
         User user = User.get("john smith");
         User user2 = User.get("John Smith");
-        assertNotSame("Users should not have the same id.", user.getId(), user2.getId());
+        assertNotSame(user.getId(), user2.getId(), "Users should not have the same id.");
         assertEquals("john smith", User.idStrategy().keyFor(user.getId()));
         assertEquals("John Smith", User.idStrategy().keyFor(user2.getId()));
     }
@@ -228,11 +228,11 @@ public class UserTest {
         j.jenkins.setSecurityRealm(new IdStrategySpecifyingSecurityRealm(new IdStrategy.CaseSensitiveEmailAddress()));
         User user = User.get("john.smith@acme.org");
         User user2 = User.get("John.Smith@acme.org");
-        assertNotSame("Users should not have the same id.", user.getId(), user2.getId());
+        assertNotSame(user.getId(), user2.getId(), "Users should not have the same id.");
         assertEquals("john.smith@acme.org", User.idStrategy().keyFor(user.getId()));
         assertEquals("John.Smith@acme.org", User.idStrategy().keyFor(user2.getId()));
         user2 = User.get("john.smith@ACME.ORG");
-        assertEquals("Users should have the same id.", user.getId(), user2.getId());
+        assertEquals(user.getId(), user2.getId(), "Users should have the same id.");
         assertEquals("john.smith@acme.org", User.idStrategy().keyFor(user2.getId()));
     }
 
@@ -256,13 +256,13 @@ public class UserTest {
         User user = User.get("John Smith");
         UserProperty prop = new SomeUserProperty();
         user.addProperty(prop);
-        assertNotNull("User should have SomeUserProperty property.", user.getProperty(SomeUserProperty.class));
-        assertEquals("UserProperty1 should be assigned to its descriptor", prop, user.getProperties().get(prop.getDescriptor()));
-        assertTrue("User should contain SomeUserProperty.", user.getAllProperties().contains(prop));
+        assertNotNull(user.getProperty(SomeUserProperty.class), "User should have SomeUserProperty property.");
+        assertEquals(prop, user.getProperties().get(prop.getDescriptor()), "UserProperty1 should be assigned to its descriptor");
+        assertTrue(user.getAllProperties().contains(prop), "User should contain SomeUserProperty.");
         }
         j.jenkins.reload();
         {
-        assertNotNull("User should have SomeUserProperty property.", User.getById("John Smith", false).getProperty(SomeUserProperty.class));
+        assertNotNull(User.getById("John Smith", false).getProperty(SomeUserProperty.class), "User should have SomeUserProperty property.");
         }
     }
 
@@ -270,28 +270,28 @@ public class UserTest {
     public void testImpersonateAndCurrent() {
         j.jenkins.setSecurityRealm(j.createDummySecurityRealm());
         User user = User.get("John Smith");
-        assertNotSame("User John Smith should not be the current user.", User.current().getId(), user.getId());
+        assertNotSame(User.current().getId(), user.getId(), "User John Smith should not be the current user.");
         SecurityContextHolder.getContext().setAuthentication(user.impersonate2());
-        assertEquals("User John Smith should be the current user.", user.getId(), User.current().getId());
+        assertEquals(user.getId(), User.current().getId(), "User John Smith should be the current user.");
     }
 
     @Test
     public void testGetUnknown() {
         User user = User.get("John Smith");
-        assertNotNull("User should not be null.", user);
+        assertNotNull(user, "User should not be null.");
     }
 
     @Test
     public void testGetAndGetAll() {
         User user = User.get("John Smith", false, Collections.emptyMap());
-        assertNull("User John Smith should not be created.", user);
-        assertFalse("Jenkins should not contain user John Smith.", User.getAll().contains(user));
+        assertNull(user, "User John Smith should not be created.");
+        assertFalse(User.getAll().contains(user), "Jenkins should not contain user John Smith.");
         User user2 = User.get("John Smith2", true, Collections.emptyMap());
-        assertNotNull("User John Smith2 should be created.", user2);
-        assertTrue("Jenkins should contain user John Smith2.", User.getAll().contains(user2));
+        assertNotNull(user2, "User John Smith2 should be created.");
+        assertTrue(User.getAll().contains(user2), "Jenkins should contain user John Smith2.");
         user = User.get("John Smith2", false, Collections.emptyMap());
-        assertNotNull("User John Smith should be created.", user);
-        assertTrue("Jenkins should contain user John Smith.", User.getAll().contains(user));
+        assertNotNull(user, "User John Smith should be created.");
+        assertTrue(User.getAll().contains(user), "Jenkins should contain user John Smith.");
     }
 
     @Test
@@ -305,7 +305,7 @@ public class UserTest {
         j.jenkins.reload();
 
         user = User.get(originalName, false, Collections.emptyMap());
-        assertEquals("User should have original name.", originalName, user.getFullName());
+        assertEquals(originalName, user.getFullName(), "User should have original name.");
     }
 
     @Test
@@ -321,17 +321,17 @@ public class UserTest {
         j.buildAndAssertSuccess(project2);
         Build build = project.getLastBuild();
         Build build2 = project2.getLastBuild();
-        assertTrue("User should participate in the last build of project free.", user.getBuilds().contains(build));
-        assertFalse("User should not participate in the last build of project free2.", user.getBuilds().contains(build2));
-        assertTrue("User should participate in the project free.", user.getProjects().contains(project));
-        assertFalse("User should not participate in the project free2.", user.getProjects().contains(project2));
+        assertTrue(user.getBuilds().contains(build), "User should participate in the last build of project free.");
+        assertFalse(user.getBuilds().contains(build2), "User should not participate in the last build of project free2.");
+        assertTrue(user.getProjects().contains(project), "User should participate in the project free.");
+        assertFalse(user.getProjects().contains(project2), "User should not participate in the project free2.");
 
         //JENKINS-16178: build should include also builds scheduled by user
 
         build2.replaceAction(new CauseAction(new Cause.UserIdCause()));
-        assertFalse("User should not participate in the last build of project free2.", user.getBuilds().contains(build2));
-        assertFalse("Current user should not participate in the last build of project free.", User.current().getBuilds().contains(build));
-        assertTrue("Current user should participate in the last build of project free2.", User.current().getBuilds().contains(build2));
+        assertFalse(user.getBuilds().contains(build2), "User should not participate in the last build of project free2.");
+        assertFalse(User.current().getBuilds().contains(build), "Current user should not participate in the last build of project free.");
+        assertTrue(User.current().getBuilds().contains(build2), "Current user should participate in the last build of project free2.");
     }
 
     @Test
@@ -342,7 +342,7 @@ public class UserTest {
         j.jenkins.reload();
         {
         User user = User.get("John Smith", false, Collections.emptyMap());
-        assertNull("User should be null.", user);
+        assertNull(user, "User should be null.");
         user = User.get("John Smithl", true, Collections.emptyMap());
         user.addProperty(new SomeUserProperty());
         user.save();
@@ -350,8 +350,8 @@ public class UserTest {
         j.jenkins.reload();
         {
         User user = User.get("John Smithl", false, Collections.emptyMap());
-        assertNotNull("User should not be null.", user);
-        assertNotNull("User should be saved with all changes.", user.getProperty(SomeUserProperty.class));
+        assertNotNull(user, "User should not be null.");
+        assertNotNull(user.getProperty(SomeUserProperty.class), "User should be saved with all changes.");
         }
     }
 
@@ -377,10 +377,10 @@ public class UserTest {
          user.save();
          File configFolder = user.getUserFolder();
          user.delete();
-         assertFalse("User should be deleted with his persistent data.", configFolder.exists());
-         assertFalse("User should be deleted from memory.", User.getAll().contains(user));
+         assertFalse(configFolder.exists(), "User should be deleted with his persistent data.");
+         assertFalse(User.getAll().contains(user), "User should be deleted from memory.");
          user = User.get("John Smith", false, Collections.emptyMap());
-         assertNull("User should be deleted from memory.", user);
+         assertNull(user, "User should be deleted from memory.");
         }
         j.jenkins.reload();
         {
@@ -391,7 +391,7 @@ public class UserTest {
                  break;
              }
          }
-         assertFalse("User should not be loaded.", contained);
+         assertFalse(contained, "User should not be loaded.");
         }
     }
 
@@ -411,17 +411,17 @@ public class UserTest {
         HtmlForm form = j.createWebClient().withBasicCredentials(user.getId(), "password").goTo(user2.getUrl() + "/account/").getFormByName("config");
         form.getInputByName("_.fullName").setValue("Alice Smith");
         j.submit(form);
-        assertEquals("User should have full name Alice Smith.", "Alice Smith", user2.getFullName());
+        assertEquals("Alice Smith", user2.getFullName(), "User should have full name Alice Smith.");
         SecurityContextHolder.getContext().setAuthentication(user2.impersonate2());
         try (JenkinsRule.WebClient webClient = j.createWebClient().withBasicCredentials(user2.getId(), "password")) {
-            FailingHttpStatusCodeException failingHttpStatusCodeException = assertThrows("User should not have permission to configure another user.", FailingHttpStatusCodeException.class, () -> webClient.goTo(user.getUrl() + "/account/"));
+            FailingHttpStatusCodeException failingHttpStatusCodeException = assertThrows(FailingHttpStatusCodeException.class, () -> webClient.goTo(user.getUrl() + "/account/"), "User should not have permission to configure another user.");
             assertThat(failingHttpStatusCodeException.getStatusCode(), is(403));
             form = webClient.goTo(user2.getUrl() + "/account/").getFormByName("config");
             form.getInputByName("_.fullName").setValue("John");
             j.submit(form);
         }
 
-        assertEquals("User should be able to configure himself.", "John", user2.getFullName());
+        assertEquals("John", user2.getFullName(), "User should be able to configure himself.");
 
     }
 
@@ -482,13 +482,13 @@ public class UserTest {
         User user = realm.createAccount("John Smith", "password");
         User user2 = realm.createAccount("John Smith2", "password");
         SecurityContextHolder.getContext().setAuthentication(user.impersonate2());
-        assertFalse("Current user should not have permission read.", user2.hasPermission(Permission.READ));
-        assertTrue("Current user should always have permission read to himself.", user.hasPermission(Permission.READ));
+        assertFalse(user2.hasPermission(Permission.READ), "Current user should not have permission read.");
+        assertTrue(user.hasPermission(Permission.READ), "Current user should always have permission read to himself.");
         auth.add(Jenkins.ADMINISTER, user.getId());
-        assertTrue("Current user should have permission read, because he has permission administer.", user2.hasPermission(Permission.READ));
+        assertTrue(user2.hasPermission(Permission.READ), "Current user should have permission read, because he has permission administer.");
         SecurityContextHolder.getContext().setAuthentication(Jenkins.ANONYMOUS2);
         user2 = User.get("anonymous");
-        assertFalse("Current user should not have permission read, because does not have global permission read and authentication is anonymous.", user2.hasPermission(Permission.READ));
+        assertFalse(user2.hasPermission(Permission.READ), "Current user should not have permission read, because does not have global permission read and authentication is anonymous.");
     }
 
     @Test
@@ -503,17 +503,17 @@ public class UserTest {
         user2.save();
 
         SecurityContextHolder.getContext().setAuthentication(user.impersonate2());
-        assertFalse("Ordinary user cannot delete somebody else", user2.canDelete());
+        assertFalse(user2.canDelete(), "Ordinary user cannot delete somebody else");
         auth.add(Jenkins.ADMINISTER, user.getId());
-        assertTrue("Administrator can delete anybody else", user2.canDelete());
-        assertFalse("User (even admin) cannot delete himself", user.canDelete());
+        assertTrue(user2.canDelete(), "Administrator can delete anybody else");
+        assertFalse(user.canDelete(), "User (even admin) cannot delete himself");
 
         SecurityContextHolder.getContext().setAuthentication(user2.impersonate2());
         auth.add(Jenkins.ADMINISTER, user2.getId());
         User user3 = User.get("Random Somebody");
-        assertFalse("Storage-less temporary user cannot be deleted", user3.canDelete());
+        assertFalse(user3.canDelete(), "Storage-less temporary user cannot be deleted");
         user3.save();
-        assertTrue("But once storage is allocated, he can be deleted", user3.canDelete());
+        assertTrue(user3.canDelete(), "But once storage is allocated, he can be deleted");
     }
 
     @Test
@@ -539,11 +539,11 @@ public class UserTest {
         // User can change only own token
         SecurityContextHolder.getContext().setAuthentication(bob.impersonate2());
         bob.getProperty(ApiTokenProperty.class).changeApiToken();
-        assertThrows("Bob should not be authorized to change alice's token", AccessDeniedException3.class, () -> alice.getProperty(ApiTokenProperty.class).changeApiToken());
+        assertThrows(AccessDeniedException3.class, () -> alice.getProperty(ApiTokenProperty.class).changeApiToken(), "Bob should not be authorized to change alice's token");
 
         // ANONYMOUS2 can not change any token
         SecurityContextHolder.getContext().setAuthentication(Jenkins.ANONYMOUS2);
-        assertThrows("Anonymous should not be authorized to change alice's token", AccessDeniedException3.class, () -> alice.getProperty(ApiTokenProperty.class).changeApiToken());
+        assertThrows(AccessDeniedException3.class, () -> alice.getProperty(ApiTokenProperty.class).changeApiToken(), "Anonymous should not be authorized to change alice's token");
     }
 
     @Issue("SECURITY-243")
@@ -559,26 +559,26 @@ public class UserTest {
         u2.setFullName("User Two");
         u2.save();
 
-        assertNotSame("Users should not have the same id.", u1.getId(), u2.getId());
+        assertNotSame(u1.getId(), u2.getId(), "Users should not have the same id.");
 
         User u = User.get("User One");
-        assertEquals("'User One' should resolve to u1", u1.getId(), u.getId());
+        assertEquals(u1.getId(), u.getId(), "'User One' should resolve to u1");
 
         u = User.get("User Two");
-        assertEquals("'User Two' should resolve to u2", u2.getId(), u.getId());
+        assertEquals(u2.getId(), u.getId(), "'User Two' should resolve to u2");
 
         u = User.get("user1");
-        assertEquals("'user1' should resolve to u1", u1.getId(), u.getId());
+        assertEquals(u1.getId(), u.getId(), "'user1' should resolve to u1");
 
         u = User.get("user2");
-        assertEquals("'user2' should resolve to u2", u2.getId(), u.getId());
+        assertEquals(u2.getId(), u.getId(), "'user2' should resolve to u2");
 
         u1.setFullName("user2");
         u1.save();
         u = User.get("user2");
-        assertEquals("'user2' should resolve to u2", u2.getId(), u.getId());
+        assertEquals(u2.getId(), u.getId(), "'user2' should resolve to u2");
         u = User.get("user1");
-        assertEquals("'user1' should resolve to u1", u1.getId(), u.getId());
+        assertEquals(u1.getId(), u.getId(), "'user1' should resolve to u1");
 
 
         u1.setFullName("user1");
@@ -586,9 +586,9 @@ public class UserTest {
         u2.setFullName("user1");
         u2.save();
         u = User.get("user1");
-        assertEquals("'user1' should resolve to u1", u1.getId(), u.getId());
+        assertEquals(u1.getId(), u.getId(), "'user1' should resolve to u1");
         u = User.get("user2");
-        assertEquals("'user2' should resolve to u2", u2.getId(), u.getId());
+        assertEquals(u2.getId(), u.getId(), "'user2' should resolve to u2");
     }
 
     @Issue("SECURITY-243")
@@ -599,15 +599,15 @@ public class UserTest {
         User attacker1 = User.get("attacker1");
         attacker1.setFullName("victim1");
         User victim1 = User.get("victim1");
-        assertEquals("victim1 is a real user ID, we must ignore the attacker1’s fullName", "victim1", victim1.getId());
-        assertNull("a recursive call to User.get was OK", victim1.getProperty(MyViewsProperty.class).getPrimaryViewName());
-        assertEquals("(though the realm mistakenly added metadata to the attacker)", "victim1", attacker1.getProperty(MyViewsProperty.class).getPrimaryViewName());
+        assertEquals("victim1", victim1.getId(), "victim1 is a real user ID, we must ignore the attacker1’s fullName");
+        assertNull(victim1.getProperty(MyViewsProperty.class).getPrimaryViewName(), "a recursive call to User.get was OK");
+        assertEquals("victim1", attacker1.getProperty(MyViewsProperty.class).getPrimaryViewName(), "(though the realm mistakenly added metadata to the attacker)");
         User.get("attacker2").setFullName("nonexistent");
-        assertEquals("but if we cannot find such a user ID, allow the fullName", "attacker2", User.get("nonexistent").getId());
+        assertEquals("attacker2", User.get("nonexistent").getId(), "but if we cannot find such a user ID, allow the fullName");
         User.get("attacker3").setFullName("unknown");
-        assertEquals("or if we are not sure, allow the fullName", "attacker3", User.get("unknown").getId());
+        assertEquals("attacker3", User.get("unknown").getId(), "or if we are not sure, allow the fullName");
         User.get("attacker4").setFullName("Victim2");
-        assertEquals("victim2 is a real (canonical) user ID", "victim2", User.get("Victim2").getId());
+        assertEquals("victim2", User.get("Victim2").getId(), "victim2 is a real (canonical) user ID");
 
     }
 
@@ -650,40 +650,40 @@ public class UserTest {
         u2.setFullName("User Two");
         u2.save();
 
-        assertNotSame("Users should not have the same id.", u1.getId(), u2.getId());
+        assertNotSame(u1.getId(), u2.getId(), "Users should not have the same id.");
 
         // We can get the same user back.
         User u = User.getById("user1", false);
-        assertSame("'user1' should return u1", u1, u);
+        assertSame(u1, u, "'user1' should return u1");
 
         // passing true should not create a new user if it does not exist.
         u = User.getById("user1", true);
-        assertSame("'user1' should return u1", u1, u);
+        assertSame(u1, u, "'user1' should return u1");
 
         // should not lookup by name.
         u = User.getById("User One", false);
-        assertNull("'User One' should not resolve to any user", u);
+        assertNull(u, "'User One' should not resolve to any user");
 
         // We can get the same user back.
         u = User.getById("user2", false);
-        assertSame("'user2' should return u2", u2, u);
+        assertSame(u2, u, "'user2' should return u2");
 
         // passing true should not create a new user if it does not exist.
         u = User.getById("user2", true);
-        assertSame("'user2' should return u1", u2, u);
+        assertSame(u2, u, "'user2' should return u1");
 
         // should not lookup by name.
         u = User.getById("User Two", false);
-        assertNull("'User Two' should not resolve to any user", u);
+        assertNull(u, "'User Two' should not resolve to any user");
 
         u1.setFullName("user1");
         u1.save();
         u2.setFullName("user1");
         u2.save();
         u = User.getById("user1", false);
-        assertSame("'user1' should resolve to u1", u1, u);
+        assertSame(u1, u, "'user1' should resolve to u1");
         u = User.getById("user2", false);
-        assertSame("'user2' should resolve to u2", u2, u);
+        assertSame(u2, u, "'user2' should resolve to u2");
     }
 
     @Test

@@ -25,10 +25,10 @@
 package hudson;
 
 import jenkins.model.TransientActionFactory;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
@@ -54,7 +54,7 @@ public class ExtensionListListenerTest {
         // plugin should trigger onChange in the MyExtensionListListener instance.
         PluginManagerUtil.dynamicLoad("magicext.hpi", r.jenkins);
 
-        Assert.assertEquals(1, listListener.onChangeCallCount);
+        Assertions.assertEquals(1, listListener.onChangeCallCount);
     }
 
     private static class MyExtensionListListener extends ExtensionListListener {

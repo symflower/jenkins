@@ -32,11 +32,11 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.ExtensionList;
@@ -56,7 +56,7 @@ import java.util.List;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -71,9 +71,9 @@ public class NodesTest {
     public void addNodeShouldFailAtomically() throws Exception {
         InvalidNode node = new InvalidNode("foo", "temp", r.createComputerLauncher(null));
         IOException e = assertThrows(
-                "Adding the node should have thrown an exception during serialization",
                 IOException.class,
-                () -> r.jenkins.addNode(node));
+                () -> r.jenkins.addNode(node),
+                "Adding the node should have thrown an exception during serialization");
         String className = InvalidNode.class.getName();
         assertThat("The exception should be from failing to serialize the node",
                 e.getMessage(), containsString("Failed to serialize " + className + "#cl for class " + className));
@@ -88,9 +88,9 @@ public class NodesTest {
         r.jenkins.addNode(oldNode);
         InvalidNode newNode = new InvalidNode("foo", "temp", r.createComputerLauncher(null));
         IOException e = assertThrows(
-                "Adding the node should have thrown an exception during serialization",
                 IOException.class,
-                () -> r.jenkins.addNode(newNode));
+                () -> r.jenkins.addNode(newNode),
+                "Adding the node should have thrown an exception during serialization");
         String className = InvalidNode.class.getName();
         assertThat("The exception should be from failing to serialize the node",
                 e.getMessage(), containsString("Failed to serialize " + className + "#cl for class " + className));
@@ -184,9 +184,9 @@ public class NodesTest {
 
         DumbSlave node = new DumbSlave("nodeA.", "temp", r.createComputerLauncher(null));
         Failure e = assertThrows(
-                "Adding the node should have thrown an exception during checkGoodName",
                 Failure.class,
-                () -> r.jenkins.addNode(node));
+                () -> r.jenkins.addNode(node),
+                "Adding the node should have thrown an exception during checkGoodName");
         assertEquals(hudson.model.Messages.Hudson_TrailingDot(), e.getMessage());
 
         assertThat(r.jenkins.getNodes(), hasSize(0));
@@ -201,9 +201,9 @@ public class NodesTest {
 
         DumbSlave node = new DumbSlave("nodeA.", "temp", r.createComputerLauncher(null));
         Failure e = assertThrows(
-                "Adding the node should have thrown an exception during checkGoodName",
                 Failure.class,
-                () -> r.jenkins.addNode(node));
+                () -> r.jenkins.addNode(node),
+                "Adding the node should have thrown an exception during checkGoodName");
         assertEquals(hudson.model.Messages.Hudson_TrailingDot(), e.getMessage());
 
         assertThat(r.jenkins.getNodes(), hasSize(1));
@@ -234,7 +234,7 @@ public class NodesTest {
     @Test
     @LocalData
     public void vetoLoad() {
-        assertNull("one-node should not have been loaded because vetoed by VetoLoadingNodes", Jenkins.get().getNode("one-node"));
+        assertNull(Jenkins.get().getNode("one-node"), "one-node should not have been loaded because vetoed by VetoLoadingNodes");
     }
 
     @TestExtension("vetoLoad")

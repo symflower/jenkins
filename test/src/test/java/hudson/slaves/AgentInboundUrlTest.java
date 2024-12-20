@@ -24,7 +24,7 @@
 
 package hudson.slaves;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.Slave;
 import java.util.logging.Level;
@@ -34,7 +34,7 @@ import org.dom4j.Element;
 import org.dom4j.io.DOMReader;
 import org.htmlunit.xml.XmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.FlagRule;
 import org.jvnet.hudson.test.InboundAgentRule;
 import org.jvnet.hudson.test.Issue;

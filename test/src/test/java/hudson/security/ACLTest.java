@@ -24,9 +24,9 @@
 
 package hudson.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -41,15 +41,15 @@ import java.util.Collections;
 import java.util.List;
 import jenkins.model.Jenkins;
 import org.htmlunit.FailingHttpStatusCodeException;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.TestExtension;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.junit.jupiter.api.Assertions;
 
 public class ACLTest {
 
@@ -94,9 +94,9 @@ public class ACLTest {
         final User manager = User.getOrCreateByIdOrFullName("manager");
 
         try (ACLContext ignored = ACL.as2(manager.impersonate2())) {
-            Exception e = Assert.assertThrows(AccessDeniedException.class,
+            Exception e = Assertions.assertThrows(AccessDeniedException.class,
                     () -> jenkins.getACL().checkAnyPermission(Jenkins.ADMINISTER));
-            Assert.assertEquals("manager is missing the Overall/Administer permission", e.getMessage());
+            Assertions.assertEquals("manager is missing the Overall/Administer permission", e.getMessage());
         }
     }
 
@@ -111,9 +111,9 @@ public class ACLTest {
         final User manager = User.getOrCreateByIdOrFullName("manager");
 
         try (ACLContext ignored = ACL.as2(manager.impersonate2())) {
-            Exception e = Assert.assertThrows(AccessDeniedException.class,
+            Exception e = Assertions.assertThrows(AccessDeniedException.class,
                     () -> jenkins.getACL().checkAnyPermission(Jenkins.ADMINISTER, Jenkins.READ));
-            Assert.assertEquals("manager is missing a permission, one of Overall/Administer, Overall/Read is required", e.getMessage());
+            Assertions.assertEquals("manager is missing a permission, one of Overall/Administer, Overall/Read is required", e.getMessage());
         }
     }
 
@@ -129,9 +129,9 @@ public class ACLTest {
         final User manager = User.getOrCreateByIdOrFullName("manager");
 
         try (ACLContext ignored = ACL.as2(manager.impersonate2())) {
-            Exception e = Assert.assertThrows(AccessDeniedException.class,
+            Exception e = Assertions.assertThrows(AccessDeniedException.class,
                     () -> jenkins.getACL().checkAnyPermission(Jenkins.MANAGE, Jenkins.SYSTEM_READ));
-            Assert.assertEquals("manager is missing the Overall/Administer permission", e.getMessage());
+            Assertions.assertEquals("manager is missing the Overall/Administer permission", e.getMessage());
         }
     }
 
@@ -147,20 +147,20 @@ public class ACLTest {
         final User manager = User.getOrCreateByIdOrFullName("manager");
 
         try (ACLContext ignored = ACL.as2(manager.impersonate2())) {
-            Exception e = Assert.assertThrows(AccessDeniedException.class,
+            Exception e = Assertions.assertThrows(AccessDeniedException.class,
                     () -> jenkins.getACL().checkAnyPermission(Item.WIPEOUT, Run.ARTIFACTS));
-            Assert.assertEquals("manager is missing a permission, one of Job/WipeOut, Run/Artifacts is required", e.getMessage());
+            Assertions.assertEquals("manager is missing a permission, one of Job/WipeOut, Run/Artifacts is required", e.getMessage());
         }
     }
 
     @Test
     public void hasAnyPermissionThrowsIfNoPermissionProvided() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> r.jenkins.getACL().hasAnyPermission());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> r.jenkins.getACL().hasAnyPermission());
     }
 
     @Test
     public void checkAnyPermissionThrowsIfNoPermissionProvided() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> r.jenkins.getACL().checkAnyPermission());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> r.jenkins.getACL().checkAnyPermission());
     }
 
     @Test

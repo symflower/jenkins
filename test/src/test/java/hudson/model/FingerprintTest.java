@@ -31,12 +31,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -69,9 +69,9 @@ import jenkins.model.Jenkins;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.CreateFileBuilder;
 import org.jvnet.hudson.test.Issue;
@@ -99,7 +99,7 @@ public class FingerprintTest {
     @Rule
     public LoggerRule loggerRule = new LoggerRule();
 
-    @Before
+    @BeforeEach
     public void setupRealm() {
         rule.jenkins.setSecurityRealm(rule.createDummySecurityRealm());
     }
@@ -179,12 +179,12 @@ public class FingerprintTest {
 
         // Check references
         Fingerprint.BuildPtr original = fp.getOriginal();
-        assertEquals("Original reference contains a wrong job name", project.getName(), original.getName());
-        assertEquals("Original reference contains a wrong build number", build.getNumber(), original.getNumber());
+        assertEquals(project.getName(), original.getName(), "Original reference contains a wrong job name");
+        assertEquals(build.getNumber(), original.getNumber(), "Original reference contains a wrong build number");
 
         Hashtable<String, Fingerprint.RangeSet> usages = fp.getUsages();
-        assertTrue("Usages do not have a reference to " + project, usages.containsKey(project.getName()));
-        assertTrue("Usages do not have a reference to " + project2, usages.containsKey(project2.getName()));
+        assertTrue(usages.containsKey(project.getName()), "Usages do not have a reference to " + project);
+        assertTrue(usages.containsKey(project2.getName()), "Usages do not have a reference to " + project2);
     }
 
     @Test
@@ -225,22 +225,22 @@ public class FingerprintTest {
         try (ACLContext acl = ACL.as(user1)) {
             Fingerprint.BuildPtr original = fp.getOriginal();
             assertThat("user1 should be able to see the origin", fp.getOriginal(), notNullValue());
-            assertEquals("user1 should be able to see the origin's project name", project1.getName(), original.getName());
-            assertEquals("user1 should be able to see the origin's build number", build.getNumber(), original.getNumber());
-            assertEquals("Only one usage should be visible to user1", 1, fp._getUsages().size());
-            assertEquals("Only project1 should be visible to user1", project1.getFullName(), fp._getUsages().get(0).name);
+            assertEquals(project1.getName(), original.getName(), "user1 should be able to see the origin's project name");
+            assertEquals(build.getNumber(), original.getNumber(), "user1 should be able to see the origin's build number");
+            assertEquals(1, fp._getUsages().size(), "Only one usage should be visible to user1");
+            assertEquals(project1.getFullName(), fp._getUsages().get(0).name, "Only project1 should be visible to user1");
         }
 
         try (ACLContext acl = ACL.as(user2)) {
             assertThat("user2 should be unable to see the origin", fp.getOriginal(), nullValue());
-            assertEquals("Only one usage should be visible to user2", 1, fp._getUsages().size());
-            assertEquals("Only project2 should be visible to user2", project2.getFullName(), fp._getUsages().get(0).name);
+            assertEquals(1, fp._getUsages().size(), "Only one usage should be visible to user2");
+            assertEquals(project2.getFullName(), fp._getUsages().get(0).name, "Only project2 should be visible to user2");
         }
 
         try (ACLContext acl = ACL.as(user3)) {
             Fingerprint.BuildPtr original = fp.getOriginal();
             assertThat("user3 should be unable to see the origin", fp.getOriginal(), nullValue());
-            assertEquals("All usages should be invisible for user3", 0, fp._getUsages().size());
+            assertEquals(0, fp._getUsages().size(), "All usages should be invisible for user3");
         }
     }
 
@@ -258,9 +258,9 @@ public class FingerprintTest {
         try (ACLContext acl = ACL.as(user1)) {
             Fingerprint.BuildPtr original = fingerprint.getOriginal();
             assertThat("user1 should able to see the origin", fingerprint.getOriginal(), notNullValue());
-            assertEquals("user1 sees the wrong original name with Item.DISCOVER", project.getFullName(), original.getName());
-            assertEquals("user1 sees the wrong original number with Item.DISCOVER", build.getNumber(), original.getNumber());
-            assertEquals("Usage ref in fingerprint should be visible to user1", 1, fingerprint._getUsages().size());
+            assertEquals(project.getFullName(), original.getName(), "user1 sees the wrong original name with Item.DISCOVER");
+            assertEquals(build.getNumber(), original.getNumber(), "user1 sees the wrong original number with Item.DISCOVER");
+            assertEquals(1, fingerprint._getUsages().size(), "Usage ref in fingerprint should be visible to user1");
         }
     }
 
@@ -279,13 +279,13 @@ public class FingerprintTest {
 
         // Ensure we can read the original from user account
         try (ACLContext acl = ACL.as(user1)) {
-            assertTrue("Test framework issue: User1 should be able to read the folder", folder.hasPermission(Item.READ));
+            assertTrue(folder.hasPermission(Item.READ), "Test framework issue: User1 should be able to read the folder");
 
             Fingerprint.BuildPtr original = fingerprint.getOriginal();
             assertThat("user1 should able to see the origin", fingerprint.getOriginal(), notNullValue());
-            assertEquals("user1 sees the wrong original name with Item.DISCOVER", project.getFullName(), original.getName());
-            assertEquals("user1 sees the wrong original number with Item.DISCOVER", build.getNumber(), original.getNumber());
-            assertEquals("user1 should be able to see the job", 1, fingerprint._getUsages().size());
+            assertEquals(project.getFullName(), original.getName(), "user1 sees the wrong original name with Item.DISCOVER");
+            assertEquals(build.getNumber(), original.getNumber(), "user1 sees the wrong original number with Item.DISCOVER");
+            assertEquals(1, fingerprint._getUsages().size(), "user1 should be able to see the job");
 
             assertThat("User should be unable do retrieve the job due to the missing read", original.getJob(), nullValue());
         }
@@ -304,9 +304,9 @@ public class FingerprintTest {
 
         // Ensure we can read the original from user account
         try (ACLContext acl = ACL.as(user1)) {
-            assertFalse("Test framework issue: User1 should be unable to read the folder", folder.hasPermission(Item.READ));
+            assertFalse(folder.hasPermission(Item.READ), "Test framework issue: User1 should be unable to read the folder");
             assertThat("user1 should be unable to see the origin", fingerprint.getOriginal(), nullValue());
-            assertEquals("No jobs should be visible to user1", 0, fingerprint._getUsages().size());
+            assertEquals(0, fingerprint._getUsages().size(), "No jobs should be visible to user1");
         }
     }
 
@@ -330,7 +330,7 @@ public class FingerprintTest {
 
         try (ACLContext acl = ACL.as(user1)) {
             assertThat("user1 should be unable to see the origin", fp.getOriginal(), nullValue());
-            assertEquals("No jobs should be visible to user1", 0, fp._getUsages().size());
+            assertEquals(0, fp._getUsages().size(), "No jobs should be visible to user1");
         }
     }
 
@@ -350,9 +350,9 @@ public class FingerprintTest {
             Fingerprint.BuildPtr original = fingerprint.getOriginal();
             assertThat("user1 should able to see the origin", fingerprint.getOriginal(), notNullValue());
             assertThat("Job has been deleted, so Job reference should return null", fingerprint.getOriginal().getJob(), nullValue());
-            assertEquals("user1 sees the wrong original name with Item.DISCOVER", project.getFullName(), original.getName());
-            assertEquals("user1 sees the wrong original number with Item.DISCOVER", build.getNumber(), original.getNumber());
-            assertEquals("user1 should be able to see the job in usages", 1, fingerprint._getUsages().size());
+            assertEquals(project.getFullName(), original.getName(), "user1 sees the wrong original name with Item.DISCOVER");
+            assertEquals(build.getNumber(), original.getNumber(), "user1 sees the wrong original number with Item.DISCOVER");
+            assertEquals(1, fingerprint._getUsages().size(), "user1 should be able to see the job in usages");
         }
     }
 
@@ -592,12 +592,12 @@ public class FingerprintTest {
 
     @NonNull
     private Fingerprint getFingerprint(@CheckForNull Run<?, ?> run, @NonNull String filename) {
-        assertNotNull("Input run is null", run);
+        assertNotNull(run, "Input run is null");
         Fingerprinter.FingerprintAction action = run.getAction(Fingerprinter.FingerprintAction.class);
-        assertNotNull("Fingerprint action has not been created in " + run, action);
+        assertNotNull(action, "Fingerprint action has not been created in " + run);
         Map<String, Fingerprint> fingerprints = action.getFingerprints();
         final Fingerprint fp = fingerprints.get(filename);
-        assertNotNull("No reference to '" + filename + "' from the Fingerprint action", fp);
+        assertNotNull(fp, "No reference to '" + filename + "' from the Fingerprint action");
         return fp;
     }
 

@@ -6,14 +6,14 @@ import static org.hamcrest.Matchers.instanceOf;
 import hudson.FilePath;
 import hudson.model.AbstractProject;
 import hudson.model.FreeStyleProject;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.jvnet.hudson.test.recipes.LocalData;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.junit.jupiter.api.Assertions;
 
 public class CommandInterpreterTest {
 
@@ -30,12 +30,12 @@ public class CommandInterpreterTest {
         try {
             ((TestCommandInterpreter) builder).getConfiguredLocalRules().isEmpty();
         } catch (NullPointerException ex) {
-            Assert.fail("getConfiguredLocalRules must not return null");
+            Assertions.fail("getConfiguredLocalRules must not return null");
         }
         try {
             ((TestCommandInterpreter) builder).buildEnvVarsFilterRules();
         } catch (NullPointerException ex) {
-            Assert.fail("buildEnvVarsFilterRules must not throw");
+            Assertions.fail("buildEnvVarsFilterRules must not throw");
         }
     }
 

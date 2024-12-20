@@ -24,11 +24,11 @@
 
 package hudson.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.cli.CLICommandInvoker;
@@ -54,7 +54,7 @@ import org.htmlunit.HttpMethod;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
@@ -72,12 +72,12 @@ public class RobustReflectionConverterTest {
     @Test public void randomExceptionsReported() {
         FreeStyleProject p = r.jenkins.getItemByFullName("j", FreeStyleProject.class);
         assertNotNull(p);
-        assertTrue("There should be no triggers", p.getTriggers().isEmpty());
+        assertTrue(p.getTriggers().isEmpty(), "There should be no triggers");
         OldDataMonitor odm = (OldDataMonitor) r.jenkins.getAdministrativeMonitor("OldData");
         Map<Saveable, OldDataMonitor.VersionRange> data = odm.getData();
         assertEquals(Set.of(p), data.keySet());
         String text = data.values().iterator().next().extra;
-        assertTrue(text, text.contains("hudson.triggers.TimerTrigger.readResolve"));
+        assertTrue(text.contains("hudson.triggers.TimerTrigger.readResolve"), text);
     }
 
     // Testing describable object to demonstrate what is expected with RobustReflectionConverter#addCriticalField
@@ -242,9 +242,9 @@ public class RobustReflectionConverterTest {
             req.setRequestBody(String.format(CONFIGURATION_TEMPLATE, AcceptOnlySpecificKeyword.ACCEPT_KEYWORD, "badvalue"));
 
             Page page = wc.getPage(req);
-            assertEquals("Submitting unacceptable configuration via REST should fail.",
-                    HttpURLConnection.HTTP_INTERNAL_ERROR,
-                    page.getWebResponse().getStatusCode());
+            assertEquals(HttpURLConnection.HTTP_INTERNAL_ERROR,
+                    page.getWebResponse().getStatusCode(),
+                    "Submitting unacceptable configuration via REST should fail.");
 
             // Configuration should not be updated for a failure of the critical field,
             assertNotEquals("badvalue", p.getProperty(KeywordProperty.class).getCriticalField().getKeyword());

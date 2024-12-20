@@ -25,8 +25,8 @@
 package hudson.util;
 
 import java.awt.Dimension;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class GraphTest {
 
@@ -36,23 +36,23 @@ public class GraphTest {
     @Test
     public void testDimensions() {
         final Dimension keep = Graph.safeDimension(Graph.MAX_AREA / 1_000, 1000, DEFAULT_W, DEFAULT_H);
-        Assert.assertEquals(Graph.MAX_AREA / 1_000, keep.width);
-        Assert.assertEquals(1_000, keep.height);
+        Assertions.assertEquals(Graph.MAX_AREA / 1_000, keep.width);
+        Assertions.assertEquals(1_000, keep.height);
 
         final Dimension keep2 = Graph.safeDimension(Graph.MAX_AREA / 2, 2, DEFAULT_W, DEFAULT_H);
-        Assert.assertEquals(Graph.MAX_AREA / 2, keep2.width);
-        Assert.assertEquals(2, keep2.height);
+        Assertions.assertEquals(Graph.MAX_AREA / 2, keep2.width);
+        Assertions.assertEquals(2, keep2.height);
 
         final Dimension resetArea = Graph.safeDimension(Graph.MAX_AREA, Graph.MAX_AREA, DEFAULT_W, DEFAULT_H);
-        Assert.assertEquals(DEFAULT_W, resetArea.width);
-        Assert.assertEquals(DEFAULT_H, resetArea.height);
+        Assertions.assertEquals(DEFAULT_W, resetArea.width);
+        Assertions.assertEquals(DEFAULT_H, resetArea.height);
 
         final Dimension resetNegativeWidth = Graph.safeDimension(-50, 1000, DEFAULT_W, DEFAULT_H);
-        Assert.assertEquals(DEFAULT_W, resetNegativeWidth.width);
-        Assert.assertEquals(DEFAULT_H, resetNegativeWidth.height);
+        Assertions.assertEquals(DEFAULT_W, resetNegativeWidth.width);
+        Assertions.assertEquals(DEFAULT_H, resetNegativeWidth.height);
 
         final Dimension resetNegativeHeight = Graph.safeDimension(1000, -50, DEFAULT_W, DEFAULT_H);
-        Assert.assertEquals(DEFAULT_W, resetNegativeHeight.width);
-        Assert.assertEquals(DEFAULT_H, resetNegativeHeight.height);
+        Assertions.assertEquals(DEFAULT_W, resetNegativeHeight.width);
+        Assertions.assertEquals(DEFAULT_H, resetNegativeHeight.height);
     }
 }

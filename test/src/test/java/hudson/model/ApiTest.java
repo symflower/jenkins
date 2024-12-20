@@ -27,9 +27,9 @@ package hudson.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,9 +39,9 @@ import java.net.HttpURLConnection;
 import net.sf.json.JSONObject;
 import org.htmlunit.Page;
 import org.htmlunit.WebResponse;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -166,7 +166,7 @@ public class ApiTest {
     }
 
     @Issue("JENKINS-22566")
-    @Ignore("TODO currently fails with: org.dom4j.DocumentException: Error on line 1 of document  : An invalid XML character (Unicode: 0x1b) was found in the element content of the document")
+    @Disabled("TODO currently fails with: org.dom4j.DocumentException: Error on line 1 of document  : An invalid XML character (Unicode: 0x1b) was found in the element content of the document")
     @Test
     public void escapedParameter() throws Exception {
         FreeStyleProject p = j.createFreeStyleProject("p");

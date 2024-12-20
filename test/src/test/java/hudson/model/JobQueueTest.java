@@ -3,16 +3,16 @@ package hudson.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.model.Queue.BlockedItem;
 import hudson.model.Queue.WaitingItem;
 import hudson.model.listeners.RunListener;
 import hudson.model.queue.QueueTaskFuture;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.SleepBuilder;
 
@@ -24,7 +24,7 @@ public class JobQueueTest {
     private static volatile boolean fireCompletedFlag = false;
     private static volatile boolean fireFinalizeFlag = false;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         RunListener<Run> listener = new RunListener<>() {
             @Override public  void onCompleted(Run r, TaskListener listener) {

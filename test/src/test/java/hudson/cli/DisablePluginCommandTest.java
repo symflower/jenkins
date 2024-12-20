@@ -33,22 +33,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Functions;
 import hudson.PluginWrapper;
 import java.io.IOException;
 import java.util.function.BiPredicate;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assume;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.WithPlugin;
+import org.junit.jupiter.api.Assumptions;
 
 public class DisablePluginCommandTest {
 
@@ -75,7 +75,7 @@ public class DisablePluginCommandTest {
         CLICommandInvoker.Result result = disablePluginsCLiCommand("-strategy", "NONE", "dependee");
 
         assertThat(result, succeeded());
-        assertEquals("Disabling only dependee", 1, StringUtils.countMatches(result.stdout(), "Disabling"));
+        assertEquals(1, StringUtils.countMatches(result.stdout(), "Disabling"), "Disabling only dependee");
         assertPluginDisabled("dependee");
     }
 
@@ -132,7 +132,7 @@ public class DisablePluginCommandTest {
     /**
      * Can disable a plugin without dependents plugins and Jenkins restart after it if -restart argument is passed.
      */
-    @Ignore("TODO calling restart seems to break Surefire")
+    @Disabled("TODO calling restart seems to break Surefire")
     @Test
     @Issue("JENKINS-27177")
     @WithPlugin("dependee-0.0.2.hpi")
@@ -187,7 +187,7 @@ public class DisablePluginCommandTest {
     /**
      * If some plugins are disabled, Jenkins will restart even though the status code isn't 0 (is 16).
      */
-    @Ignore("TODO calling restart seems to break Surefire")
+    @Disabled("TODO calling restart seems to break Surefire")
     @Test
     @Issue("JENKINS-27177")
     @WithPlugin({"variant.hpi", "depender-0.0.2.hpi", "mandatory-depender-0.0.2.hpi", "plugin-first.hpi", "dependee-0.0.2.hpi"})
@@ -249,8 +249,8 @@ public class DisablePluginCommandTest {
         assertPluginDisabled("dependee");
         assertPluginDisabled("depender");
 
-        assertTrue("An occurrence of the depender plugin in the log says it was successfully disabled", checkResultWith(result, StringUtils::contains, "depender", PluginWrapper.PluginDisableStatus.DISABLED));
-        assertTrue("An occurrence of the depender plugin in the log says it was already disabled", checkResultWith(result, StringUtils::contains, "depender", PluginWrapper.PluginDisableStatus.ALREADY_DISABLED));
+        assertTrue(checkResultWith(result, StringUtils::contains, "depender", PluginWrapper.PluginDisableStatus.DISABLED), "An occurrence of the depender plugin in the log says it was successfully disabled");
+        assertTrue(checkResultWith(result, StringUtils::contains, "depender", PluginWrapper.PluginDisableStatus.ALREADY_DISABLED), "An occurrence of the depender plugin in the log says it was already disabled");
     }
 
     /**
@@ -311,7 +311,7 @@ public class DisablePluginCommandTest {
         assertPluginDisabled("depender");
         assertPluginDisabled("mandatory-depender");
 
-        assertTrue("Only error NO_SUCH_PLUGIN in quiet mode", checkResultWith(result, StringUtils::startsWith, "badplugin", PluginWrapper.PluginDisableStatus.NO_SUCH_PLUGIN));
+        assertTrue(checkResultWith(result, StringUtils::startsWith, "badplugin", PluginWrapper.PluginDisableStatus.NO_SUCH_PLUGIN), "Only error NO_SUCH_PLUGIN in quiet mode");
     }
 
     /**
@@ -328,7 +328,7 @@ public class DisablePluginCommandTest {
         assertPluginEnabled("depender");
         assertPluginEnabled("mandatory-depender");
 
-        assertTrue("Only error NOT_DISABLED_DEPENDANTS in quiet mode", checkResultWith(result, StringUtils::startsWith, "dependee", PluginWrapper.PluginDisableStatus.NOT_DISABLED_DEPENDANTS));
+        assertTrue(checkResultWith(result, StringUtils::startsWith, "dependee", PluginWrapper.PluginDisableStatus.NOT_DISABLED_DEPENDANTS), "Only error NOT_DISABLED_DEPENDANTS in quiet mode");
     }
 
     /**
@@ -391,6 +391,6 @@ public class DisablePluginCommandTest {
     }
 
     private void assumeNotWindows() {
-        Assume.assumeFalse(Functions.isWindows());
+        Assumptions.assumeFalse(Functions.isWindows());
     }
 }

@@ -9,10 +9,10 @@ import hudson.model.FreeStyleProject;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.htmlunit.ScriptResult;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 public class Security2780Test {
     @Rule
@@ -36,6 +36,6 @@ public class Security2780Test {
 
         assertThat("No unsafe HTML expected in the tooltip", jsResultString, not(containsString("<img")));
         assertThat("Safe HTML expected in the tooltip", jsResultString, containsString("Schedule a Build for &lt;img"));
-        Assert.assertFalse("No alert expected", alertTriggered.get());
+        Assertions.assertFalse(alertTriggered.get(), "No alert expected");
     }
 }

@@ -1,3 +1,11 @@
+# Migrated to JUnit 5 with Symflower
+
+* Symflower version: 44511
+* Execution time: 1m21.417s
+* Diff: 566 files changed, 3727 insertions(+), 3688 deletions(-)
+
+---
+
 <a href="https://jenkins.io">
     <img width="400" src="https://www.jenkins.io/images/jenkins-logo-title-dark.svg" alt="Jenkins logo"> 
 </a>

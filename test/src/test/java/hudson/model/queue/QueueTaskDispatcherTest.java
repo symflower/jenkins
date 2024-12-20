@@ -2,9 +2,9 @@ package hudson.model.queue;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.FreeStyleProject;
 import hudson.model.Node;
@@ -15,7 +15,7 @@ import hudson.util.StreamTaskListener;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -38,8 +38,8 @@ public class QueueTaskDispatcherTest {
 
         Item item = r.jenkins.getQueue().getItem(project);
 
-        assertTrue("Not blocked", item.isBlocked());
-        assertEquals("Expected CauseOfBlockage to be returned", "blocked by canRun", item.getWhy());
+        assertTrue(item.isBlocked(), "Not blocked");
+        assertEquals("blocked by canRun", item.getWhy(), "Expected CauseOfBlockage to be returned");
 
         // Clear the queue
         assertTrue(r.jenkins.getQueue().cancel(project));

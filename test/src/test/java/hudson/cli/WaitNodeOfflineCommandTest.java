@@ -30,16 +30,16 @@ import static hudson.cli.CLICommandInvoker.Matcher.succeededSilently;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.slaves.DumbSlave;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -52,7 +52,7 @@ public class WaitNodeOfflineCommandTest {
     @Rule
     public final JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         command = new CLICommandInvoker(j, "wait-node-offline");
     }

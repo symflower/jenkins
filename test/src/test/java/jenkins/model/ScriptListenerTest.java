@@ -23,7 +23,7 @@ import jenkins.util.ScriptListener;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
 import org.jvnet.hudson.test.TestExtension;

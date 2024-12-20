@@ -36,9 +36,9 @@ import hudson.model.ListView;
 import hudson.model.View;
 import java.io.IOException;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class GetViewCommandTest {
@@ -47,7 +47,7 @@ public class GetViewCommandTest {
 
     @Rule public final JenkinsRule j = new JenkinsRule();
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
 
         command = new CLICommandInvoker(j, new GetViewCommand());
     }

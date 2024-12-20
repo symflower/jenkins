@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.model.UnprotectedRootAction;
@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.htmlunit.ScriptResult;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -112,7 +112,7 @@ public class SvgIconTest  {
         String jsResultString = (String) jsResult;
 
         assertThat("XSS not prevented (content)", jsResultString, not(containsString(dangerousPart)));
-        assertFalse("XSS not prevented (alert)", alertTriggered.get());
+        assertFalse(alertTriggered.get(), "XSS not prevented (alert)");
     }
 
     @TestExtension

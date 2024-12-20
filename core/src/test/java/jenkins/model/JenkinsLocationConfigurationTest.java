@@ -24,11 +24,11 @@
 
 package jenkins.model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -41,7 +41,7 @@ public class JenkinsLocationConfigurationTest {
 
     JenkinsLocationConfiguration config;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         config = mock(JenkinsLocationConfiguration.class, Mockito.CALLS_REAL_METHODS);
         Answer<String> mockVoid = invocation -> "stub";

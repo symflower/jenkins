@@ -24,11 +24,11 @@
 
 package jenkins.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import net.sf.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 @Issue("SECURITY-765")
@@ -134,7 +134,7 @@ public class RedactSecretJsonInErrorMessageSanitizerTest {
         JSONObject input = JSONObject.fromObject(from.replace('\'', '"'));
         JSONObject output = RedactSecretJsonInErrorMessageSanitizer.INSTANCE.sanitize(input);
         assertNotSame(output, input);
-        assertEquals("redaction of " + from, to.replace('\'', '"').replace(" ", ""),
-                output.toString().replace(" ", ""));
+        assertEquals(to.replace('\'', '"').replace(" ", ""), output.toString().replace(" ", ""),
+                "redaction of " + from);
     }
 }

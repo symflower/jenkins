@@ -62,10 +62,10 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.Callback;
 import org.htmlunit.Page;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -75,7 +75,7 @@ import org.jvnet.hudson.test.SmokeTest;
  * Tests of {@link SetupWizard}.
  * @author Oleg Nenashev
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class SetupWizardTest {
 
     @Rule
@@ -84,7 +84,7 @@ public class SetupWizardTest {
     @Rule
     public TemporaryFolder tmpdir = new TemporaryFolder();
 
-    @Before
+    @BeforeEach
     public void initSetupWizard() throws IOException, InterruptedException {
         final SetupWizard wizard = j.jenkins.getSetupWizard();
         wizard.init(true);

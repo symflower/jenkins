@@ -35,7 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * In its own suite to minimize the chance of mucking about with other tests.

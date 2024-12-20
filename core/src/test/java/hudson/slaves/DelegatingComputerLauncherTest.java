@@ -1,6 +1,6 @@
 package hudson.slaves;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -11,7 +11,7 @@ import hudson.DescriptorExtensionList;
 import hudson.model.Descriptor;
 import java.util.ArrayList;
 import jenkins.model.Jenkins;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 /**
@@ -58,9 +58,9 @@ public class DelegatingComputerLauncherTest {
 
             when(mockList.iterator()).thenReturn(returnedList.iterator());
 
-            assertTrue("DelegatingComputerLauncher should filter out other DelegatingComputerLauncher instances " +
-                            "from its descriptor's getApplicableDescriptors() method",
-                    new DummyTwo.DummyTwoDescriptor().applicableDescriptors(null, new DumbSlave.DescriptorImpl()).isEmpty());
+            assertTrue(new DummyTwo.DummyTwoDescriptor().applicableDescriptors(null, new DumbSlave.DescriptorImpl()).isEmpty(),
+                    "DelegatingComputerLauncher should filter out other DelegatingComputerLauncher instances " +
+                            "from its descriptor's getApplicableDescriptors() method");
         }
     }
 

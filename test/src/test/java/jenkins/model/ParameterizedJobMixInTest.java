@@ -28,7 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.model.FreeStyleProject;
 import hudson.model.ParametersDefinitionProperty;
@@ -39,11 +39,11 @@ import java.net.URL;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 
 /**
@@ -74,9 +74,9 @@ public class ParameterizedJobMixInTest {
         final JenkinsRule.WebClient webClient = j.createWebClient();
 
         FailingHttpStatusCodeException fex = assertThrows(
-                "should fail when invoking disabled project",
                 FailingHttpStatusCodeException.class,
-                () -> webClient.getPage(webClient.addCrumb(new WebRequest(new URL(j.getURL(), project.getUrl() + "build?delay=0"), HttpMethod.POST))));
+                () -> webClient.getPage(webClient.addCrumb(new WebRequest(new URL(j.getURL(), project.getUrl() + "build?delay=0"), HttpMethod.POST))),
+                "should fail when invoking disabled project");
         assertThat("Should fail with conflict", fex.getStatusCode(), is(409));
     }
 
@@ -98,7 +98,7 @@ public class ParameterizedJobMixInTest {
         assertThat(items[0].task, instanceOf(FreeStyleProject.class));
 
         Queue.WaitingItem waitingItem = (Queue.WaitingItem) items[0];
-        Assert.assertTrue(waitingItem.timestamp.getTimeInMillis() - triggerTime > 45000);
+        Assertions.assertTrue(waitingItem.timestamp.getTimeInMillis() - triggerTime > 45000);
 
         Jenkins.get().getQueue().doCancelItem(1);
     }

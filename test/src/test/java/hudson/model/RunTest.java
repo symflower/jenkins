@@ -28,10 +28,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.ExtensionList;
 import hudson.FilePath;
@@ -59,8 +59,8 @@ import jenkins.util.VirtualFile;
 import org.htmlunit.ScriptResult;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.SleepBuilder;
@@ -68,7 +68,7 @@ import org.jvnet.hudson.test.SmokeTest;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class RunTest  {
 
     @Rule public JenkinsRule j = new JenkinsRule();
@@ -166,7 +166,7 @@ public class RunTest  {
         FreeStyleBuild upBuild = j.buildAndAssertSuccess(up);
         j.waitUntilNoActivity();
         CustomBuild downBuild = down.getBuilds().getLastBuild();
-        assertNotNull("The down build must exist, otherwise the up's one is not protected.", downBuild);
+        assertNotNull(downBuild, "The down build must exist, otherwise the up's one is not protected.");
 
         // updating the name before the build is problematic under Windows
         // so we are updating internal stuff manually

@@ -24,10 +24,10 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
@@ -41,14 +41,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import jenkins.MasterToSlaveFileCallable;
 import jenkins.model.Jenkins;
-import org.junit.Assume;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
 import org.jvnet.hudson.test.MockFolder;
 import org.jvnet.hudson.test.WithoutJenkins;
+import org.junit.jupiter.api.Assumptions;
 
 public class WorkspaceCleanupThreadTest {
 
@@ -186,7 +186,7 @@ public class WorkspaceCleanupThreadTest {
         createOldWorkspaceOn(r.createOnlineSlave(), p);
         performCleanup();
         assertFalse(ws.exists());
-        assertFalse("temporary directory should be cleaned up as well", tmp.exists());
+        assertFalse(tmp.exists(), "temporary directory should be cleaned up as well");
     }
 
     @Issue("JENKINS-65829")
@@ -201,7 +201,7 @@ public class WorkspaceCleanupThreadTest {
         assertTrue(libsWs.exists());
         performCleanup();
         assertFalse(jobWs.exists());
-        assertFalse("libs directory should be cleaned up as well", libsWs.exists());
+        assertFalse(libsWs.exists(), "libs directory should be cleaned up as well");
     }
 
     private FilePath createOldWorkspaceOn(Node slave, FreeStyleProject p) throws Exception {
@@ -249,7 +249,7 @@ public class WorkspaceCleanupThreadTest {
         }
 
         @Override public Void invoke(File f, VirtualChannel channel) {
-            Assume.assumeTrue("failed to reset lastModified on " + f, f.setLastModified(time));
+            Assumptions.assumeTrue(f.setLastModified(time), "failed to reset lastModified on " + f);
             return null;
         }
     }

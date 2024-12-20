@@ -27,9 +27,9 @@ package hudson.slaves;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.BulkChange;
 import hudson.Functions;
@@ -66,9 +66,9 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.RealJenkinsRule;
@@ -81,7 +81,7 @@ public class NodeProvisionerTest {
 
     @Rule public RealJenkinsRule rr = new RealJenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // run 10x the regular speed to speed up the test
         rr.javaOptions(
@@ -129,7 +129,7 @@ public class NodeProvisionerTest {
      */
     // TODO fragile
     @Test public void autoProvision() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_autoProvision);
     }
 
@@ -152,7 +152,7 @@ public class NodeProvisionerTest {
      */
     // TODO fragile
     @Test public void loadSpike() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_loadSpike);
     }
 
@@ -174,7 +174,7 @@ public class NodeProvisionerTest {
      */
     // TODO fragile
     @Test public void baselineSlaveUsage() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_baselineSlaveUsage);
     }
 
@@ -198,7 +198,7 @@ public class NodeProvisionerTest {
      */
     // TODO fragile
     @Test public void labels() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_labels);
     }
 
@@ -236,7 +236,7 @@ public class NodeProvisionerTest {
     @Issue("JENKINS-7291")
     @Test
     public void flyweightTasksWithoutMasterExecutors() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_flyweightTasksWithoutMasterExecutors);
     }
 
@@ -268,7 +268,7 @@ public class NodeProvisionerTest {
     @Issue("JENKINS-30084")
     @Test
     public void shouldRunFlyweightTaskOnProvisionedNodeWhenNodeRestricted() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_shouldRunFlyweightTaskOnProvisionedNodeWhenNodeRestricted);
     }
 
@@ -287,7 +287,7 @@ public class NodeProvisionerTest {
     @Issue("JENKINS-67635")
     @Test
     public void testJobWithCloudLabelExpressionProvisionsOnlyOneAgent() throws Throwable {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         rr.then(NodeProvisionerTest::_testJobWithCloudLabelExpressionProvisionsOnlyOneAgent);
     }
 

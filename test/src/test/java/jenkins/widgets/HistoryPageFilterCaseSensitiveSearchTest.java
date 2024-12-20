@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Consumer;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * TODO: Code partially duplicated with HistoryPageFilterTest in core
@@ -37,15 +37,15 @@ public class HistoryPageFilterCaseSensitiveSearchTest {
     @Test
     public void should_search_case_sensitively_when_enabled_for_user() throws IOException {
         setCaseSensitiveSearchForUserAndCheckAssertionForGivenSearchString("FAILURE", historyPageFilter -> {
-                Assert.assertEquals(1, historyPageFilter.runs.size());
-                Assert.assertEquals(HistoryPageEntry.getEntryId(2), historyPageFilter.runs.get(0).getEntryId());
+                Assertions.assertEquals(1, historyPageFilter.runs.size());
+                Assertions.assertEquals(HistoryPageEntry.getEntryId(2), historyPageFilter.runs.get(0).getEntryId());
         });
     }
 
     @Test
     public void should_skip_result_with_different_capitalization_when_case_sensitively_search_is_enabled_for_user() throws IOException {
         setCaseSensitiveSearchForUserAndCheckAssertionForGivenSearchString(
-                "failure", historyPageFilter -> Assert.assertEquals(0, historyPageFilter.runs.size()));
+                "failure", historyPageFilter -> Assertions.assertEquals(0, historyPageFilter.runs.size()));
     }
 
     private void setCaseSensitiveSearchForUserAndCheckAssertionForGivenSearchString(final String searchString,

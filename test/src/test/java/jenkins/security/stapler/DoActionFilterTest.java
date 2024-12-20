@@ -1,8 +1,8 @@
 package jenkins.security.stapler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -21,7 +21,7 @@ import org.htmlunit.HttpMethod;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
 import org.htmlunit.util.NameValuePair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -94,11 +94,11 @@ public class DoActionFilterTest extends StaplerAbstractTest {
             } catch (FailingHttpStatusCodeException e) {
                 throw new AssertionError("should have access to a public method", e);
             }
-            FailingHttpStatusCodeException x = assertThrows("should not have allowed protected access", FailingHttpStatusCodeException.class, () -> wc.goTo("testAccessModifierUrl/protected/value", null));
+            FailingHttpStatusCodeException x = assertThrows(FailingHttpStatusCodeException.class, () -> wc.goTo("testAccessModifierUrl/protected/value", null), "should not have allowed protected access");
             assertEquals(HttpServletResponse.SC_NOT_FOUND, x.getStatusCode());
-            x = assertThrows("should not have allowed internal access", FailingHttpStatusCodeException.class, () -> wc.goTo("testAccessModifierUrl/internal/value", null));
+            x = assertThrows(FailingHttpStatusCodeException.class, () -> wc.goTo("testAccessModifierUrl/internal/value", null), "should not have allowed internal access");
             assertEquals(HttpServletResponse.SC_NOT_FOUND, x.getStatusCode());
-            x = assertThrows("should not have allowed private access", FailingHttpStatusCodeException.class, () -> wc.goTo("testAccessModifierUrl/private/value", null));
+            x = assertThrows(FailingHttpStatusCodeException.class, () -> wc.goTo("testAccessModifierUrl/private/value", null), "should not have allowed private access");
             assertEquals(HttpServletResponse.SC_NOT_FOUND, x.getStatusCode());
         }
     }

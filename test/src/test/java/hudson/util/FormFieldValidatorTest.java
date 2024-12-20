@@ -41,9 +41,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.htmlunit.ScriptResult;
 import org.htmlunit.WebResponseListener;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -51,6 +50,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -97,7 +97,7 @@ public class FormFieldValidatorTest {
         // get initial value
         final ScriptResult scriptResult1 = page.executeJavaScript("document.querySelectorAll('.validation-error-area--visible .ok')[1].textContent");
         final long javaScriptResult1 = Long.parseLong((String) scriptResult1.getJavaScriptResult());
-        Assert.assertEquals(System.currentTimeMillis(), javaScriptResult1, 5000); // value is expected to be roughly "now"
+        Assertions.assertEquals(javaScriptResult1, 5000, System.currentTimeMillis()); // value is expected to be roughly "now"
 
         // focus then blur to update
         page.executeJavaScript("document.querySelector('.CodeMirror textarea').dispatchEvent(new Event(\"focus\"))");
@@ -107,10 +107,10 @@ public class FormFieldValidatorTest {
         // get updated value
         final ScriptResult scriptResult2 = page.executeJavaScript("document.querySelectorAll('.validation-error-area--visible .ok')[1].textContent");
         final long javaScriptResult2 = Long.parseLong((String) scriptResult2.getJavaScriptResult());
-        Assert.assertEquals(System.currentTimeMillis(), javaScriptResult2, 5000); // value is expected to be roughly "now"
+        Assertions.assertEquals(javaScriptResult2, 5000, System.currentTimeMillis()); // value is expected to be roughly "now"
 
         // value should have changed
-        Assert.assertNotEquals(javaScriptResult1, javaScriptResult2);
+        Assertions.assertNotEquals(javaScriptResult1, javaScriptResult2);
     }
 
     public static class CodeMirrorStep extends Builder {
@@ -154,7 +154,7 @@ public class FormFieldValidatorTest {
 
             statusListener.assertHasResponses();
             String contentAsString = statusListener.getResponses().get(0).getContentAsString();
-            Assert.assertTrue(contentAsString.contains("doCheckXyz is broken"));
+            Assertions.assertTrue(contentAsString.contains("doCheckXyz is broken"));
         } finally {
             Publisher.all().remove(d);
         }

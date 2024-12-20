@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.htmlunit.ScriptResult;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 public class Security2776Test {
     public static final String URL_NAME = "security2776";
@@ -53,7 +53,7 @@ public class Security2776Test {
         assertThat(jsResult, instanceOf(String.class));
         String jsResultString = (String) jsResult;
         assertThat(jsResultString, is(expectedResult));
-        Assert.assertFalse("No alert expected", alerts.get());
+        Assertions.assertFalse(alerts.get(), "No alert expected");
     }
 
     private static String _getUnsafeTooltip() {

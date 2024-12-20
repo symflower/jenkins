@@ -34,7 +34,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import jenkins.util.MemoryReductionUtil;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 
 /**

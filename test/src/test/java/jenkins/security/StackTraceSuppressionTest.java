@@ -35,10 +35,10 @@ import hudson.model.User;
 import java.io.IOException;
 import jenkins.model.Jenkins;
 import org.htmlunit.html.HtmlPage;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.xml.sax.SAXException;
@@ -48,12 +48,12 @@ public class StackTraceSuppressionTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setup() {
         clearProperties();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         clearProperties();
     }

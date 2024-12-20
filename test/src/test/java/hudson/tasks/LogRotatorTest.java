@@ -26,12 +26,12 @@ package hudson.tasks;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Functions;
 import hudson.Launcher;
@@ -53,7 +53,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.FailureBuilder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -100,8 +100,8 @@ public class LogRotatorTest {
 
     @Test
     public void ableToDeleteCurrentBuild() throws Exception {
-        assumeFalse("Deleting the current build while is is completing does not work consistently on Windows",
-                Functions.isWindows());
+        assumeFalse(Functions.isWindows(),
+                "Deleting the current build while is is completing does not work consistently on Windows");
         var p = j.createFreeStyleProject();
         // Keep 0 builds, i.e. immediately delete builds as they complete.
         LogRotator logRotator = new LogRotator(-1, 0, -1, -1);
@@ -165,12 +165,12 @@ public class LogRotatorTest {
         assertTrue(project.getBuildByNumber(4).getHasArtifacts());
         j.buildAndAssertStatus(Result.FAILURE, project); // #5
         assertTrue(project.getBuildByNumber(2).getHasArtifacts());
-        assertFalse("no better than #4", project.getBuildByNumber(3).getHasArtifacts());
+        assertFalse(project.getBuildByNumber(3).getHasArtifacts(), "no better than #4");
         assertTrue(project.getBuildByNumber(4).getHasArtifacts());
         assertTrue(project.getBuildByNumber(5).getHasArtifacts());
         project.getBuildersList().replaceBy(Set.of(new CreateArtifact()));
         j.buildAndAssertSuccess(project); // #6
-        assertFalse("#2 is still lastSuccessful until #6 is complete", project.getBuildByNumber(2).getHasArtifacts());
+        assertFalse(project.getBuildByNumber(2).getHasArtifacts(), "#2 is still lastSuccessful until #6 is complete");
         assertFalse(project.getBuildByNumber(3).getHasArtifacts());
         assertFalse(project.getBuildByNumber(4).getHasArtifacts());
         assertTrue(project.getBuildByNumber(5).getHasArtifacts());
@@ -178,7 +178,7 @@ public class LogRotatorTest {
         j.buildAndAssertSuccess(project); // #7
         assertNull(project.getBuildByNumber(1));
         assertNotNull(project.getBuildByNumber(2));
-        assertFalse("lastSuccessful was #6 for ArtifactArchiver", project.getBuildByNumber(2).getHasArtifacts());
+        assertFalse(project.getBuildByNumber(2).getHasArtifacts(), "lastSuccessful was #6 for ArtifactArchiver");
         assertFalse(project.getBuildByNumber(3).getHasArtifacts());
         assertFalse(project.getBuildByNumber(4).getHasArtifacts());
         assertFalse(project.getBuildByNumber(5).getHasArtifacts());

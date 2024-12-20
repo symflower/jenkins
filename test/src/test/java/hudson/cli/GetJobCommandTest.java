@@ -30,9 +30,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 import hudson.model.FreeStyleProject;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockFolder;
@@ -43,7 +43,7 @@ public class GetJobCommandTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         command = new CLICommandInvoker(j, new GetJobCommand());
     }

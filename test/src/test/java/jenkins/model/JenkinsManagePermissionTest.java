@@ -8,8 +8,8 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.PluginWrapper;
 import hudson.cli.CLICommandInvoker;
@@ -29,10 +29,10 @@ import org.hamcrest.Matcher;
 import org.htmlunit.WebResponse;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -48,12 +48,12 @@ public class JenkinsManagePermissionTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    @BeforeClass
+    @BeforeAll
     public static void enableManagePermission() {
         System.setProperty("jenkins.security.ManagePermission", "true");
     }
 
-    @AfterClass
+    @AfterAll
     public static void disableManagePermission() {
         System.clearProperty("jenkins.security.ManagePermission");
     }
@@ -164,9 +164,9 @@ public class JenkinsManagePermissionTest {
                 .grant(Jenkins.MANAGE, Jenkins.READ).everywhere().toEveryone());
         j.submit(form);
         // THEN the changes on fields forbidden to a Jenkins.MANAGE permission are not saved
-        assertEquals("shouldn't be allowed to change the number of executors", currentNumberExecutors, j.getInstance().getNumExecutors());
-        assertEquals("shouldn't be allowed to change the shell executable", shell, getShell());
-        assertEquals("shouldn't be allowed to change the primary view", view, j.getInstance().getPrimaryView());
+        assertEquals(currentNumberExecutors, j.getInstance().getNumExecutors(), "shouldn't be allowed to change the number of executors");
+        assertEquals(shell, getShell(), "shouldn't be allowed to change the shell executable");
+        assertEquals(view, j.getInstance().getPrimaryView(), "shouldn't be allowed to change the primary view");
     }
 
     @Issue("JENKINS-60266")

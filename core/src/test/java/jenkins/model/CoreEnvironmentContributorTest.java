@@ -11,9 +11,9 @@ import hudson.model.Job;
 import hudson.model.TaskListener;
 import java.io.File;
 import java.io.IOException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -30,12 +30,12 @@ public class CoreEnvironmentContributorTest {
     @Mock
     TaskListener listener;
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         mocks.close();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
         instance = new CoreEnvironmentContributor();

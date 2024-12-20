@@ -24,7 +24,7 @@
 
 package hudson.model;
 
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.Assume.assumeNoException;
 
 import java.io.IOException;
@@ -32,11 +32,11 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
@@ -53,7 +53,7 @@ public class UpdateCenterPluginInstallTest {
             assumeNoException(x);
         }
         InetSocketAddress address = new InetSocketAddress("updates.jenkins-ci.org", 80);
-        assumeFalse("Unable to resolve updates.jenkins-ci.org. Skip test.", address.isUnresolved());
+        assumeFalse(address.isUnresolved(), "Unable to resolve updates.jenkins-ci.org. Skip test.");
     }
 
     @Test
@@ -62,10 +62,10 @@ public class UpdateCenterPluginInstallTest {
         JenkinsRule.JSONWebResponse response = jenkinsRule.postJSON("pluginManager/installPlugins", buildInstallPayload("unknown_plugin_xyz"));
         JSONObject json = response.getJSONObject();
 
-        Assert.assertEquals("error", json.get("status"));
-        Assert.assertEquals("No such plugin: unknown_plugin_xyz", json.get("message"));
-        Assert.assertEquals("error", json.get("status"));
-        Assert.assertEquals("No such plugin: unknown_plugin_xyz", json.get("message"));
+        Assertions.assertEquals("error", json.get("status"));
+        Assertions.assertEquals("No such plugin: unknown_plugin_xyz", json.get("message"));
+        Assertions.assertEquals("error", json.get("status"));
+        Assertions.assertEquals("No such plugin: unknown_plugin_xyz", json.get("message"));
     }
 
     @Test
@@ -74,21 +74,21 @@ public class UpdateCenterPluginInstallTest {
         JenkinsRule.JSONWebResponse installResponse = jenkinsRule.postJSON("pluginManager/installPlugins", buildInstallPayload("changelog-history", "git"));
         JSONObject json = installResponse.getJSONObject();
 
-        Assert.assertEquals("ok", json.get("status"));
+        Assertions.assertEquals("ok", json.get("status"));
         JSONObject data = json.getJSONObject("data");
-        Assert.assertTrue(data.has("correlationId"));
+        Assertions.assertTrue(data.has("correlationId"));
 
         String correlationId = data.getString("correlationId");
         JSONObject installStatus = jenkinsRule.getJSON("updateCenter/installStatus?correlationId=" + correlationId).getJSONObject();
-        Assert.assertEquals("ok", json.get("status"));
+        Assertions.assertEquals("ok", json.get("status"));
         JSONObject status = installStatus.getJSONObject("data");
         JSONArray states = status.getJSONArray("jobs");
-        Assert.assertEquals(states.toString(), 2, states.size());
+        Assertions.assertEquals(2, states.size(), states.toString());
 
         JSONObject pluginInstallState = states.getJSONObject(0);
-        Assert.assertEquals("changelog-history", pluginInstallState.get("name"));
+        Assertions.assertEquals("changelog-history", pluginInstallState.get("name"));
         pluginInstallState = states.getJSONObject(1);
-        Assert.assertEquals("git", pluginInstallState.get("name"));
+        Assertions.assertEquals("git", pluginInstallState.get("name"));
     }
 
     private JSONObject buildInstallPayload(String... plugins) {

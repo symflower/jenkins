@@ -2,9 +2,9 @@ package hudson.console;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.FilePath;
 import hudson.Launcher;
@@ -36,7 +36,7 @@ import org.htmlunit.html.DomElement;
 import org.htmlunit.html.DomNodeUtil;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.SequenceLock;
@@ -81,7 +81,7 @@ public class ConsoleAnnotatorTest {
 
         // there should be two 'ooo's
         String xml = rsp.asXml();
-        assertEquals(xml, 3, xml.split("ooo").length);
+        assertEquals(3, xml.split("ooo").length, xml);
     }
 
     /**
@@ -369,7 +369,7 @@ public class ConsoleAnnotatorTest {
 
         HtmlPage log = r.createWebClient().getPage(p, "scmPollLog");
         String text = log.asNormalizedText();
-        assertTrue(text, text.contains("$$$hello from polling"));
+        assertTrue(text.contains("$$$hello from polling"), text);
     }
 
     public static class PollingSCM extends SingleFileSCM {

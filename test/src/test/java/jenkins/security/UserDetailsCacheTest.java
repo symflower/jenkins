@@ -24,15 +24,15 @@
 
 package jenkins.security;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.security.HudsonPrivateSecurityRealm;
 import java.io.IOException;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,7 +45,7 @@ public class UserDetailsCacheTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void before() throws IOException {
         HudsonPrivateSecurityRealm realm = new HudsonPrivateSecurityRealm(false, false, null);
         j.jenkins.setSecurityRealm(realm);

@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.hasItem;
 
 import java.util.logging.Level;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
 

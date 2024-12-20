@@ -24,15 +24,15 @@
 
 package jenkins.security;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.FilePath;
 import hudson.slaves.DumbSlave;
 import hudson.util.DirScanner;
 import java.io.OutputStream;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 // TODO What is this even testing?
@@ -43,7 +43,7 @@ public class FilePathSecureTest {
     private DumbSlave s;
     private FilePath root, remote;
 
-    @Before public void init() throws Exception {
+    @BeforeEach public void init() throws Exception {
         s = r.createOnlineSlave();
         root = r.jenkins.getRootPath();
         remote = s.getRootPath();

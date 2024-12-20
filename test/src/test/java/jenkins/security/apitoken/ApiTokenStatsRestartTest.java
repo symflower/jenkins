@@ -29,10 +29,10 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.User;
 import java.io.File;
@@ -51,7 +51,7 @@ import org.htmlunit.html.HtmlSpan;
 import org.htmlunit.util.NameValuePair;
 import org.htmlunit.xml.XmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -119,7 +119,7 @@ public class ApiTokenStatsRestartTest {
                    assertThat(useCounterSpan.getTextContent(), containsString("" + NUM_CALL_WITH_TOKEN));
 
                    File apiTokenStatsFile = new File(u.getUserFolder(), "apiTokenStats.xml");
-                   assertTrue("apiTokenStats.xml file should exist", apiTokenStatsFile.exists());
+                   assertTrue(apiTokenStatsFile.exists(), "apiTokenStats.xml file should exist");
            });
 
         sessions.then(j -> {

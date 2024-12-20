@@ -24,7 +24,7 @@
 
 package jenkins.security.stapler;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.model.UnprotectedRootAction;
@@ -32,9 +32,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Locale;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -45,7 +45,7 @@ public class StaplerDispatchValidatorTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         StaplerDispatchValidator validator = StaplerDispatchValidator.getInstance(j.jenkins.getServletContext());
         try (InputStream whitelist = getClass().getResourceAsStream("StaplerDispatchValidatorTest/whitelist.txt")) {

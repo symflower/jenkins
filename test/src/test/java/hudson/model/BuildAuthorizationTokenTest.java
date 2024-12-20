@@ -3,7 +3,7 @@ package hudson.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -12,9 +12,9 @@ import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -27,7 +27,7 @@ public class BuildAuthorizationTokenTest {
 
     private static final String token = "whatever";
 
-    @Before
+    @BeforeEach
     public void setupSecurity() {
         jr.jenkins.setSecurityRealm(jr.createDummySecurityRealm());
         jr.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy()
@@ -57,9 +57,9 @@ public class BuildAuthorizationTokenTest {
         FreeStyleProject project = jr.createFreeStyleProject();
         JenkinsRule.WebClient wc = jr.createWebClient();
         FailingHttpStatusCodeException fex = assertThrows(
-                "should not reach here since only POST request can",
                 FailingHttpStatusCodeException.class,
-                () -> wc.getPage(new WebRequest(new URL(jr.getURL(), project.getUrl() + "build?delay=0"), HttpMethod.GET)));
+                () -> wc.getPage(new WebRequest(new URL(jr.getURL(), project.getUrl() + "build?delay=0"), HttpMethod.GET)),
+                "should not reach here since only POST request can");
         assertThat("Should fail with method not allowed", fex.getStatusCode(), is(405));
     }
 
@@ -104,9 +104,9 @@ public class BuildAuthorizationTokenTest {
         FreeStyleProject project = jr.createFreeStyleProject();
         JenkinsRule.WebClient wc = jr.createWebClient();
         FailingHttpStatusCodeException fex = assertThrows(
-                "should not reach here as anonymous does not have Item.BUILD and token is not set",
                 FailingHttpStatusCodeException.class,
-                () -> wc.getPage(wc.addCrumb(new WebRequest(new URL(jr.getURL(), project.getUrl() + "build?delay=0"), HttpMethod.POST))));
+                () -> wc.getPage(wc.addCrumb(new WebRequest(new URL(jr.getURL(), project.getUrl() + "build?delay=0"), HttpMethod.POST))),
+                "should not reach here as anonymous does not have Item.BUILD and token is not set");
         assertThat("Should fail with access denied", fex.getStatusCode(), is(403));
     }
 

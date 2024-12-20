@@ -30,11 +30,11 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.XmlFile;
 import hudson.model.Computer;
@@ -54,7 +54,7 @@ import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -155,23 +155,23 @@ public class LogRecorderManagerTest {
         assertTrue(ch.call(new LambdaLog(Level.FINE, "ns1")));
         assertFalse(ch.call(new LambdaLog(Level.FINER, "ns1")));
         List<LogRecord> recs = c.getLogRecords();
-        assertEquals(show(recs), 6, recs.size());
+        assertEquals(6, recs.size(), show(recs));
         // Would of course prefer to get "msg #5 1.0 2.0 'OK?'" but all attempts to fix this have ended in disaster (JENKINS-63458):
         assertEquals("msg #5 {0,number,0.0} {1,number,0.0} ''OK?''", new SimpleFormatter().formatMessage(recs.get(1)));
         recs = r1.getSlaveLogRecords().get(c);
         assertNotNull(recs);
-        assertEquals(show(recs), 3, recs.size());
+        assertEquals(3, recs.size(), show(recs));
         recs = r2.getSlaveLogRecords().get(c);
         assertNotNull(recs);
-        assertEquals(show(recs), 1, recs.size());
+        assertEquals(1, recs.size(), show(recs));
         String text = j.createWebClient().goTo("log/r1/").asNormalizedText();
-        assertTrue(text, text.contains(c.getDisplayName()));
-        assertTrue(text, text.contains("msg #1"));
-        assertTrue(text, text.contains("msg #2"));
-        assertFalse(text, text.contains("msg #3"));
-        assertFalse(text, text.contains("msg #4"));
-        assertTrue(text, text.contains("LambdaLog @FINE"));
-        assertFalse(text, text.contains("LambdaLog @FINER"));
+        assertTrue(text.contains(c.getDisplayName()), text);
+        assertTrue(text.contains("msg #1"), text);
+        assertTrue(text.contains("msg #2"), text);
+        assertFalse(text.contains("msg #3"), text);
+        assertFalse(text.contains("msg #4"), text);
+        assertTrue(text.contains("LambdaLog @FINE"), text);
+        assertFalse(text.contains("LambdaLog @FINER"), text);
     }
 
     @Test

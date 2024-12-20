@@ -27,9 +27,9 @@ package hudson.triggers;
 import hudson.scheduler.CronTabList;
 import hudson.scheduler.Hash;
 import java.util.TimeZone;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Kanstantsin Shautsou
@@ -49,11 +49,11 @@ public class TimerTriggerTest {
         try {
             String cron = "TZ=GMT\nH 0 * * *";
             CronTabList ctl = CronTabList.create(cron, Hash.from("whatever"));
-            Assert.assertEquals("previous occurrence is in GMT", "GMT", ctl.previous().getTimeZone().getID());
+            Assertions.assertEquals("GMT", ctl.previous().getTimeZone().getID(), "previous occurrence is in GMT");
 
             cron = "TZ=America/Denver\nH 0 * * *";
             ctl = CronTabList.create(cron, Hash.from("whatever"));
-            Assert.assertEquals("next occurrence is in America/Denver", "America/Denver", ctl.next().getTimeZone().getID());
+            Assertions.assertEquals("America/Denver", ctl.next().getTimeZone().getID(), "next occurrence is in America/Denver");
         } finally {
             TimeZone.setDefault(defaultTz);
         }

@@ -7,7 +7,7 @@ import hudson.model.Node;
 import java.io.IOException;
 import jenkins.security.MasterToSlaveCallable;
 import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class JenkinsJVMRealTest {

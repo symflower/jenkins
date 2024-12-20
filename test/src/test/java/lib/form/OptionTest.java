@@ -24,9 +24,9 @@
 
 package lib.form;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.ExtensionList;
 import hudson.model.RootAction;
@@ -36,7 +36,7 @@ import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlOption;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -291,12 +291,12 @@ public class OptionTest {
             assertNotEquals(DomElement.ATTRIBUTE_NOT_DEFINED, option.getAttribute("value"));
 
             assertTrue(
-                    "Value attribute does not contain the expected value",
-                    option.getValueAttribute().contains(valueContainsExpected)
+                    option.getValueAttribute().contains(valueContainsExpected),
+                    "Value attribute does not contain the expected value"
             );
             assertTrue(
-                    "Body content of the option does not contain the expected value",
-                    option.getText().contains(bodyContainsExpected)
+                    option.getText().contains(bodyContainsExpected),
+                    "Body content of the option does not contain the expected value"
             );
         }
     }

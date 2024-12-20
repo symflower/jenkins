@@ -28,11 +28,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.EnvVars;
 import hudson.Functions;
@@ -60,7 +60,7 @@ import org.htmlunit.Page;
 import org.htmlunit.WebResponse;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.CaptureEnvironmentBuilder;
 import org.jvnet.hudson.test.FailureBuilder;
@@ -257,28 +257,28 @@ public class AbstractBuildTest {
     public void fixEmptyDisplayName() throws Exception {
         FreeStyleProject p = j.createFreeStyleProject("foo");
         p.setDisplayName("");
-        assertEquals("An empty display name should be ignored.", "foo", p.getDisplayName());
+        assertEquals("foo", p.getDisplayName(), "An empty display name should be ignored.");
     }
 
     @Test
     public void fixBlankDisplayName() throws Exception {
         FreeStyleProject p = j.createFreeStyleProject("foo");
         p.setDisplayName(" ");
-        assertEquals("A blank display name should be ignored.", "foo", p.getDisplayName());
+        assertEquals("foo", p.getDisplayName(), "A blank display name should be ignored.");
     }
 
     @Test
     public void validDisplayName() throws Exception {
         FreeStyleProject p = j.createFreeStyleProject("foo");
         p.setDisplayName("bar");
-        assertEquals("A non-blank display name should be used.", "bar", p.getDisplayName());
+        assertEquals("bar", p.getDisplayName(), "A non-blank display name should be used.");
     }
 
     @Test
     public void trimValidDisplayName() throws Exception {
         FreeStyleProject p = j.createFreeStyleProject("foo");
         p.setDisplayName("    bar    ");
-        assertEquals("A non-blank display name with whitespace should be trimmed.", "bar", p.getDisplayName());
+        assertEquals("bar", p.getDisplayName(), "A non-blank display name with whitespace should be trimmed.");
     }
 
     private static class ThrowBuilder extends Builder {

@@ -2,14 +2,14 @@ package jenkins.security;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.matchesPattern;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 import java.util.TreeSet;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HMACConfidentialKeyTest {
 
@@ -24,11 +24,11 @@ public class HMACConfidentialKeyTest {
         for (String str : new String[] {"Hello world", "", "\u0000"}) {
             String mac = key.mac(str);
             unique.add(mac);
-            assertTrue(mac, mac.matches("[0-9A-Fa-f]{32}"));
+            assertTrue(mac.matches("[0-9A-Fa-f]{32}"), mac);
             assertTrue(key.checkMac(str, mac));
             assertFalse(key.checkMac("garbage", mac));
         }
-        assertEquals("all 3 MAC are different", 3, unique.size());
+        assertEquals(3, unique.size(), "all 3 MAC are different");
     }
 
     @Test

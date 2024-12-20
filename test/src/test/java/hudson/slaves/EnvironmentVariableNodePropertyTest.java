@@ -1,6 +1,6 @@
 package hudson.slaves;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.CaptureEnvironmentBuilder;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -143,7 +143,7 @@ public class EnvironmentVariableNodePropertyTest {
 
     // //////////////////////// setup //////////////////////////////////////////
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         agent = j.createSlave();
         project = j.createFreeStyleProject();

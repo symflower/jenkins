@@ -35,13 +35,13 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.ExtensionList;
 import hudson.Functions;
@@ -101,8 +101,8 @@ import org.htmlunit.WebResponse;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.reactor.ReactorException;
 import org.jvnet.hudson.test.Issue;
@@ -122,7 +122,7 @@ import org.mockito.Mockito;
  * @see Jenkins
  * @see JenkinsRule
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class JenkinsTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
@@ -171,9 +171,9 @@ public class JenkinsTest {
     public void testUserCreationFromUrlForAdmins() throws Exception {
         WebClient wc = j.createWebClient();
 
-        assertNull("User not supposed to exist", User.getById("nonexistent", false));
+        assertNull(User.getById("nonexistent", false), "User not supposed to exist");
         wc.assertFails("user/nonexistent", 404);
-        assertNull("User not supposed to exist", User.getById("nonexistent", false));
+        assertNull(User.getById("nonexistent", false), "User not supposed to exist");
 
         try {
             User.ALLOW_USER_CREATION_VIA_URL = true;
@@ -181,7 +181,7 @@ public class JenkinsTest {
             // expected to work
             wc.goTo("user/nonexistent2");
 
-            assertNotNull("User supposed to exist", User.getById("nonexistent2", false));
+            assertNotNull(User.getById("nonexistent2", false), "User supposed to exist");
 
         } finally {
             User.ALLOW_USER_CREATION_VIA_URL = false;
@@ -424,15 +424,15 @@ public class JenkinsTest {
 
         wc.withBasicApiToken(User.getById("bob", true));
         Page page = eval(wc);
-        assertEquals("bob has only READ",
-                HttpURLConnection.HTTP_FORBIDDEN,
-                page.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_FORBIDDEN,
+                page.getWebResponse().getStatusCode(),
+                "bob has only READ");
 
         wc.withBasicApiToken(User.getById("charlie", true));
         page = eval(wc);
-        assertEquals("charlie has ADMINISTER and READ",
-                HttpURLConnection.HTTP_OK,
-                page.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_OK,
+                page.getWebResponse().getStatusCode(),
+                "charlie has ADMINISTER and READ");
     }
 
     private Page eval(WebClient wc) throws Exception {
@@ -628,7 +628,7 @@ public class JenkinsTest {
     @Test
     @WithPlugin("jenkins-47406.hpi") // Sources: https://github.com/Vlatombe/jenkins-47406
     public void jobCreatedByInitializerIsRetained() {
-        assertNotNull("JENKINS-47406 should exist", j.jenkins.getItem("JENKINS-47406"));
+        assertNotNull(j.jenkins.getItem("JENKINS-47406"), "JENKINS-47406 should exist");
     }
 
     @Issue("SECURITY-2047")
@@ -638,7 +638,7 @@ public class JenkinsTest {
         j.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy());
         WebClient wc = j.createWebClient();
 
-        FailingHttpStatusCodeException e = assertThrows("Page should be protected.", FailingHttpStatusCodeException.class, () -> wc.goTo("login123"));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> wc.goTo("login123"), "Page should be protected.");
         assertThat(e.getStatusCode(), is(403));
     }
 
@@ -688,7 +688,7 @@ public class JenkinsTest {
         SaveableListenerImpl saveListener = ExtensionList.lookupSingleton(SaveableListenerImpl.class);
         saveListener.reset();
         j.jenkins.reload();
-        assertFalse("Jenkins object should not have been saved.", saveListener.wasCalled());
+        assertFalse(saveListener.wasCalled(), "Jenkins object should not have been saved.");
     }
 
     @TestExtension("reloadShouldNotSaveConfig")

@@ -1,10 +1,10 @@
 package hudson.tasks._maven;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.MarkupText;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class Maven3MojoNoteTest {
 
@@ -25,7 +25,7 @@ public class Maven3MojoNoteTest {
     }
 
     private void check(final String decorated, final String input) {
-        assertTrue(input + " does not match" + Maven3MojoNote.PATTERN, Maven3MojoNote.PATTERN.matcher(input).matches());
+        assertTrue(Maven3MojoNote.PATTERN.matcher(input).matches(), input + " does not match" + Maven3MojoNote.PATTERN);
         assertEquals(decorated, annotate(input));
     }
 

@@ -1,8 +1,8 @@
 package hudson.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import hudson.Functions;
 import hudson.Launcher.ProcStarter;
@@ -10,7 +10,7 @@ import hudson.Proc;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.FakeLauncher;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -153,6 +153,6 @@ public class BatchFileTest {
     public void canLoadUnstableReturnFromDisk() {
         FreeStyleProject p = (FreeStyleProject) rule.jenkins.getItemByFullName("batch");
         BatchFile batchFile = (BatchFile) p.getBuildersList().get(0);
-        assertEquals("unstable return", (Integer) 1, batchFile.getUnstableReturn());
+        assertEquals((Integer) 1, batchFile.getUnstableReturn(), "unstable return");
     }
 }

@@ -26,14 +26,14 @@ package hudson.tasks;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import hudson.AbortException;
 import hudson.FilePath;
@@ -64,9 +64,9 @@ import jenkins.util.VirtualFile;
 import org.hamcrest.Matchers;
 import org.jenkinsci.plugins.structs.describable.DescribableModel;
 import org.junit.ClassRule;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -212,7 +212,7 @@ public class ArtifactArchiverTest {
         FreeStyleBuild b = j.buildAndAssertSuccess(p);
         FilePath ws = b.getWorkspace();
         assertNotNull(ws);
-        assumeTrue("May not be testable on Windows:\n" + JenkinsRule.getLog(b), ws.child("dir/lodge").exists());
+        assumeTrue(ws.child("dir/lodge").exists(), "May not be testable on Windows:\n" + JenkinsRule.getLog(b));
         List<FreeStyleBuild.Artifact> artifacts = b.getArtifacts();
         assertEquals(1, artifacts.size());
         FreeStyleBuild.Artifact artifact = artifacts.get(0);
@@ -247,7 +247,7 @@ public class ArtifactArchiverTest {
         FreeStyleBuild b = j.buildAndAssertSuccess(p);
         FilePath ws = b.getWorkspace();
         assertNotNull(ws);
-        assumeTrue("May not be testable on Windows:\n" + JenkinsRule.getLog(b), ws.child("dir/lodge").exists());
+        assumeTrue(ws.child("dir/lodge").exists(), "May not be testable on Windows:\n" + JenkinsRule.getLog(b));
         List<FreeStyleBuild.Artifact> artifacts = b.getArtifacts();
         assertEquals(0, artifacts.size());
     }
@@ -258,7 +258,7 @@ public class ArtifactArchiverTest {
         FreeStyleProject p = j.jenkins.getItemByFullName(Functions.isWindows() ? "sample-windows" : "sample", FreeStyleProject.class);
 
         FreeStyleBuild b = p.scheduleBuild2(0).get();
-        assumeTrue("May not be testable on Windows:\n" + JenkinsRule.getLog(b), b.getResult() == Result.SUCCESS);
+        assumeTrue(b.getResult() == Result.SUCCESS, "May not be testable on Windows:\n" + JenkinsRule.getLog(b));
         FilePath ws = b.getWorkspace();
         assertNotNull(ws);
         List<FreeStyleBuild.Artifact> artifacts = b.getArtifacts();
@@ -396,7 +396,7 @@ public class ArtifactArchiverTest {
         assertTrue(artifacts.child("dir").child(".svn").child("file").exists());
     }
 
-    @Ignore("Test is too slow and requires a lot of disk space")
+    @Disabled("Test is too slow and requires a lot of disk space")
     @Issue("JENKINS-10629")
     @Test
     public void testLargeArchiveFromAgent() throws Exception {
@@ -458,8 +458,8 @@ public class ArtifactArchiverTest {
         assertNotNull(lr);
         assertEquals(1, lr.getArtifactNumToKeep());
         String xml = p.getConfigFile().asString();
-        assertFalse(xml, xml.contains("<latestOnly>"));
-        assertTrue(xml, xml.contains("<artifactNumToKeep>1</artifactNumToKeep>"));
+        assertFalse(xml.contains("<latestOnly>"), xml);
+        assertTrue(xml.contains("<artifactNumToKeep>1</artifactNumToKeep>"), xml);
     }
 
     @LocalData
@@ -467,9 +467,9 @@ public class ArtifactArchiverTest {
         FreeStyleProject p = j.jenkins.getItemByFullName(Functions.isWindows() ? "sample-windows" : "sample", FreeStyleProject.class);
         assertNotNull(p);
         String xml = p.getConfigFile().asString();
-        assertFalse(xml, xml.contains("<recordBuildArtifacts>"));
-        assertTrue(xml, xml.contains("<fingerprint>true</fingerprint>"));
-        assertFalse(xml, xml.contains("<hudson.tasks.Fingerprinter>"));
+        assertFalse(xml.contains("<recordBuildArtifacts>"), xml);
+        assertTrue(xml.contains("<fingerprint>true</fingerprint>"), xml);
+        assertFalse(xml.contains("<hudson.tasks.Fingerprinter>"), xml);
         ArtifactArchiver aa = p.getPublishersList().get(ArtifactArchiver.class);
         assertTrue(aa.isFingerprint());
         FreeStyleBuild b1 = j.buildAndAssertSuccess(p);
@@ -499,7 +499,7 @@ public class ArtifactArchiverTest {
         p.setAssignedNode(slave);
 
         FreeStyleBuild build = j.buildAndAssertStatus(Result.FAILURE, p);
-        assumeFalse(FILENAME + " should not be readable by " + System.getProperty("user.name"), new File(build.getWorkspace().child(FILENAME).getRemote()).canRead());
+        assumeFalse(new File(build.getWorkspace().child(FILENAME).getRemote()).canRead(), FILENAME + " should not be readable by " + System.getProperty("user.name"));
         String expectedPath = build.getWorkspace().child(FILENAME).getRemote();
         j.assertLogContains("ERROR: Step ‘Archive the artifacts’ failed: java.nio.file.AccessDeniedException: " + expectedPath, build);
         assertThat("No stacktrace shown", build.getLog(31), Matchers.iterableWithSize(lessThan(30)));

@@ -26,11 +26,11 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.AbortException;
 import hudson.cli.CLICommand;
@@ -50,7 +50,7 @@ import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.htmlunit.WebResponse;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -198,8 +198,8 @@ public class ItemsTest {
     private void cannotOverwrite(String target) throws Exception {
         overwriteTargetSetUp();
         for (OverwriteTactic tactic : OverwriteTactic.values()) {
-            assertThrows(tactic + " was not supposed to work against " + target, Exception.class, () -> tactic.run(r, target));
-            assertEquals(tactic + " still overwrote " + target, target, r.jenkins.getItemByFullName(target, FreeStyleProject.class).getDescription());
+            assertThrows(Exception.class, () -> tactic.run(r, target), tactic + " was not supposed to work against " + target);
+            assertEquals(target, r.jenkins.getItemByFullName(target, FreeStyleProject.class).getDescription(), tactic + " still overwrote " + target);
         }
     }
 

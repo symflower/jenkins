@@ -24,10 +24,10 @@
 
 package hudson.search;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.jvnet.hudson.test.QueryUtils.waitUntilStringIsPresent;
 
 import hudson.model.FreeStyleProject;
@@ -52,7 +52,7 @@ import org.htmlunit.html.HtmlButton;
 import org.htmlunit.html.HtmlInput;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
@@ -366,20 +366,20 @@ public class SearchTest {
         j.jenkins.addView(new ListView("foo", j.jenkins));
 
         // SYSTEM can see all the views
-        assertEquals("two views exist", 2, Jenkins.get().getViews().size());
+        assertEquals(2, Jenkins.get().getViews().size(), "two views exist");
         List<SearchItem> results = new ArrayList<>();
         j.jenkins.getSearchIndex().suggest("foo", results);
-        assertEquals("nonempty results list", 1, results.size());
+        assertEquals(1, results.size(), "nonempty results list");
 
 
         // Alice can't
-        assertFalse("no permission", j.jenkins.getView("foo").hasPermission2(User.get("alice").impersonate2(), View.READ));
+        assertFalse(j.jenkins.getView("foo").hasPermission2(User.get("alice").impersonate2(), View.READ), "no permission");
         ACL.impersonate2(User.get("alice").impersonate2(), () -> {
-            assertEquals("no visible views", 0, Jenkins.get().getViews().size());
+            assertEquals(0, Jenkins.get().getViews().size(), "no visible views");
 
             List<SearchItem> results1 = new ArrayList<>();
             j.jenkins.getSearchIndex().suggest("foo", results1);
-            assertEquals("empty results list", Collections.emptyList(), results1);
+            assertEquals(Collections.emptyList(), results1, "empty results list");
         });
     }
 
@@ -408,7 +408,7 @@ public class SearchTest {
             j.jenkins.getSearchIndex().find("config", results);
             j.jenkins.getSearchIndex().find("manage", results);
             j.jenkins.getSearchIndex().find("log", results);
-            assertEquals("empty results list", 0, results.size());
+            assertEquals(0, results.size(), "empty results list");
         }
     }
 

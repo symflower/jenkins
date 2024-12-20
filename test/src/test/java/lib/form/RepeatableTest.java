@@ -24,10 +24,10 @@
 
 package lib.form;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.DescriptorExtensionList;
 import hudson.Extension;
@@ -49,9 +49,9 @@ import org.htmlunit.html.HtmlButton;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlSelect;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -66,7 +66,7 @@ public class RepeatableTest {
 
     private RootActionImpl rootAction;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         rootAction = ExtensionList.lookupSingleton(RootActionImpl.class);
     }
@@ -403,8 +403,8 @@ public class RepeatableTest {
         String xml = f.asXml();
         rootAction.bindClass = Fruity.class;
         j.submit(f);
-        assertEquals(rootAction.formData + "\n" + xml,
-                     "[Apple with 17 seeds pie, Yellow Banana split]", rootAction.bindResult.toString());
+        assertEquals("[Apple with 17 seeds pie, Yellow Banana split]",
+                     rootAction.bindResult.toString(), rootAction.formData + "\n" + xml);
     }
 
     // ========================================================================

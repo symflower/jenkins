@@ -24,8 +24,8 @@
 
 package jenkins.agents;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import hudson.Functions;
 import hudson.model.FreeStyleProject;
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 import jenkins.security.SlaveToMasterCallable;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.InboundAgentRule;
 import org.jvnet.hudson.test.Issue;

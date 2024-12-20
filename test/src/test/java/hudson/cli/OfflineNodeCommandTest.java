@@ -41,10 +41,10 @@ import hudson.slaves.DumbSlave;
 import hudson.slaves.OfflineCause;
 import hudson.util.OneShotEvent;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.InboundAgentRule;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -65,7 +65,7 @@ public class OfflineNodeCommandTest {
     @Rule
     public InboundAgentRule inboundAgents = new InboundAgentRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         command = new CLICommandInvoker(j, "offline-node");
     }

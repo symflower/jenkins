@@ -8,11 +8,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Util;
@@ -42,7 +42,7 @@ import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.xml.XmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
@@ -72,7 +72,7 @@ public class ApiTokenPropertyTest {
 
         // Make sure that user is able to get the token via the interface
         try (ACLContext acl = ACL.as(u)) {
-            assertEquals("User is unable to get its own token", token, t.getApiToken());
+            assertEquals(token, t.getApiToken(), "User is unable to get its own token");
         }
 
         // test the authentication via Token
@@ -147,9 +147,9 @@ public class ApiTokenPropertyTest {
         WebClient wc = createClientForUser("bar")
                 .withThrowExceptionOnFailingStatusCode(false);
         HtmlPage requirePOST = wc.goTo(foo.getUrl() + "/" + descriptor.getDescriptorUrl() + "/changeToken");
-        assertEquals("method should not be allowed",
-                HttpURLConnection.HTTP_BAD_METHOD,
-                requirePOST.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_METHOD,
+                requirePOST.getWebResponse().getStatusCode(),
+                "method should not be allowed");
 
         wc.setThrowExceptionOnFailingStatusCode(true);
         WebRequest request = new WebRequest(new URI(j.getURL().toString() + foo.getUrl() + "/" + descriptor.getDescriptorUrl() + "/changeToken").toURL(), HttpMethod.POST);
@@ -157,8 +157,8 @@ public class ApiTokenPropertyTest {
 
         // TODO This nicer alternative requires https://github.com/jenkinsci/jenkins/pull/2268 or similar to work
 //        HtmlPage res = requirePOST.getPage().getForms().get(0).getElementsByAttribute("input", "type", "submit").get(0).click();
-        assertEquals("Update token response is incorrect",
-                Messages.ApiTokenProperty_ChangeToken_SuccessHidden(), "<div>" + res.getBody().asNormalizedText() + "</div>");
+        assertEquals(Messages.ApiTokenProperty_ChangeToken_SuccessHidden(),
+                "<div>" + res.getBody().asNormalizedText() + "</div>", "Update token response is incorrect");
     }
 
     @Test
@@ -214,7 +214,7 @@ public class ApiTokenPropertyTest {
 
         // user is still able to connect with legacy token
         User admin = User.getById("admin", false);
-        assertNotNull("Admin user not configured correctly in local data", admin);
+        assertNotNull(admin, "Admin user not configured correctly in local data");
         ApiTokenProperty apiTokenProperty = admin.getProperty(ApiTokenProperty.class);
 
         WebClient wc = j.createWebClient();
@@ -659,9 +659,9 @@ public class ApiTokenPropertyTest {
 
     private void checkInvalidTokenValue(ApiTokenProperty apiTokenProperty, String tokenName, String tokenValue) throws Exception {
         assertThrows(
-                "The invalid token " + tokenName + " with value " + tokenValue + " was accepted but it should have been rejected.",
                 IllegalArgumentException.class,
-                () -> apiTokenProperty.addFixedNewToken(tokenName, tokenValue));
+                () -> apiTokenProperty.addFixedNewToken(tokenName, tokenValue),
+                "The invalid token " + tokenName + " with value " + tokenValue + " was accepted but it should have been rejected.");
     }
 
     // test no token are generated for new user with the global configuration set to false

@@ -24,11 +24,11 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.File;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 /**
@@ -43,8 +43,8 @@ public class FileParameterValueTest {
         final FileParameterValue param1 = new FileParameterValue(paramName, new File("ws_param1.txt"), "param1.txt");
         final FileParameterValue param2 = new FileParameterValue(paramName, new File("ws_param2.txt"), "param2.txt");
 
-        assertNotEquals("Files with same locations should be considered as different", param1, param2);
-        assertNotEquals("Files with same locations should be considered as different", param2, param1);
+        assertNotEquals(param1, param2, "Files with same locations should be considered as different");
+        assertNotEquals(param2, param1, "Files with same locations should be considered as different");
     }
 
     @Test public void compareNullParams() {

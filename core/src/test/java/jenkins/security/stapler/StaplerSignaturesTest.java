@@ -5,32 +5,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.stapler.Function;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.StaplerResponse2;
 import org.kohsuke.stapler.json.JsonResponse;
 import org.kohsuke.stapler.lang.FieldRef;
+import org.junit.jupiter.api.Assertions;
 
 public class StaplerSignaturesTest {
     @Test
     public void testSignaturesSimple() {
         Set<String> methodSignatures = Arrays.stream(SomeClass.class.getMethods()).map(it -> new Function.InstanceFunction(it).getSignature()).collect(Collectors.toSet());
-        Assert.assertEquals(SomeClass.METHOD_SIGNATURES, methodSignatures);
+        Assertions.assertEquals(SomeClass.METHOD_SIGNATURES, methodSignatures);
 
         Set<String> fieldSignatures = Arrays.stream(SomeClass.class.getFields()).map(it -> FieldRef.wrap(it).getSignature()).collect(Collectors.toSet());
-        Assert.assertEquals(SomeClass.FIELD_SIGNATURES, fieldSignatures);
+        Assertions.assertEquals(SomeClass.FIELD_SIGNATURES, fieldSignatures);
     }
 
     @Test
     public void testSignaturesInheritance() {
         Set<String> methodSignatures = Arrays.stream(SomeSubclass.class.getMethods()).map(it -> new Function.InstanceFunction(it).getSignature()).collect(Collectors.toSet());
-        Assert.assertEquals(SomeSubclass.METHOD_SIGNATURES, methodSignatures);
+        Assertions.assertEquals(SomeSubclass.METHOD_SIGNATURES, methodSignatures);
 
         Set<String> fieldSignatures = Arrays.stream(SomeSubclass.class.getFields()).map(it -> FieldRef.wrap(it).getSignature()).collect(Collectors.toSet());
-        Assert.assertEquals(SomeSubclass.FIELD_SIGNATURES, fieldSignatures);
+        Assertions.assertEquals(SomeSubclass.FIELD_SIGNATURES, fieldSignatures);
     }
 
     public static class SomeClass {

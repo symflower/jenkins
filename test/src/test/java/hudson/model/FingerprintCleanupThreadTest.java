@@ -30,9 +30,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.io.FileMatchers.aReadableFile;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
@@ -53,7 +53,7 @@ import jenkins.fingerprints.FingerprintStorageDescriptor;
 import jenkins.fingerprints.GlobalFingerprintConfiguration;
 import jenkins.model.FingerprintFacet;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class FingerprintCleanupThreadTest {
@@ -73,7 +73,7 @@ public class FingerprintCleanupThreadTest {
         FingerprintCleanupThread cleanupThread = new FingerprintCleanupThread();
         cleanupThread.execute(testTaskListener);
         String logOutput = testTaskListener.outputStream.toString(Charset.defaultCharset());
-        assertFalse("Should not have logged unimportant, excessive message.", logOutput.contains("possibly trimming"));
+        assertFalse(logOutput.contains("possibly trimming"), "Should not have logged unimportant, excessive message.");
     }
 
     @Test
@@ -84,13 +84,13 @@ public class FingerprintCleanupThreadTest {
         FingerprintCleanupThread cleanupThread = new FingerprintCleanupThread();
         cleanupThread.execute(testTaskListener);
         String logOutput = testTaskListener.outputStream.toString(Charset.defaultCharset());
-        assertFalse("Should have deleted obsolete file.", fpFile.toFile().exists());
+        assertFalse(fpFile.toFile().exists(), "Should have deleted obsolete file.");
     }
 
     @Test
     public void testGetRecurrencePeriod() {
         FingerprintCleanupThread cleanupThread = new FingerprintCleanupThread();
-        assertEquals("Wrong recurrence period.", PeriodicWork.DAY, cleanupThread.getRecurrencePeriod());
+        assertEquals(PeriodicWork.DAY, cleanupThread.getRecurrencePeriod(), "Wrong recurrence period.");
     }
 
     @Test
@@ -101,7 +101,7 @@ public class FingerprintCleanupThreadTest {
         FingerprintCleanupThread cleanupThread = new FingerprintCleanupThread();
         cleanupThread.execute(testTaskListener);
         String logOutput = testTaskListener.outputStream.toString(Charset.defaultCharset());
-        assertTrue("Should have done nothing.", logOutput.startsWith("Cleaned up 0 records"));
+        assertTrue(logOutput.startsWith("Cleaned up 0 records"), "Should have done nothing.");
     }
 
     @Test

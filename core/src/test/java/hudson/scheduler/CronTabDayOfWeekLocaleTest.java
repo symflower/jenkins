@@ -1,6 +1,6 @@
 package hudson.scheduler;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -338,10 +338,10 @@ public class CronTabDayOfWeekLocaleTest {
         final DateFormat f = DateFormat.getDateTimeInstance();
         final String msg = "Locale: " + locale + " FirstDayOfWeek: " + actual.getFirstDayOfWeek() + " Expected: "
                 + f.format(expected.getTime()) + " Actual: " + f.format(actual.getTime());
-        assertEquals(msg, expected.get(Calendar.YEAR), actual.get(Calendar.YEAR));
-        assertEquals(msg, expected.get(Calendar.MONTH), actual.get(Calendar.MONTH));
-        assertEquals(msg, expected.get(Calendar.DAY_OF_MONTH), actual.get(Calendar.DAY_OF_MONTH));
-        assertEquals(msg, expected.get(Calendar.HOUR), actual.get(Calendar.HOUR));
-        assertEquals(msg, expected.get(Calendar.MINUTE), actual.get(Calendar.MINUTE));
+        assertEquals(expected.get(Calendar.YEAR), actual.get(Calendar.YEAR), msg);
+        assertEquals(expected.get(Calendar.MONTH), actual.get(Calendar.MONTH), msg);
+        assertEquals(expected.get(Calendar.DAY_OF_MONTH), actual.get(Calendar.DAY_OF_MONTH), msg);
+        assertEquals(expected.get(Calendar.HOUR), actual.get(Calendar.HOUR), msg);
+        assertEquals(expected.get(Calendar.MINUTE), actual.get(Calendar.MINUTE), msg);
     }
 }

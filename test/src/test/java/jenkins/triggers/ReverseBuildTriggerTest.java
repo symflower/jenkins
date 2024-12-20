@@ -27,8 +27,8 @@ package jenkins.triggers;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import hudson.model.Cause;
 import hudson.model.Computer;
@@ -46,10 +46,10 @@ import java.util.List;
 import java.util.Set;
 import jenkins.model.Jenkins;
 import jenkins.security.QueueItemAuthenticatorConfiguration;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -63,7 +63,7 @@ public class ReverseBuildTriggerTest {
 
     @Rule public JenkinsRule r = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void runMoreQuickly() throws Exception {
         r.jenkins.setQuietPeriod(0);
     }
@@ -110,7 +110,7 @@ public class ReverseBuildTriggerTest {
         FreeStyleBuild b = r.buildAndAssertSuccess(upstream);
         r.assertLogContains(downstreamName, b);
         r.waitUntilNoActivity();
-        assertNotNull(JenkinsRule.getLog(b), downstream.getLastBuild());
+        assertNotNull(downstream.getLastBuild(), JenkinsRule.getLog(b));
         assertEquals(1, downstream.getLastBuild().number);
         // A QIA is configured but does not specify any authentication for downstream, so upstream should not trigger it:
         QueueItemAuthenticatorConfiguration.get()

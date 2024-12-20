@@ -12,9 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.net.URL;
 import org.htmlunit.WebRequest;
 import org.htmlunit.WebResponse;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -43,7 +43,7 @@ public class SuspiciousRequestFilterTest {
         assertThat(response.getContentAsString(), containsString("path parameter"));
     }
 
-    @Ignore("No longer passes Jetty")
+    @Disabled("No longer passes Jetty")
     @Test
     public void allowSemicolonsInRequestPathWhenEscapeHatchEnabled() throws Exception {
         SuspiciousRequestFilter.allowSemicolonsInPath = true;

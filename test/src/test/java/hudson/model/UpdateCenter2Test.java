@@ -26,16 +26,16 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assume.assumeNotNull;
 
 import hudson.model.UpdateCenter.DownloadJob;
 import hudson.model.UpdateCenter.DownloadJob.Failure;
 import hudson.model.UpdateCenter.DownloadJob.Success;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -51,7 +51,7 @@ public class UpdateCenter2Test {
     /**
      * Makes sure a plugin installs fine.
      */
-    @Ignore("TODO randomly fails: SocketTimeoutException from goTo due to GET http://localhost:…/update-center.json?…; or: Downloaded file …/changelog-history.jpi.tmp does not match expected SHA-256, expected '…', actual '…'")
+    @Disabled("TODO randomly fails: SocketTimeoutException from goTo due to GET http://localhost:…/update-center.json?…; or: Downloaded file …/changelog-history.jpi.tmp does not match expected SHA-256, expected '…', actual '…'")
     @Test public void install() throws Exception {
         UpdateSite.neverUpdate = false;
         j.jenkins.pluginManager.doCheckUpdatesServer(); // load the metadata
@@ -68,7 +68,7 @@ public class UpdateCenter2Test {
         assertEquals(Messages.UpdateCenter_n_a(), j.jenkins.getUpdateCenter().getLastUpdatedString());
     }
 
-    @Ignore("TODO times out when UC is down with SocketTimeoutException")
+    @Disabled("TODO times out when UC is down with SocketTimeoutException")
     @Issue("SECURITY-234")
     @Test public void installInvalidChecksum() throws Exception {
         UpdateSite.neverUpdate = false;
@@ -81,7 +81,7 @@ public class UpdateCenter2Test {
         plugin.sha512 = wrongChecksum;
         DownloadJob job = (DownloadJob) plugin.deploy().get();
         assertThat(job.status, instanceOf(Failure.class));
-        assertTrue("error message references checksum", ((Failure) job.status).problem.getMessage().contains(wrongChecksum));
+        assertTrue(((Failure) job.status).problem.getMessage().contains(wrongChecksum), "error message references checksum");
     }
 
 }

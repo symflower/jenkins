@@ -29,9 +29,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.concurrent.Future;
 import jenkins.model.Jenkins;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -62,7 +62,7 @@ public class PluginTest {
         r.createWebClient().assertFails("plugin/matrix-auth/meta-inf/manifest.mf", HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    @Ignore("TODO observed to fail in CI with 404 due to external UC issues")
+    @Disabled("TODO observed to fail in CI with 404 due to external UC issues")
     @Test
     @Issue("SECURITY-925")
     public void preventTimestamp2_toBeServed() throws Exception {

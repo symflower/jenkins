@@ -10,11 +10,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.htmlunit.AlertHandler;
 import org.htmlunit.ScriptResult;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
+import org.junit.jupiter.api.Assertions;
 
 public class Security2779Test {
     public static final String URL_NAME = "security2779";
@@ -40,7 +40,7 @@ public class Security2779Test {
         page.executeJavaScript("document.querySelector('" + selector + "')._tippy.show()");
         webClient.waitForBackgroundJavaScript(2000);
         // Assertion includes the selector for easier diagnosis
-        Assert.assertEquals("Alert with selector '" + selector + "'", 0, alerts.get());
+        Assertions.assertEquals(0, alerts.get(), "Alert with selector '" + selector + "'");
 
         final ScriptResult innerHtmlScript = page.executeJavaScript("document.querySelector('.tippy-content').innerHTML");
         Object jsResult = innerHtmlScript.getJavaScriptResult();

@@ -17,11 +17,11 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import jenkins.tasks.SimpleBuildStep;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 public class Security3245Test {
 
@@ -43,7 +43,7 @@ public class Security3245Test {
             assertThat(content, containsString("<button type='button' class='jenkins-button " +
                     "reveal-expandable-detail'>&lt;script&gt;alert(1)&lt;/script&gt;</button>"));
             // check that alert was not executed
-            Assert.assertFalse("Alert not expected", alerts.get());
+            Assertions.assertFalse(alerts.get(), "Alert not expected");
         }
     }
 

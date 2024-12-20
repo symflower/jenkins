@@ -35,13 +35,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.FilePath;
@@ -73,9 +73,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 
@@ -820,7 +820,7 @@ public class VirtualFileTest {
     }
 
     private void checkCommonAssertionForIsDescendant(VirtualFile virtualRoot, VirtualFile virtualRootChildA, VirtualFile virtualFromA, String absolutePath) throws Exception {
-        assertThrows("isDescendant should have refused the absolute path", IllegalArgumentException.class, () -> virtualRootChildA.isDescendant(absolutePath));
+        assertThrows(IllegalArgumentException.class, () -> virtualRootChildA.isDescendant(absolutePath), "isDescendant should have refused the absolute path");
 
         assertTrue(virtualRootChildA.isDescendant("aa"));
         assertTrue(virtualRootChildA.isDescendant("aa/aa.txt"));
@@ -1093,7 +1093,7 @@ public class VirtualFileTest {
     }
 
     @Test
-    @Ignore("TODO doesn't pass on ci.jenkins.io due to root user being used in container tests")
+    @Disabled("TODO doesn't pass on ci.jenkins.io due to root user being used in container tests")
     public void testCanRead_False_FileVF() throws Exception {
         File ws = tmp.newFolder("ws");
         String childString = "child";
@@ -1154,7 +1154,7 @@ public class VirtualFileTest {
         Util.createSymlink(ws, childString, linkString, TaskListener.NULL);
 
         VirtualFile link = VirtualFile.forFile(ws).child(linkString);
-        assertThrows("Should have not followed links", IOException.class, () -> link.open(LinkOption.NOFOLLOW_LINKS));
+        assertThrows(IOException.class, () -> link.open(LinkOption.NOFOLLOW_LINKS), "Should have not followed links");
     }
 
     @Test
@@ -1168,7 +1168,7 @@ public class VirtualFileTest {
         Files.writeString(ws.toPath().resolve(childString), childString, StandardCharsets.US_ASCII);
         File childThroughSymlink = new File(tmp.getRoot(), "/" + symlinkName + "/" + childString);
         VirtualFile child = rootVirtualFile.child(symlinkName).child(childString);
-        assertThrows("Should have not followed links", IOException.class, () -> child.open(LinkOption.NOFOLLOW_LINKS));
+        assertThrows(IOException.class, () -> child.open(LinkOption.NOFOLLOW_LINKS), "Should have not followed links");
     }
 
     @Test
@@ -1181,7 +1181,7 @@ public class VirtualFileTest {
         Files.writeString(ws.toPath().resolve(childString), childString, StandardCharsets.US_ASCII);
         VirtualFile rootVirtualPath = VirtualFile.forFilePath(new FilePath(tmp.getRoot()));
         VirtualFile childVirtualPath = rootVirtualPath.child(symlinkName).child(childString);
-        assertThrows("Should have not followed links", IOException.class, () -> childVirtualPath.open(LinkOption.NOFOLLOW_LINKS));
+        assertThrows(IOException.class, () -> childVirtualPath.open(LinkOption.NOFOLLOW_LINKS), "Should have not followed links");
     }
 
     @Test
@@ -1194,7 +1194,7 @@ public class VirtualFileTest {
         Util.createSymlink(ws, childString, linkString, TaskListener.NULL);
 
         VirtualFile link = VirtualFile.forFilePath(new FilePath(ws)).child(linkString);
-        assertThrows("Should have not followed links", IOException.class, () -> link.open(LinkOption.NOFOLLOW_LINKS));
+        assertThrows(IOException.class, () -> link.open(LinkOption.NOFOLLOW_LINKS), "Should have not followed links");
     }
 
     @Test
@@ -1262,7 +1262,7 @@ public class VirtualFileTest {
     }
 
     @Test
-    @Ignore("TODO doesn't pass on ci.jenkins.io due to root user being used in container tests")
+    @Disabled("TODO doesn't pass on ci.jenkins.io due to root user being used in container tests")
     public void testCanRead_False_FilePathVF() throws Exception {
         // This test checks the method's behavior in the abstract base class,
         // which generally does nothing.

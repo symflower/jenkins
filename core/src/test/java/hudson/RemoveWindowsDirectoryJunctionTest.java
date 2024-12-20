@@ -4,15 +4,15 @@
 
 package hudson;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import hudson.os.WindowsUtil;
 import java.io.File;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
@@ -23,7 +23,7 @@ public class RemoveWindowsDirectoryJunctionTest {
     @Rule
     public TemporaryFolder tmp = new TemporaryFolder();
 
-    @Before
+    @BeforeEach
     public void windowsOnly() {
        assumeTrue(Functions.isWindows());
     }
@@ -33,11 +33,11 @@ public class RemoveWindowsDirectoryJunctionTest {
     public void testJunctionIsRemovedButNotContents() throws Exception {
         File subdir1 = tmp.newFolder("notJunction");
         File f1 = new File(subdir1, "testfile1.txt");
-        assertTrue("Unable to create temporary file in notJunction directory", f1.createNewFile());
+        assertTrue(f1.createNewFile(), "Unable to create temporary file in notJunction directory");
         File j1 = WindowsUtil.createJunction(new File(tmp.getRoot(), "test junction"), subdir1);
         Util.deleteRecursive(j1);
-        assertFalse("Windows Junction should have been removed", j1.exists());
-        assertTrue("Contents of Windows Junction should not be removed", f1.exists());
+        assertFalse(j1.exists(), "Windows Junction should have been removed");
+        assertTrue(f1.exists(), "Contents of Windows Junction should not be removed");
     }
 
 }

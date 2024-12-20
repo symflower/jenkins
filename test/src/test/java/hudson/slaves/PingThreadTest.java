@@ -25,11 +25,11 @@
 package hudson.slaves;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Functions;
 import hudson.Platform;
@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import jenkins.security.MasterToSlaveCallable;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -60,7 +60,7 @@ public class PingThreadTest {
 
     @Test
     public void failedPingThreadResetsComputerChannel() throws Exception {
-        assumeFalse("We simulate hung agent by sending the SIGSTOP signal", Functions.isWindows() || Platform.isDarwin());
+        assumeFalse(Functions.isWindows() || Platform.isDarwin(), "We simulate hung agent by sending the SIGSTOP signal");
 
         DumbSlave slave = j.createOnlineSlave();
         Computer computer = slave.toComputer();
@@ -122,7 +122,7 @@ public class PingThreadTest {
                         .start();
         int result = process.waitFor();
         String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-        assertEquals(output, 0, result);
+        assertEquals(0, result, output);
 
         await().pollInterval(250, TimeUnit.MILLISECONDS)
                 .atMost(10, TimeUnit.SECONDS)

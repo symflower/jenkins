@@ -3,7 +3,7 @@ package jenkins.slaves;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.EnvVars;
 import hudson.model.Slave;
@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -32,7 +32,7 @@ public class UnsupportedRemotingAgentTest {
 
     private File agentJar;
 
-    @Before
+    @BeforeEach
     public void extractAgent() throws Exception {
         agentJar = new File(tmpDir.getRoot(), "unsupported-agent.jar");
         FileUtils.copyURLToFile(UnsupportedRemotingAgentTest.class.getResource("/old-remoting/remoting-unsupported.jar"), agentJar);

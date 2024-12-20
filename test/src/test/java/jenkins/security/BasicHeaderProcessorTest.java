@@ -1,7 +1,7 @@
 package jenkins.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.ExtensionList;
 import hudson.model.UnprotectedRootAction;
@@ -15,9 +15,9 @@ import jenkins.security.apitoken.ApiTokenPropertyConfiguration;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.TestExtension;
@@ -35,7 +35,7 @@ public class BasicHeaderProcessorTest {
 
     private SpySecurityListener spySecurityListener;
 
-    @Before
+    @BeforeEach
     public void prepareListeners() {
         this.spySecurityListener = ExtensionList.lookupSingleton(SpySecurityListener.class);
     }

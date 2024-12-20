@@ -34,9 +34,9 @@ import static org.hamcrest.Matchers.startsWith;
 
 import hudson.model.Computer;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -46,7 +46,7 @@ public class GetNodeCommandTest {
 
     @Rule public final JenkinsRule j = new JenkinsRule();
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
 
         command = new CLICommandInvoker(j, new GetNodeCommand());
     }

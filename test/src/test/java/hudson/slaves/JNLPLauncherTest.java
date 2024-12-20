@@ -28,11 +28,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.Proc;
 import hudson.Util;
@@ -53,8 +53,8 @@ import jenkins.slaves.RemotingWorkDirSettings;
 import org.htmlunit.Page;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -66,7 +66,7 @@ import org.jvnet.hudson.test.recipes.LocalData;
  * Tests of {@link JNLPLauncher}.
  * @author Kohsuke Kawaguchi
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class JNLPLauncherTest {
     @Rule public JenkinsRule j = new JenkinsRule();
 
@@ -93,7 +93,7 @@ public class JNLPLauncherTest {
 
         Computer c = addTestAgent(false);
         launchJnlpAndVerify(c, buildJnlpArgs(c).add("-workDir", workDir.getAbsolutePath()));
-        assertTrue("Remoting work dir should have been created", new File(workDir, "remoting").exists());
+        assertTrue(new File(workDir, "remoting").exists(), "Remoting work dir should have been created");
     }
 
     @Test
@@ -107,10 +107,10 @@ public class JNLPLauncherTest {
         ComputerLauncher launcher = c.getLauncher();
         assertThat(launcher, instanceOf(JNLPLauncher.class));
         JNLPLauncher jnlpLauncher = (JNLPLauncher) launcher;
-        assertNotNull("Work Dir Settings should be defined",
-                jnlpLauncher.getWorkDirSettings());
-        assertTrue("Work directory should be disabled for the migrated agent",
-                jnlpLauncher.getWorkDirSettings().isDisabled());
+        assertNotNull(jnlpLauncher.getWorkDirSettings(),
+                "Work Dir Settings should be defined");
+        assertTrue(jnlpLauncher.getWorkDirSettings().isDisabled(),
+                "Work directory should be disabled for the migrated agent");
     }
 
     @Issue("JENKINS-73011")
@@ -140,7 +140,7 @@ public class JNLPLauncherTest {
 
     @Test
     public void testDefaults() {
-        assertFalse("Work directory enabled by default", new JNLPLauncher().getWorkDirSettings().isDisabled());
+        assertFalse(new JNLPLauncher().getWorkDirSettings().isDisabled(), "Work directory enabled by default");
     }
 
     @Test
@@ -152,7 +152,7 @@ public class JNLPLauncherTest {
         launcher = new DelegatingComputerLauncherImpl(launcher);
         Computer c = addTestAgent(launcher);
         launchJnlpAndVerify(c, buildJnlpArgs(c));
-        assertTrue("Remoting work dir should have been created", new File(workDir, "internalDir").exists());
+        assertTrue(new File(workDir, "internalDir").exists(), "Remoting work dir should have been created");
     }
 
     @Test
@@ -164,7 +164,7 @@ public class JNLPLauncherTest {
         launcher = new ComputerLauncherFilterImpl(launcher);
         Computer c = addTestAgent(launcher);
         launchJnlpAndVerify(c, buildJnlpArgs(c));
-        assertTrue("Remoting work dir should have been created", new File(workDir, "internalDir").exists());
+        assertTrue(new File(workDir, "internalDir").exists(), "Remoting work dir should have been created");
     }
 
     private static class DelegatingComputerLauncherImpl extends DelegatingComputerLauncher {

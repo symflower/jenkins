@@ -24,8 +24,8 @@
 
 package jenkins.security.stapler;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.ExtensionList;
@@ -37,8 +37,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 import jenkins.model.Jenkins;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.StaplerRequest2;
@@ -83,13 +83,13 @@ public class StaticRoutingDecisionProviderTest extends StaplerAbstractTest {
         }
     }
 
-    @Before
+    @BeforeEach
     public void preparation() throws Exception {
         ContentProvider.called = false;
         ContentProvider.called2 = false;
     }
 
-    @Before
+    @BeforeEach
     public void resetWhitelist() throws Exception {
         ExtensionList.lookupSingleton(StaticRoutingDecisionProvider.class).resetAndSave();
     }

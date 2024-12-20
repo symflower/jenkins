@@ -10,7 +10,7 @@ import hudson.model.FreeStyleProject;
 import hudson.tasks.Builder;
 import java.io.IOException;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 

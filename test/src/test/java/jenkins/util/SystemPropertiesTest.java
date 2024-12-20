@@ -31,11 +31,11 @@ import static org.hamcrest.Matchers.nullValue;
 import jakarta.servlet.ServletContextEvent;
 import org.eclipse.jetty.ee9.webapp.WebAppContext;
 import org.hamcrest.Matchers;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -47,12 +47,12 @@ public class SystemPropertiesTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         new SystemProperties.Listener().contextInitialized(new ServletContextEvent(j.jenkins.getServletContext()));
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         System.clearProperty("foo.bar");
     }

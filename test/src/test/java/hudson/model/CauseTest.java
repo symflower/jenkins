@@ -27,9 +27,9 @@ package hudson.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.XmlFile;
 import hudson.model.queue.QueueTaskFuture;
@@ -44,14 +44,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import jenkins.model.Jenkins;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.jvnet.hudson.test.recipes.LocalData;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 public class CauseTest {
 
@@ -71,9 +71,9 @@ public class CauseTest {
             }
         }
         String buildXml = new XmlFile(Run.XSTREAM, new File(early.getRootDir(), "build.xml")).asString();
-        assertTrue("keeps full history:\n" + buildXml, buildXml.contains("<upstreamBuild>1</upstreamBuild>"));
+        assertTrue(buildXml.contains("<upstreamBuild>1</upstreamBuild>"), "keeps full history:\n" + buildXml);
         buildXml = new XmlFile(Run.XSTREAM, new File(last.getRootDir(), "build.xml")).asString();
-        assertFalse("too big:\n" + buildXml, buildXml.contains("<upstreamBuild>1</upstreamBuild>"));
+        assertFalse(buildXml.contains("<upstreamBuild>1</upstreamBuild>"), "too big:\n" + buildXml);
     }
 
     @Issue("JENKINS-15747")
@@ -96,7 +96,7 @@ public class CauseTest {
         }
         last = j.waitForCompletion(a.scheduleBuild2(0, new Cause.UpstreamCause(last)).get());
         int count = new XmlFile(Run.XSTREAM, new File(last.getRootDir(), "build.xml")).asString().split(Pattern.quote("<hudson.model.Cause_-UpstreamCause")).length;
-        assertFalse("too big at " + count, count > 100);
+        assertFalse(count > 100, "too big at " + count);
         //j.interactiveBreak();
         for (QueueTaskFuture<FreeStyleBuild> future : futures) {
             j.assertBuildStatusSuccess(j.waitForCompletion(future.waitForStart()));
@@ -155,8 +155,8 @@ public class CauseTest {
 
         final JenkinsRule.WebClient wc = j.createWebClient();
         final String content = wc.getPage(build).getWebResponse().getContentAsString();
-        Assert.assertFalse(content.contains("Started by remote host <img"));
-        Assert.assertTrue(content.contains("Started by remote host &lt;img"));
+        Assertions.assertFalse(content.contains("Started by remote host <img"));
+        Assertions.assertTrue(content.contains("Started by remote host &lt;img"));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class CauseTest {
         wc.setAlertHandler((page, s) -> alertCalled.set(true));
         wc.goTo(downBuild.getUrl());
 
-        assertFalse("XSS not prevented", alertCalled.get());
+        assertFalse(alertCalled.get(), "XSS not prevented");
     }
 
     private <B extends Build<?, B>> B waitForDownBuild(Project<?, B> down) throws Exception {
@@ -247,15 +247,15 @@ public class CauseTest {
 
             final JenkinsRule.WebClient wc = j.createWebClient();
             final String content = wc.getPage(build).getWebResponse().getContentAsString();
-            Assert.assertTrue(content.contains("Simple cause: safe"));
+            Assertions.assertTrue(content.contains("Simple cause: safe"));
         }
         {
             final FreeStyleBuild build = j.waitForCompletion(fs.scheduleBuild2(0, new SimpleCause("<img src=x onerror=alert(1)>")).get());
 
             final JenkinsRule.WebClient wc = j.createWebClient();
             final String content = wc.getPage(build).getWebResponse().getContentAsString();
-            Assert.assertFalse(content.contains("Simple cause: <img"));
-            Assert.assertTrue(content.contains("Simple cause: &lt;img"));
+            Assertions.assertFalse(content.contains("Simple cause: <img"));
+            Assertions.assertTrue(content.contains("Simple cause: &lt;img"));
         }
     }
 

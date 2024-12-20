@@ -29,10 +29,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.model.User;
 import java.net.URI;
@@ -47,7 +47,7 @@ import org.htmlunit.WebRequest;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.xml.XmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import test.security.realm.InMemorySecurityRealm;
@@ -156,7 +156,7 @@ public class UserSeedPropertyTest {
         assertUserNotConnected(wc, ALICE);
         assertUserConnected(wc, "anonymous");
 
-        FailingHttpStatusCodeException e = assertThrows("Alice does not exist any longer and so should not be able to login", FailingHttpStatusCodeException.class, () -> wc.login(ALICE));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> wc.login(ALICE), "Alice does not exist any longer and so should not be able to login");
         assertEquals(401, e.getStatusCode());
     }
 
@@ -191,7 +191,7 @@ public class UserSeedPropertyTest {
             assertUserConnected(wc, ALICE);
 
             // as the feature is disabled, we cannot renew the seed
-            assertThrows("The feature should be disabled", FailingHttpStatusCodeException.class, () -> requestRenewSeedForUser(alice));
+            assertThrows(FailingHttpStatusCodeException.class, () -> requestRenewSeedForUser(alice), "The feature should be disabled");
 
             // failed attempt to renew the seed does not have any effect
             assertUserConnected(wc, ALICE);
@@ -203,7 +203,7 @@ public class UserSeedPropertyTest {
             assertUserConnected(wc, ALICE);
 
             JenkinsRule.WebClient wc2 = j.createWebClient();
-            FailingHttpStatusCodeException e = assertThrows("Alice is not longer backed by security realm", FailingHttpStatusCodeException.class, () -> wc2.login(ALICE));
+            FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> wc2.login(ALICE), "Alice is not longer backed by security realm");
             assertEquals(401, e.getStatusCode());
         } finally {
             UserSeedProperty.DISABLE_USER_SEED = currentStatus;
@@ -281,7 +281,7 @@ public class UserSeedPropertyTest {
             assertNotNull(alice);
 
             HtmlPage htmlPage = wc.goTo(alice.getUrl() + "/security/");
-            assertThrows("Seed section should not be displayed", ElementNotFoundException.class, () -> htmlPage.getDocumentElement().getOneHtmlElementByAttribute("div", "class", "user-seed-panel"));
+            assertThrows(ElementNotFoundException.class, () -> htmlPage.getDocumentElement().getOneHtmlElementByAttribute("div", "class", "user-seed-panel"), "Seed section should not be displayed");
         }
         finally {
             UserSeedProperty.HIDE_USER_SEED_SECTION = currentStatus;

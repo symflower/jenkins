@@ -27,14 +27,14 @@ package hudson.util;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.Saveable;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 public class DescribableListTest {

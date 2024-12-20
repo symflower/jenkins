@@ -24,7 +24,7 @@
 
 package hudson.diagnosis;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.net.URL;
 import java.util.List;
@@ -32,9 +32,9 @@ import jenkins.model.JenkinsLocationConfiguration;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.WebRequest;
 import org.htmlunit.util.NameValuePair;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -54,7 +54,7 @@ public class ReverseProxySetupMonitorTest {
 
     private String desiredContextPath;
 
-    @Before
+    @BeforeEach
     public void resetContextPath() {
         this.desiredContextPath = "/jenkins";
     }

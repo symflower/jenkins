@@ -27,9 +27,9 @@ package jenkins.security.stapler;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
@@ -58,10 +58,10 @@ import jenkins.model.Jenkins;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -82,7 +82,7 @@ public class Security400Test {
 
     private static boolean filteredDoActionTriggered = false;
 
-    @Before
+    @BeforeEach
     public void prepareFilterListener() {
         WebApp webApp = WebApp.get(j.jenkins.getServletContext());
         webApp.setFilteredDoActionTriggerListener((f, req, rsp, node) -> {
@@ -95,18 +95,18 @@ public class Security400Test {
         });
     }
 
-    @After
+    @AfterEach
     public void resetFilter() {
         filteredDoActionTriggered = false;
     }
 
     private void assertRequestWasBlockedAndResetFlag() {
-        assertTrue("No request was blocked", filteredDoActionTriggered);
+        assertTrue(filteredDoActionTriggered, "No request was blocked");
         filteredDoActionTriggered = false;
     }
 
     private void assertRequestWasNotBlocked() {
-        assertFalse("There was at least a request that was blocked", filteredDoActionTriggered);
+        assertFalse(filteredDoActionTriggered, "There was at least a request that was blocked");
     }
 
     @Test
@@ -114,7 +114,7 @@ public class Security400Test {
     public void asyncDoRun() throws Exception {
         j.createWebClient().assertFails("extensionList/" + AsyncPeriodicWork.class.getName() + "/" + Work.class.getName() + "/run", HttpURLConnection.HTTP_NOT_FOUND);
         Thread.sleep(1000); // give the thread a moment to finish
-        assertFalse("should never have run", ran);
+        assertFalse(ran, "should never have run");
     }
 
     private static boolean ran;

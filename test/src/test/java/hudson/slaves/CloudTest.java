@@ -4,9 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.Action;
@@ -23,7 +23,7 @@ import jenkins.model.TransientActionFactory;
 import org.acegisecurity.acls.sid.Sid;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -82,7 +82,7 @@ public class CloudTest {
     public void cloudNameIsEncodedInGetUrl() {
         ACloud aCloud = new ACloud("../../gibberish", "0");
 
-        assertEquals("Cloud name is encoded in Cloud#getUrl", "cloud/..%2F..%2Fgibberish/", aCloud.getUrl());
+        assertEquals("cloud/..%2F..%2Fgibberish/", aCloud.getUrl(), "Cloud name is encoded in Cloud#getUrl");
     }
 
     public static final class ACloud extends AbstractCloudImpl {

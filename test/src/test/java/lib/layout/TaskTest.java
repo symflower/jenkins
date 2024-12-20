@@ -24,7 +24,7 @@
 
 package lib.layout;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.UnprotectedRootAction;
 import jakarta.servlet.ServletException;
@@ -32,7 +32,7 @@ import java.io.IOException;
 import org.htmlunit.html.HtmlElementUtil;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.TestExtension;
@@ -48,7 +48,7 @@ public class TaskTest {
         WebClient wc = j.createWebClient();
         HtmlPage page = wc.goTo(postLink.getUrlName());
         HtmlElementUtil.click(page.getAnchorByText("POST"));
-        assertTrue("Action method should be invoked", postLink.called);
+        assertTrue(postLink.called, "Action method should be invoked");
     }
 
     @TestExtension("postLink") public static final MockAction postLink = new MockAction();

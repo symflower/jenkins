@@ -1,7 +1,7 @@
 package jenkins.security;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.FreeStyleProject;
 import hudson.model.InvisibleAction;
@@ -10,7 +10,7 @@ import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.html.DomElement;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -44,10 +44,10 @@ public class Security3135Test {
 
         j.waitUntilNoActivityUpTo(2000); // Give the job 2 seconds to be submitted
 
-        assertTrue("Request was not made", viewHolder.isRequestMade());
-        assertTrue("Expected 405 Method Not Allowed", exceptionThrown);
-        assertNull("Build should not be scheduled", j.jenkins.getQueue().getItem(project));
-        assertNull("Build should not be scheduled", project.getBuildByNumber(1));
+        assertTrue(viewHolder.isRequestMade(), "Request was not made");
+        assertTrue(exceptionThrown, "Expected 405 Method Not Allowed");
+        assertNull(j.jenkins.getQueue().getItem(project), "Build should not be scheduled");
+        assertNull(project.getBuildByNumber(1), "Build should not be scheduled");
     }
 
     @TestExtension

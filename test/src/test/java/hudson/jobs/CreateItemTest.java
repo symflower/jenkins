@@ -27,10 +27,10 @@ package hudson.jobs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.Failure;
 import hudson.model.FreeStyleProject;
@@ -47,9 +47,9 @@ import jenkins.model.Jenkins;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -65,7 +65,7 @@ public class CreateItemTest {
     @Rule
     public JenkinsRule rule = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setup() {
         rule.jenkins.setSecurityRealm(rule.createDummySecurityRealm());
     }
@@ -89,9 +89,9 @@ public class CreateItemTest {
         Page p = rule.createWebClient()
                 .withThrowExceptionOnFailingStatusCode(false)
                 .getPage(request);
-        assertEquals("Creating job from copy should succeed.",
-                HttpURLConnection.HTTP_OK,
-                p.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_OK,
+                p.getWebResponse().getStatusCode(),
+                "Creating job from copy should succeed.");
     }
 
     @Issue("JENKINS-34691")
@@ -114,9 +114,9 @@ public class CreateItemTest {
                 .withThrowExceptionOnFailingStatusCode(false)
                 .getPage(request);
 
-        assertEquals("Creating job from copy should fail.",
-                HttpURLConnection.HTTP_BAD_REQUEST,
-                p.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST,
+                p.getWebResponse().getStatusCode(),
+                "Creating job from copy should fail.");
         assertThat(rule.jenkins.getItem("newJob"), nullValue());
     }
 

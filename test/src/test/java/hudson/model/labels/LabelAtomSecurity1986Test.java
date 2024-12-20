@@ -27,16 +27,16 @@ package hudson.model.labels;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.XmlFile;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -64,7 +64,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void startsWithDoubleDotSlash() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/..%2ffoo/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/..%2ffoo/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom("../foo");
         XmlFile configFile = foo.getConfigFile();
@@ -93,7 +93,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void endsWithDoubleDotSlash() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo..%2f/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo..%2f/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom("foo../");
         XmlFile configFile = foo.getConfigFile();
@@ -112,7 +112,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void startsWithDoubleDotBackslash() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/..\\foo/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/..\\foo/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom("..\\foo");
         XmlFile configFile = foo.getConfigFile();
@@ -122,7 +122,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void endsWithDoubleDotBackslash() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo..\\/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo..\\/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom("foo..\\");
         XmlFile configFile = foo.getConfigFile();
@@ -132,7 +132,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void middleDotsSlashes() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo%2f..%2fgoo/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo%2f..%2fgoo/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom("foo/../goo");
         XmlFile configFile = foo.getConfigFile();
@@ -142,7 +142,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void middleDotsBackslashes() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo%\\..\\goo/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/foo%\\..\\goo/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom("foo\\..\\");
         XmlFile configFile = foo.getConfigFile();
@@ -169,7 +169,7 @@ public class LabelAtomSecurity1986Test {
     @Test
     @Issue("SECURITY-1986")
     public void startsWithTripleDotBackslash() {
-        FailingHttpStatusCodeException e = assertThrows("Should have rejected label.", FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/...%2ffoo/configure").getFormByName("config")));
+        FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> j.submit(j.createWebClient().goTo("labelAtom/...%2ffoo/configure").getFormByName("config")), "Should have rejected label.");
         assertThat(e.getStatusCode(), is(HttpURLConnection.HTTP_BAD_REQUEST));
         LabelAtom foo = j.jenkins.getLabelAtom(".../foo");
         XmlFile configFile = foo.getConfigFile();

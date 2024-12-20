@@ -1,6 +1,6 @@
 package hudson;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.model.AbstractItem;
@@ -10,14 +10,14 @@ import hudson.security.ACL;
 import hudson.security.ACLContext;
 import jenkins.model.Jenkins;
 import org.htmlunit.FailingHttpStatusCodeException;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.TestExtension;
+import org.junit.jupiter.api.Assertions;
 
 public class AbstractItemSecurity1114Test {
     @Rule
@@ -39,7 +39,7 @@ public class AbstractItemSecurity1114Test {
         // alice can discover project
         JenkinsRule.WebClient alice = j.createWebClient().login("alice");
         FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> alice.goTo("bypass/myproject"));
-        Assert.assertEquals("alice can discover", 403, e.getStatusCode());
+        Assertions.assertEquals(403, e.getStatusCode(), "alice can discover");
 
         // bob can read project
         JenkinsRule.WebClient bob = j.createWebClient().login("bob");
@@ -49,9 +49,9 @@ public class AbstractItemSecurity1114Test {
         // carol has no permissions
         JenkinsRule.WebClient carol = j.createWebClient().login("carol");
         e = assertThrows(FailingHttpStatusCodeException.class, () -> carol.goTo("bypass/nonexisting"));
-        Assert.assertEquals("carol gets 404 for nonexisting project", 404, e.getStatusCode());
+        Assertions.assertEquals(404, e.getStatusCode(), "carol gets 404 for nonexisting project");
         e = assertThrows(FailingHttpStatusCodeException.class, () -> carol.goTo("bypass/myproject"));
-        Assert.assertEquals("carol gets 404 for invisible project", 404, e.getStatusCode());
+        Assertions.assertEquals(404, e.getStatusCode(), "carol gets 404 for invisible project");
     }
 
     @TestExtension

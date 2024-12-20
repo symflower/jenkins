@@ -2,11 +2,11 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.ExtensionList;
 import hudson.XmlFile;
@@ -28,7 +28,7 @@ import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
 import org.htmlunit.util.NameValuePair;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -72,7 +72,7 @@ public class AbstractItemTest {
         // reload away
         p.doReload();
 
-        assertFalse(SaveableListener.class.getSimpleName() + " should not have been called", testSaveableListener.isChangeCalled());
+        assertFalse(testSaveableListener.isChangeCalled(), SaveableListener.class.getSimpleName() + " should not have been called");
         assertEquals("Good Evening", p.getDescription());
 
         FreeStyleBuild b2 = p.getBuildByNumber(1);
@@ -83,13 +83,13 @@ public class AbstractItemTest {
         try (var ignored = ACL.as(alice)) {
             p.setDescription("This is Alice's project");
         }
-        assertTrue(SaveableListener.class.getSimpleName() + " should have been called", testSaveableListener.isChangeCalled());
+        assertTrue(testSaveableListener.isChangeCalled(), SaveableListener.class.getSimpleName() + " should have been called");
         assertThat(testSaveableListener.getChangeUser(), equalTo(alice.impersonate2()));
 
         try (var ignored = ACL.as(alice)) {
             p.delete();
         }
-        assertTrue(SaveableListener.class.getSimpleName() + " should have been called", testSaveableListener.isDeleteCalled());
+        assertTrue(testSaveableListener.isDeleteCalled(), SaveableListener.class.getSimpleName() + " should have been called");
         assertThat(testSaveableListener.getDeleteUser(), equalTo(alice.impersonate2()));
     }
 

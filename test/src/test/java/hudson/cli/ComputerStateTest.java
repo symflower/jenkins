@@ -31,8 +31,8 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.cli.CLICommandInvoker.Result;
 import hudson.model.Computer;
@@ -43,7 +43,7 @@ import jenkins.model.Jenkins;
 import org.htmlunit.ElementNotFoundException;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 
@@ -166,8 +166,8 @@ public class ComputerStateTest {
 
     private void assertLinkDoesNotExist(HtmlPage page, String text) {
         assertThrows(
-                text + " link should not exist",
                 ElementNotFoundException.class,
-                () -> page.getAnchorByText(text));
+                () -> page.getAnchorByText(text),
+                text + " link should not exist");
     }
 }

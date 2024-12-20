@@ -4,11 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.Assume.assumeThat;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -22,11 +22,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 
@@ -44,7 +44,7 @@ public class AtomicFileWriterTest {
     AtomicFileWriter afw;
     String expectedContent = "hello world";
 
-    @BeforeClass
+    @BeforeAll
     public static void computePermissions() throws IOException {
         final File tempDir = tmp.newFolder();
         final File newFile = new File(tempDir, "blah");
@@ -66,14 +66,14 @@ public class AtomicFileWriterTest {
         return posixSupported;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         af = tmp.newFile();
         Files.writeString(af.toPath(), PREVIOUS, Charset.defaultCharset());
         afw = new AtomicFileWriter(af.toPath(), Charset.defaultCharset());
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         afw.abort();
     }
@@ -109,8 +109,8 @@ public class AtomicFileWriterTest {
         afw.flush();
 
         // Then
-        assertEquals("File writer did not properly flush to temporary file",
-                expectedContent.length() * 2 + 1, Files.size(afw.getTemporaryPath()));
+        assertEquals(expectedContent.length() * 2 + 1,
+                Files.size(afw.getTemporaryPath()), "File writer did not properly flush to temporary file");
     }
 
     @Test

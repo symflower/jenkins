@@ -24,7 +24,7 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.FilePath;
 import hudson.Launcher;
@@ -32,7 +32,7 @@ import hudson.slaves.WorkspaceList;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Notifier;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 

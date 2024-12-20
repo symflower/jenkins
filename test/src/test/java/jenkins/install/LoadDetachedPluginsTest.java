@@ -31,9 +31,9 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.ClassicPluginStrategy;
 import hudson.ExtensionList;
@@ -49,10 +49,10 @@ import java.util.stream.Collectors;
 import jenkins.plugins.DetachedPluginsUtil;
 import jenkins.plugins.DetachedPluginsUtil.DetachedPlugin;
 import jenkins.security.UpdateSiteWarningsMonitor;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -60,7 +60,7 @@ import org.jvnet.hudson.test.RestartableJenkinsRule;
 import org.jvnet.hudson.test.SmokeTest;
 import org.jvnet.hudson.test.recipes.LocalData;
 
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class LoadDetachedPluginsTest {
 
     @Rule public RestartableJenkinsRule rr = PluginManagerUtil.newRestartableJenkinsRule();
@@ -82,7 +82,7 @@ public class LoadDetachedPluginsTest {
     }
 
     @Test
-    @Ignore("Only useful while updating bundled plugins, otherwise new security warnings fail unrelated builds")
+    @Disabled("Only useful while updating bundled plugins, otherwise new security warnings fail unrelated builds")
     @LocalData
     public void noUpdateSiteWarnings() {
         rr.then(r -> {
@@ -145,7 +145,7 @@ public class LoadDetachedPluginsTest {
 
     private void assertLoader(Class<?> c, String expectedPlugin, JenkinsRule r) {
         PluginWrapper pw = r.jenkins.pluginManager.whichPlugin(c);
-        assertNotNull("did not expect to be loading " + c + " from " + c.getClassLoader(), pw);
+        assertNotNull(pw, "did not expect to be loading " + c + " from " + c.getClassLoader());
         assertEquals(expectedPlugin, pw.getShortName());
     }
 
@@ -170,7 +170,7 @@ public class LoadDetachedPluginsTest {
             PluginWrapper wrapper = pluginManager.getPlugin(plugin.getShortName());
             if (wrapper != null) {
                 installedPlugins.add(wrapper);
-                assertTrue("Detached plugins should be active if installed", wrapper.isActive());
+                assertTrue(wrapper.isActive(), "Detached plugins should be active if installed");
                 assertThat("Detached plugins should not have dependency errors", wrapper.getDependencyErrors(), empty());
             }
         }

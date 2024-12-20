@@ -29,8 +29,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.servlet.ServletContext;
 import java.io.File;
@@ -38,7 +38,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import jenkins.model.Jenkins;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRecipe;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -80,8 +80,8 @@ public class CustomPluginManagerTest {
     }
 
     private void check(Class<? extends CustomPluginManager> klass) {
-        assertTrue("Correct plugin manager installed", klass.isAssignableFrom(r.getPluginManager().getClass()));
-        assertNotNull("Plugin 'htmlpublisher' installed", r.jenkins.getPlugin("htmlpublisher"));
+        assertTrue(klass.isAssignableFrom(r.getPluginManager().getClass()), "Correct plugin manager installed");
+        assertNotNull(r.jenkins.getPlugin("htmlpublisher"), "Plugin 'htmlpublisher' installed");
     }
 
     // An interface not to override every constructor.

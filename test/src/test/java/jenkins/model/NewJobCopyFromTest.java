@@ -7,7 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import hudson.model.Item;
 import java.io.IOException;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.xml.sax.SAXException;

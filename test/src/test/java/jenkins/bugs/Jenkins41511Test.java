@@ -2,14 +2,14 @@ package jenkins.bugs;
 
 import hudson.security.HudsonPrivateSecurityRealm;
 import jenkins.model.Jenkins;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class Jenkins41511Test {
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         System.setProperty(Jenkins.class.getName() + ".slaveAgentPort", "10000");
         System.setProperty(Jenkins.class.getName() + ".slaveAgentPortEnforce", "true");

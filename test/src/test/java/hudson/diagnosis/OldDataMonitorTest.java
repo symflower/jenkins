@@ -24,8 +24,8 @@
 
 package hudson.diagnosis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import hudson.XmlFile;
 import hudson.model.FreeStyleBuild;
@@ -43,9 +43,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import jenkins.model.lazy.BuildReference;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MemoryAssert;
@@ -61,7 +61,7 @@ public class OldDataMonitorTest {
 
     @Rule public JenkinsRule r = new JenkinsRule();
 
-    @Ignore("constantly failing on CI builders, makes problems for memory()")
+    @Disabled("constantly failing on CI builders, makes problems for memory()")
     @Issue("JENKINS-19544")
     @LocalData
     @Test public void robustness() {

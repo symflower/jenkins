@@ -1,6 +1,6 @@
 package lib.form;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.AbstractProject;
 import hudson.model.FreeStyleProject;
@@ -9,7 +9,7 @@ import hudson.tasks.Builder;
 import hudson.util.FormValidation;
 import jakarta.inject.Inject;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;

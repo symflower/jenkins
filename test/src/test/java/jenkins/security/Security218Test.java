@@ -2,7 +2,7 @@ package jenkins.security;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.slaves.DumbSlave;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import org.codehaus.groovy.runtime.MethodClosure;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.InboundAgentRule;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -63,9 +63,9 @@ public class Security218Test implements Serializable {
     @SuppressWarnings("ConstantConditions")
     private void check(DumbSlave s) {
         IOException e = assertThrows(
-                "Expected the connection to die",
                 IOException.class,
-                () -> s.getComputer().getChannel().call(new EvilReturnValue()));
+                () -> s.getComputer().getChannel().call(new EvilReturnValue()),
+                "Expected the connection to die");
         assertThat(e.getMessage(), containsString(MethodClosure.class.getName()));
     }
 

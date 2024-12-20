@@ -28,10 +28,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
@@ -55,11 +55,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.util.xstream.CriticalXStreamException;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Timeout;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -71,12 +73,12 @@ public class RobustReflectionConverterTest {
         Logger.getLogger(RobustReflectionConverter.class.getName()).setLevel(Level.OFF);
     }
 
-    @Before
+    @BeforeEach
     public void before() {
         RobustReflectionConverter.RECORD_FAILURES_FOR_ALL_AUTHENTICATIONS = true;
     }
 
-    @After
+    @AfterEach
     public void after() {
         RobustReflectionConverter.RECORD_FAILURES_FOR_ALL_AUTHENTICATIONS = originalRecordFailures;
     }
@@ -149,7 +151,7 @@ public class RobustReflectionConverterTest {
                 "</hold>", xs.toXML(h));
     }
 
-    @Ignore("Throws an NPE in writeValueToImplicitCollection. Issue has existed since RobustReflectionConverter was created.")
+    @Disabled("Throws an NPE in writeValueToImplicitCollection. Issue has existed since RobustReflectionConverter was created.")
     @Test
     public void implicitCollectionsAllowNullElements() {
         XStream2 xs = new XStream2();
@@ -259,7 +261,8 @@ public class RobustReflectionConverterTest {
     @Owner("p4")
     public static class Jean extends Lover {}
 
-    @Test(timeout = 30 * 1000)
+    @Test
+    @Timeout(value = 30 * 1000, unit = TimeUnit.MILLISECONDS)
     @Issue("SECURITY-2602")
     public void robustDoesNotSwallowDosException() {
         XStream2 xstream2 = new XStream2();
@@ -280,10 +283,11 @@ public class RobustReflectionConverterTest {
         assertNotNull(cause);
         assertThat(cause, instanceOf(InputManipulationException.class));
         InputManipulationException ime = (InputManipulationException) cause;
-        assertTrue("Limit expected in message", ime.getMessage().contains("exceeds 5 seconds"));
+        assertTrue(ime.getMessage().contains("exceeds 5 seconds"), "Limit expected in message");
     }
 
-    @Test(timeout = 30 * 1000)
+    @Test
+    @Timeout(value = 30 * 1000, unit = TimeUnit.MILLISECONDS)
     public void customConverter_useDefaultXStreamException() {
         XStream2 xstream2 = new XStream2();
         xstream2.registerConverter(new CustomSet.ConverterImpl(xstream2.getMapper()));
@@ -294,10 +298,11 @@ public class RobustReflectionConverterTest {
         final String xml = xstream2.toXML(customSet);
 
         InputManipulationException e = assertThrows(InputManipulationException.class, () -> xstream2.fromXML(xml));
-        assertTrue("Limit expected in message", e.getMessage().contains("exceeds 5 seconds"));
+        assertTrue(e.getMessage().contains("exceeds 5 seconds"), "Limit expected in message");
     }
 
-    @Test(timeout = 30 * 1000)
+    @Test
+    @Timeout(value = 30 * 1000, unit = TimeUnit.MILLISECONDS)
     @Issue("SECURITY-2602")
     public void customConverter_wrapped_useCriticalXStreamException() {
         XStream2 xstream2 = new XStream2();
@@ -319,7 +324,7 @@ public class RobustReflectionConverterTest {
         assertNotNull(cause);
         assertThat(cause, instanceOf(InputManipulationException.class));
         InputManipulationException ime = (InputManipulationException) cause;
-        assertTrue("Limit expected in message", ime.getMessage().contains("exceeds 5 seconds"));
+        assertTrue(ime.getMessage().contains("exceeds 5 seconds"), "Limit expected in message");
     }
 
     private Set<Object> preparePayload() {

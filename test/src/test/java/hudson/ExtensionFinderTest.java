@@ -26,10 +26,10 @@ package hudson;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.ImplementedBy;
@@ -39,7 +39,7 @@ import jakarta.inject.Qualifier;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestEnvironment;
@@ -59,8 +59,8 @@ public class ExtensionFinderTest {
     @Test
     public void failingInstance() {
         FailingExtension i = PageDecorator.all().get(FailingExtension.class);
-        assertNull("Instantiation should have failed", i);
-        assertTrue("Instantiation should have been attempted", FailingExtension.error);
+        assertNull(i, "Instantiation should have failed");
+        assertTrue(FailingExtension.error, "Instantiation should have been attempted");
     }
 
     @TestExtension("failingInstance")

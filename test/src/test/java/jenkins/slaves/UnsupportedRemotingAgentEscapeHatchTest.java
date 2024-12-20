@@ -14,9 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestRule;
 import org.jvnet.hudson.test.FlagRule;
@@ -40,7 +40,7 @@ public class UnsupportedRemotingAgentEscapeHatchTest {
 
     private File agentJar;
 
-    @Before
+    @BeforeEach
     public void extractAgent() throws Exception {
         agentJar = new File(tmpDir.getRoot(), "unsupported-agent.jar");
         FileUtils.copyURLToFile(UnsupportedRemotingAgentEscapeHatchTest.class.getResource("/old-remoting/remoting-unsupported.jar"), agentJar);

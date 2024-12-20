@@ -2,13 +2,13 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
 
 import hudson.EnvVars;
 import hudson.Platform;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
@@ -40,7 +40,7 @@ public class JobTest {
 
     @Issue("JENKINS-14807")
     @Test
-    @Ignore("Test doesn't work with static state, needs rethinking / removing")
+    @Disabled("Test doesn't work with static state, needs rethinking / removing")
     public void use_agent_platform_path_separator_when_contribute_path() throws Throwable {
         // mock environment to simulate EnvVars of agent node with different platform than master
         Platform agentPlatform = Platform.current() == Platform.UNIX ? Platform.WINDOWS : Platform.UNIX;

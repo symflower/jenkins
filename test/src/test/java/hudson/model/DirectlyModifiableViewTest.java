@@ -25,8 +25,8 @@
 package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
@@ -36,7 +36,7 @@ import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
 import org.htmlunit.WebResponse;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.MockFolder;
@@ -197,7 +197,7 @@ public class DirectlyModifiableViewTest {
 
     private void assertBadStatus(Page page, String message) {
         WebResponse rsp = page.getWebResponse();
-        assertFalse("Status: " + rsp.getStatusCode(), j.isGoodHttpStatus(rsp.getStatusCode()));
+        assertFalse(j.isGoodHttpStatus(rsp.getStatusCode()), "Status: " + rsp.getStatusCode());
         assertThat(rsp.getContentAsString(), Matchers.containsString(message));
     }
 }

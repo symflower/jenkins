@@ -37,9 +37,9 @@ import hudson.model.Item;
 import hudson.model.Run;
 import java.util.List;
 import jenkins.model.Jenkins;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -57,7 +57,7 @@ public class RunRangeCommandTest {
 
     @ClassRule public static final JenkinsRule j = new JenkinsRule();
 
-    @BeforeClass public static void setUpClass() throws Exception {
+    @BeforeAll public static void setUpClass() throws Exception {
         command = new CLICommandInvoker(j,  new DummyRangeCommand());
         project = j.createFreeStyleProject(PROJECT_NAME);
         for (int i = 0; i < BUILDS; i++) {

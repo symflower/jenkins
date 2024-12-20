@@ -30,8 +30,8 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.FilePath;
 import hudson.Functions;
@@ -44,13 +44,13 @@ import java.util.stream.Collectors;
 import org.htmlunit.Page;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.util.NameValuePair;
-import org.junit.Assume;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.LocalData;
+import org.junit.jupiter.api.Assumptions;
 
 public class FileParameterValueTest {
     @Rule
@@ -165,7 +165,7 @@ public class FileParameterValueTest {
     @Test
     @Issue("SECURITY-1074")
     public void fileParameter_cannotCreateFile_outsideOfBuildFolder_backslashEdition() throws Exception {
-        Assume.assumeTrue("Backslashes are only dangerous on Windows", Functions.isWindows());
+        Assumptions.assumeTrue(Functions.isWindows(), "Backslashes are only dangerous on Windows");
 
         // you can test the behavior before the correction by setting FileParameterValue.ALLOW_FOLDER_TRAVERSAL_OUTSIDE_WORKSPACE to true
 
@@ -393,7 +393,7 @@ public class FileParameterValueTest {
 
         HtmlPage page = j.createWebClient().goTo("job/" + p.getName() + "/lastSuccessfulBuild/parameters/parameter/html.html/html.html");
         for (String header : new String[]{"Content-Security-Policy", "X-WebKit-CSP", "X-Content-Security-Policy"}) {
-            assertEquals("Header set: " + header, DirectoryBrowserSupport.DEFAULT_CSP_VALUE, page.getWebResponse().getResponseHeaderValue(header));
+            assertEquals(DirectoryBrowserSupport.DEFAULT_CSP_VALUE, page.getWebResponse().getResponseHeaderValue(header), "Header set: " + header);
         }
 
         String propName = DirectoryBrowserSupport.class.getName() + ".CSP";

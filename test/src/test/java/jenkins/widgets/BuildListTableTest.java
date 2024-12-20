@@ -24,7 +24,7 @@
 
 package jenkins.widgets;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.AbstractItem;
 import hudson.model.FreeStyleProject;
@@ -35,7 +35,7 @@ import java.util.logging.Level;
 import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -66,14 +66,14 @@ public class BuildListTableTest {
         String href = anchor.getHrefAttribute();
         URL target = URI.create(page.getUrl().toExternalForm()).resolve(href).toURL();
         wc.getPage(target);
-        assertEquals(href, r.getURL() + "view/v1/job/d/view/v2/job/d2/job/p/", target.toString());
+        assertEquals(r.getURL() + "view/v1/job/d/view/v2/job/d2/job/p/", target.toString(), href);
         page = wc.goTo("job/d/view/All/builds");
         assertEquals(0, wc.waitForBackgroundJavaScript(120000));
         anchor = page.getAnchorByText("d » d2 » p");
         href = anchor.getHrefAttribute();
         target = URI.create(page.getUrl().toExternalForm()).resolve(href).toURL();
         wc.getPage(target);
-        assertEquals(href, r.getURL() + "job/d/job/d2/job/p/", target.toString());
+        assertEquals(r.getURL() + "job/d/job/d2/job/p/", target.toString(), href);
     }
 
 }

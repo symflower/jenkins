@@ -24,13 +24,13 @@
 
 package jenkins.security.csrf;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.AdministrativeMonitor;
 import hudson.security.csrf.DefaultCrumbIssuer;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -45,7 +45,7 @@ public class CSRFAdministrativeMonitorTest {
         j.jenkins.setCrumbIssuer(null);
 
         CSRFAdministrativeMonitor monitor = j.jenkins.getExtensionList(AdministrativeMonitor.class).get(CSRFAdministrativeMonitor.class);
-        assertTrue("Monitor must not be activated", monitor.isActivated());
+        assertTrue(monitor.isActivated(), "Monitor must not be activated");
     }
 
     @Test
@@ -54,6 +54,6 @@ public class CSRFAdministrativeMonitorTest {
         j.jenkins.setCrumbIssuer(new DefaultCrumbIssuer(false));
 
         CSRFAdministrativeMonitor monitor = j.jenkins.getExtensionList(AdministrativeMonitor.class).get(CSRFAdministrativeMonitor.class);
-        assertFalse("Monitor must be activated", monitor.isActivated());
+        assertFalse(monitor.isActivated(), "Monitor must be activated");
     }
 }

@@ -28,8 +28,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.Assume.assumeNoException;
 
 import hudson.EnvVars;
@@ -48,9 +48,9 @@ import java.net.URLStreamHandler;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsSessionRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -89,7 +89,7 @@ public class Security637Test {
         }
     }
 
-    @Ignore("TODO these map to different IPs now")
+    @Disabled("TODO these map to different IPs now")
     @Test
     @Issue("SECURITY-637")
     public void urlDnsEquivalence() throws Throwable {
@@ -102,7 +102,7 @@ public class Security637Test {
         });
     }
 
-    @Ignore("TODO these map to different IPs now")
+    @Disabled("TODO these map to different IPs now")
     @Test
     @Issue("SECURITY-637")
     public void urlSafeDeserialization_urlBuiltInAgent_inSameJVMRemotingContext() throws Throwable {
@@ -132,7 +132,7 @@ public class Security637Test {
         }
     }
 
-    @Ignore("TODO these map to different IPs now")
+    @Disabled("TODO these map to different IPs now")
     @Test
     @Issue("SECURITY-637")
     public void urlSafeDeserialization_urlBuiltInMaster_inSameJVMRemotingContext() throws Throwable {

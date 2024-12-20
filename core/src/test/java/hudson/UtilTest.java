@@ -28,16 +28,16 @@ package hudson;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.Assume.assumeNoException;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import hudson.model.TaskListener;
 import hudson.os.WindowsUtil;
@@ -62,11 +62,11 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -144,8 +144,8 @@ public class UtilTest {
         Locale.setDefault(Locale.GERMANY);
         try {
             // Just verifying no exception is thrown:
-            assertNotNull("German locale", Util.getTimeSpanString(1234));
-            assertNotNull("German locale <1 sec", Util.getTimeSpanString(123));
+            assertNotNull(Util.getTimeSpanString(1234), "German locale");
+            assertNotNull(Util.getTimeSpanString(123), "German locale <1 sec");
         }
         finally { Locale.setDefault(saveLocale); }
     }
@@ -185,7 +185,7 @@ public class UtilTest {
             "%C3%A9%20",
         };
         for (int i = 0; i < data.length; i += 2) {
-            assertEquals("test " + i, data[i + 1], Util.rawEncode(data[i]));
+            assertEquals(data[i + 1], Util.rawEncode(data[i]), "test " + i);
         }
     }
 
@@ -213,7 +213,7 @@ public class UtilTest {
                 "%C3%A9%20",
         };
         for (int i = 0; i < data.length; i += 2) {
-            assertEquals("test " + i, data[i + 1], Util.fullEncode(data[i]));
+            assertEquals(data[i + 1], Util.fullEncode(data[i]), "test " + i);
         }
     }
 
@@ -222,10 +222,10 @@ public class UtilTest {
      */
     @Test
     public void testTryParseNumber() {
-        assertEquals("Successful parse did not return the parsed value", 20, Util.tryParseNumber("20", 10).intValue());
-        assertEquals("Failed parse did not return the default value", 10, Util.tryParseNumber("ss", 10).intValue());
-        assertEquals("Parsing empty string did not return the default value", 10, Util.tryParseNumber("", 10).intValue());
-        assertEquals("Parsing null string did not return the default value", 10, Util.tryParseNumber(null, 10).intValue());
+        assertEquals(20, Util.tryParseNumber("20", 10).intValue(), "Successful parse did not return the parsed value");
+        assertEquals(10, Util.tryParseNumber("ss", 10).intValue(), "Failed parse did not return the default value");
+        assertEquals(10, Util.tryParseNumber("", 10).intValue(), "Parsing empty string did not return the default value");
+        assertEquals(10, Util.tryParseNumber(null, 10).intValue(), "Parsing null string did not return the default value");
     }
 
     @Test
@@ -256,7 +256,7 @@ public class UtilTest {
 
             // test linking from another directory
             File anotherDir = new File(d, "anotherDir");
-            assertTrue("Couldn't create " + anotherDir, anotherDir.mkdir());
+            assertTrue(anotherDir.mkdir(), "Couldn't create " + anotherDir);
 
             Util.createSymlink(d, "a", "anotherDir/link", l);
             assertEquals("a", Util.resolveSymlink(new File(d, "anotherDir/link")));
@@ -292,11 +292,11 @@ public class UtilTest {
 
             // test linking to another directory
             File dir = new File(d, "dir");
-            assertTrue("Couldn't create " + dir, dir.mkdir());
+            assertTrue(dir.mkdir(), "Couldn't create " + dir);
             assertFalse(Util.isSymlink(new File(d, "dir")));
 
             File anotherDir = new File(d, "anotherDir");
-            assertTrue("Couldn't create " + anotherDir, anotherDir.mkdir());
+            assertTrue(anotherDir.mkdir(), "Couldn't create " + anotherDir);
 
             Util.createSymlink(d, "dir", "anotherDir/symlinkDir", l);
             // JENKINS-12331: either a bug in createSymlink or this isn't supposed to work:
@@ -308,7 +308,7 @@ public class UtilTest {
 
     @Test
     public void testIsSymlink_onWindows_junction() throws Exception {
-        assumeTrue("Uses Windows-specific features", Functions.isWindows());
+        assumeTrue(Functions.isWindows(), "Uses Windows-specific features");
         File targetDir = tmp.newFolder("targetDir");
         File d = tmp.newFolder("dir");
         File junction = WindowsUtil.createJunction(new File(d, "junction"), targetDir);
@@ -318,7 +318,7 @@ public class UtilTest {
     @Test
     @Issue("JENKINS-55448")
     public void testIsSymlink_ParentIsJunction() throws IOException, InterruptedException {
-        assumeTrue("Uses Windows-specific features", Functions.isWindows());
+        assumeTrue(Functions.isWindows(), "Uses Windows-specific features");
         File targetDir = tmp.newFolder();
         File file = new File(targetDir, "test-file");
         new FilePath(file).touch(System.currentTimeMillis());
@@ -474,8 +474,8 @@ public class UtilTest {
         assertEquals(0, Util.loadProperties("").size());
 
         Properties p = Util.loadProperties("k.e.y=va.l.ue");
-        assertEquals(p.toString(), "va.l.ue", p.get("k.e.y"));
-        assertEquals(p.toString(), 1, p.size());
+        assertEquals("va.l.ue", p.get("k.e.y"), p.toString());
+        assertEquals(1, p.size(), p.toString());
     }
 
     @Test
@@ -580,9 +580,9 @@ public class UtilTest {
         assertEquals(PosixFilePermissions.fromString("-wxr--rw-"), Util.modeToPermissions(0346));
         assertEquals(PosixFilePermissions.fromString("---------"), Util.modeToPermissions(0000));
 
-        assertEquals("Non-permission bits should be ignored", PosixFilePermissions.fromString("r-xr-----"), Util.modeToPermissions(0100540));
+        assertEquals(PosixFilePermissions.fromString("r-xr-----"), Util.modeToPermissions(0100540), "Non-permission bits should be ignored");
 
-        Exception e = Assert.assertThrows(Exception.class, () -> Util.modeToPermissions(01777));
+        Exception e = Assertions.assertThrows(Exception.class, () -> Util.modeToPermissions(01777));
         assertThat(e.getMessage(), startsWith("Invalid mode"));
     }
 
@@ -723,7 +723,7 @@ public class UtilTest {
 
     @Test
     public void ifOverriddenFailure() {
-        AbstractMethodError error = Assert.assertThrows(AbstractMethodError.class, () -> Util.ifOverridden(() -> true, BaseClass.class, DerivedClassFailure.class, "method"));
+        AbstractMethodError error = Assertions.assertThrows(AbstractMethodError.class, () -> Util.ifOverridden(() -> true, BaseClass.class, DerivedClassFailure.class, "method"));
         assertEquals("The class " + DerivedClassFailure.class.getName() + " must override at least one of the BaseClass.method methods", error.getMessage());
     }
 

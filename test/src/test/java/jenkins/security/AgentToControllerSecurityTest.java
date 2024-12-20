@@ -2,11 +2,11 @@ package jenkins.security;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.FilePath;
 import hudson.remoting.Callable;
@@ -22,7 +22,7 @@ import jenkins.security.s2m.CallableDirectionChecker;
 import jenkins.util.JenkinsJVM;
 import org.jenkinsci.remoting.RoleChecker;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.function.ThrowingRunnable;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -199,8 +199,8 @@ public class AgentToControllerSecurityTest {
             runnable.run();
         } catch (IOException ex) {
             final Throwable cause = ex.getCause();
-            assertTrue("IOException with message: '" + ex.getMessage() + "' wasn't caused by " + causeClass + ": " + (cause == null ? "(null)" : (cause.getClass().getName() + ": " + cause.getMessage())),
-                    cause != null && causeClass.isAssignableFrom(cause.getClass()));
+            assertTrue(cause != null && causeClass.isAssignableFrom(cause.getClass()),
+                    "IOException with message: '" + ex.getMessage() + "' wasn't caused by " + causeClass + ": " + (cause == null ? "(null)" : (cause.getClass().getName() + ": " + cause.getMessage())));
             return causeClass.cast(cause);
         } catch (Throwable t) {
             fail("Threw other Throwable: " + t.getClass() + " with message " + t.getMessage());

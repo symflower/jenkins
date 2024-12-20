@@ -9,11 +9,11 @@ package hudson.security.csrf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.User;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,15 +30,15 @@ import org.htmlunit.html.DomElement;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlHiddenInput;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.recipes.WithTimeout;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author dty
@@ -47,7 +47,7 @@ public class DefaultCrumbIssuerTest {
 
     @Rule public JenkinsRule r = new JenkinsRule();
 
-    @Before public void setIssuer() {
+    @BeforeEach public void setIssuer() {
         r.jenkins.setCrumbIssuer(new DefaultCrumbIssuer(false));
     }
 
@@ -129,13 +129,13 @@ public class DefaultCrumbIssuerTest {
         WebClient wc = r.createWebClient();
         r.assertXPathValue(wc.goToXml("crumbIssuer/api/xml"), "//crumbRequestField", r.jenkins.getCrumbIssuer().getCrumbRequestField());
         String text = wc.goTo("crumbIssuer/api/xml?xpath=concat(//crumbRequestField,'=',//crumb)", "text/plain").getWebResponse().getContentAsString();
-        assertTrue(text, text.matches("\\Q" + r.jenkins.getCrumbIssuer().getCrumbRequestField() + "\\E=[0-9a-f]+"));
+        assertTrue(text.matches("\\Q" + r.jenkins.getCrumbIssuer().getCrumbRequestField() + "\\E=[0-9a-f]+"), text);
         text = wc.goTo("crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)", "text/plain").getWebResponse().getContentAsString();
-        assertTrue(text, text.matches("\\Q" + r.jenkins.getCrumbIssuer().getCrumbRequestField() + "\\E:[0-9a-f]+"));
+        assertTrue(text.matches("\\Q" + r.jenkins.getCrumbIssuer().getCrumbRequestField() + "\\E:[0-9a-f]+"), text);
         text = wc.goTo("crumbIssuer/api/xml?xpath=/*/crumbRequestField/text()", "text/plain").getWebResponse().getContentAsString();
         assertEquals(r.jenkins.getCrumbIssuer().getCrumbRequestField(), text);
         text = wc.goTo("crumbIssuer/api/xml?xpath=/*/crumb/text()", "text/plain").getWebResponse().getContentAsString();
-        assertTrue(text, text.matches("[0-9a-f]+"));
+        assertTrue(text.matches("[0-9a-f]+"), text);
         wc.assertFails("crumbIssuer/api/xml?xpath=concat('hack=\"',//crumb,'\"')", HttpURLConnection.HTTP_FORBIDDEN);
         wc.assertFails("crumbIssuer/api/xml?xpath=concat(\"hack='\",//crumb,\"'\")", HttpURLConnection.HTTP_FORBIDDEN);
         wc.assertFails("crumbIssuer/api/xml?xpath=concat('{',//crumb,':1}')", HttpURLConnection.HTTP_FORBIDDEN); // 37.5% chance that crumb ~ /[a-f].+/
@@ -164,14 +164,14 @@ public class DefaultCrumbIssuerTest {
                 .withThrowExceptionOnFailingStatusCode(false);
 
         Page page = wc.goTo("quietDown");
-        assertEquals("expect HTTP 405 method not allowed",
-                HttpURLConnection.HTTP_BAD_METHOD,
-                page.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_METHOD,
+                page.getWebResponse().getStatusCode(),
+                "expect HTTP 405 method not allowed");
 
         HtmlPage retry = (HtmlPage) wc.getCurrentWindow().getEnclosedPage();
         HtmlPage success = r.submit(retry.getFormByName("retry"));
         assertEquals(HttpURLConnection.HTTP_OK, success.getWebResponse().getStatusCode());
-        assertTrue("quieting down", r.jenkins.isQuietingDown());
+        assertTrue(r.jenkins.isQuietingDown(), "quieting down");
     }
 
     @Test
@@ -277,9 +277,9 @@ public class DefaultCrumbIssuerTest {
             assertNotNull(r.jenkins.getItem(jobName2));
         } else {
             e = assertThrows(
-                    "Should have failed due to invalid crumb",
                     FailingHttpStatusCodeException.class,
-                    () -> r.createWebClient().getPage(request2));
+                    () -> r.createWebClient().getPage(request2),
+                    "Should have failed due to invalid crumb");
             assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.getStatusCode());
             // cannot create new job due to invalid crumb
             assertNull(r.jenkins.getItem(jobName2));
@@ -299,7 +299,7 @@ public class DefaultCrumbIssuerTest {
         // responseForCrumb = Jenkins-Crumb=xxxx
         String crumb2 = responseForCrumb.substring(CrumbIssuer.DEFAULT_CRUMB_NAME.length() + "=".length());
 
-        Assert.assertNotEquals("should be different crumbs", crumb1, crumb2);
+        Assertions.assertNotEquals(crumb1, crumb2, "should be different crumbs");
     }
 
     private WebRequest createRequestForJobCreation(String jobName) throws Exception {

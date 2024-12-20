@@ -17,7 +17,7 @@
 
 package jenkins.org.apache.commons.validator.routines;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
@@ -179,45 +179,45 @@ public class RegexValidatorTest extends TestCase {
 
         // Single Regular Expression - null
         {
-            final IllegalArgumentException e = assertThrows("Single Null - expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> new RegexValidator((String) null));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> new RegexValidator((String) null), "Single Null - expected IllegalArgumentException");
             assertEquals("Single Null", "Regular expression[0] is missing", e.getMessage());
         }
 
         // Single Regular Expression - Zero Length
         {
-            final IllegalArgumentException e = assertThrows("Single Zero Length - expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> new RegexValidator(""));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> new RegexValidator(""), "Single Zero Length - expected IllegalArgumentException");
             assertEquals("Single Zero Length", "Regular expression[0] is missing", e.getMessage());
         }
 
         // Multiple Regular Expression - Null array
         {
-            final IllegalArgumentException e = assertThrows("Null Array - expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> new RegexValidator((String[]) null));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> new RegexValidator((String[]) null), "Null Array - expected IllegalArgumentException");
             assertEquals("Null Array", "Regular expressions are missing", e.getMessage());
         }
 
         // Multiple Regular Expression - Zero Length array
         {
-            final IllegalArgumentException e = assertThrows("Zero Length Array - expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> new RegexValidator(new String[0]));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> new RegexValidator(new String[0]), "Zero Length Array - expected IllegalArgumentException");
             assertEquals("Zero Length Array", "Regular expressions are missing", e.getMessage());
         }
 
         // Multiple Regular Expression - Array has Null
         {
             String[] expressions = new String[] {"ABC", null};
-            final IllegalArgumentException e = assertThrows("Array has Null - expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> new RegexValidator(expressions));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> new RegexValidator(expressions), "Array has Null - expected IllegalArgumentException");
             assertEquals("Array has Null", "Regular expression[1] is missing", e.getMessage());
         }
 
         // Multiple Regular Expression - Array has Zero Length
         {
             String[] expressions = new String[] {"", "ABC"};
-            final IllegalArgumentException e = assertThrows("Array has Zero Length - expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> new RegexValidator(expressions));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> new RegexValidator(expressions), "Array has Zero Length - expected IllegalArgumentException");
             assertEquals("Array has Zero Length", "Regular expression[0] is missing", e.getMessage());
         }
     }

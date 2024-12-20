@@ -44,28 +44,28 @@ import java.util.UUID;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.SmokeTest;
 import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Test
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class InstallUtilTest {
 
     @Rule
     public JenkinsRule jenkinsRule = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setup() {
         // JenkinsRule will have created the last exec file (indirectly),
         // so remove it so we can fake the tests.
@@ -74,7 +74,7 @@ public class InstallUtilTest {
         Main.isUnitTest = false;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         // Reset the unit test flag back to its default.
         Main.isUnitTest = true;
@@ -89,10 +89,10 @@ public class InstallUtilTest {
         InstallUtil.getConfigFile().delete();
 
         // A new test instance sets up security first
-        Assert.assertEquals(InstallState.INITIAL_SECURITY_SETUP, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
+        Assertions.assertEquals(InstallState.INITIAL_SECURITY_SETUP, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
 
         // And proceeds to the new state
-        Assert.assertEquals(InstallState.NEW, InstallUtil.getNextInstallState(InstallState.INITIAL_SECURITY_SETUP));
+        Assertions.assertEquals(InstallState.NEW, InstallUtil.getNextInstallState(InstallState.INITIAL_SECURITY_SETUP));
 
         // Save the last exec version. This will only be done by Jenkins after one of:
         //   1. A successful run of the install wizard.
@@ -105,15 +105,15 @@ public class InstallUtilTest {
         // Now if we ask what is the InstallState, we should be told it's a RESTART because
         // the install wizard is complete and the version matches the currently executing
         // Jenkins version.
-        Assert.assertEquals(InstallState.RESTART, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
+        Assertions.assertEquals(InstallState.RESTART, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
 
         // Fudge things again, changing the stored version to something old, faking an upgrade...
         InstallUtil.saveLastExecVersion("1.584");
-        Assert.assertEquals(InstallState.UPGRADE, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
+        Assertions.assertEquals(InstallState.UPGRADE, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
 
         // Fudge things yet again, changing the stored version to something very very new, faking a downgrade...
         InstallUtil.saveLastExecVersion("1000000.0");
-        Assert.assertEquals(InstallState.DOWNGRADE, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
+        Assertions.assertEquals(InstallState.DOWNGRADE, InstallUtil.getNextInstallState(InstallState.UNKNOWN));
     }
 
 
@@ -127,19 +127,19 @@ public class InstallUtilTest {
         // Delete the config file, forcing getLastExecVersion to return
         // the default/unset version value.
         InstallUtil.getConfigFile().delete();
-        Assert.assertEquals("1.0", InstallUtil.getLastExecVersion());
+        Assertions.assertEquals("1.0", InstallUtil.getLastExecVersion());
 
         // Set the version to some stupid value and check again. This time,
         // getLastExecVersion should read it from the file.
         setStoredVersion("9.123");
-        Assert.assertEquals("9.123", InstallUtil.getLastExecVersion());
+        Assertions.assertEquals("9.123", InstallUtil.getLastExecVersion());
     }
 
     private void setStoredVersion(String version) throws Exception {
         Jenkins.VERSION = version;
         // Force a save of the config.xml
         jenkinsRule.jenkins.save();
-        Assert.assertEquals(version, Jenkins.getStoredVersion().toString());
+        Assertions.assertEquals(version, Jenkins.getStoredVersion().toString());
     }
 
     /**
@@ -193,15 +193,15 @@ public class InstallUtilTest {
 
         Map<String, String> persisted = InstallUtil.getPersistedInstallStatus();
 
-        Assert.assertEquals(nameMap.get("Pending"), persisted.get("pending-plug"));
-        Assert.assertEquals("Pending", persisted.get("installing-plug")); // only marked as success/fail after successful install
-        Assert.assertEquals(nameMap.get("Failure"), persisted.get("failure-plug"));
-        Assert.assertEquals(nameMap.get("Success"), persisted.get("success-plug"));
+        Assertions.assertEquals(nameMap.get("Pending"), persisted.get("pending-plug"));
+        Assertions.assertEquals("Pending", persisted.get("installing-plug")); // only marked as success/fail after successful install
+        Assertions.assertEquals(nameMap.get("Failure"), persisted.get("failure-plug"));
+        Assertions.assertEquals(nameMap.get("Success"), persisted.get("success-plug"));
 
         InstallUtil.clearInstallStatus();
 
         persisted = InstallUtil.getPersistedInstallStatus();
 
-        Assert.assertNull(persisted); // should be deleted
+        Assertions.assertNull(persisted); // should be deleted
     }
 }

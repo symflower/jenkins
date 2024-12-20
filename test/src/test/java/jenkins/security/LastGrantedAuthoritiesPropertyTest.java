@@ -1,6 +1,6 @@
 package jenkins.security;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.security.AbstractPasswordBasedSecurityRealm;
 import hudson.security.GroupDetails;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;

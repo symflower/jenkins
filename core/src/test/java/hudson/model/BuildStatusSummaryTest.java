@@ -1,14 +1,14 @@
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import hudson.model.Run.Summary;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link Run#getBuildStatusSummary()}.
@@ -21,7 +21,7 @@ public class BuildStatusSummaryTest {
     private Run build;
     private Run prevBuild;
 
-    @Before
+    @BeforeEach
     public void before() {
         mockBuilds(Run.class);
     }

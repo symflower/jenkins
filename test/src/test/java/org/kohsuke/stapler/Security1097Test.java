@@ -1,7 +1,7 @@
 package org.kohsuke.stapler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.Extension;
 import hudson.model.InvisibleAction;
@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.kohsuke.stapler.json.SubmittedForm;
 

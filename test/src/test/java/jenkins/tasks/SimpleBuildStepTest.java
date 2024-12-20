@@ -14,12 +14,12 @@ import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import java.io.IOException;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
+import org.junit.jupiter.api.Assertions;
 
 public class SimpleBuildStepTest {
 
@@ -28,9 +28,9 @@ public class SimpleBuildStepTest {
         @Override
         public void perform(@NonNull Run<?, ?> run, @NonNull FilePath workspace, @NonNull EnvVars env, @NonNull Launcher launcher, @NonNull TaskListener listener) throws InterruptedException, IOException {
             // Check that the environment we get includes values from the slave
-            Assert.assertEquals("JENKINS-29144", env.get("TICKET"));
+            Assertions.assertEquals("JENKINS-29144", env.get("TICKET"));
             // And that parameters appear too
-            Assert.assertEquals("WORLD", env.get("HELLO"));
+            Assertions.assertEquals("WORLD", env.get("HELLO"));
         }
 
         @TestExtension("builderReceivesEnvVars")

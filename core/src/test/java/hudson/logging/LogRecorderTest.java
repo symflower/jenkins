@@ -26,10 +26,10 @@ package hudson.logging;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import jenkins.model.Jenkins;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -161,15 +161,15 @@ public class LogRecorderTest {
         isNotCandidate(candidates, "org");
         isNotCandidate(candidates, "org.example");
 
-        assertEquals("expected number of items", 10, candidates.size());
+        assertEquals(10, candidates.size(), "expected number of items");
     }
 
     private static void isCandidate(Set<String> candidates, String candidate) {
-        assertTrue(candidate, candidates.contains(candidate));
+        assertTrue(candidates.contains(candidate), candidate);
     }
 
     private static void isNotCandidate(Set<String> candidates, String candidate) {
-        assertFalse(candidate, candidates.contains(candidate));
+        assertFalse(candidates.contains(candidate), candidate);
     }
 
 }

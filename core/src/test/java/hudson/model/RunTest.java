@@ -24,10 +24,10 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.console.AnnotatedLargeText;
@@ -48,7 +48,7 @@ import java.util.concurrent.Executors;
 import jenkins.model.Jenkins;
 import org.apache.commons.jelly.XMLOutput;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.localizer.LocaleProvider;
@@ -150,10 +150,10 @@ public class RunTest {
         r.onStartBuilding();
         String msg;
         msg = r.getDurationString();
-        assertTrue(msg, msg.endsWith(" and counting"));
+        assertTrue(msg.endsWith(" and counting"), msg);
         r.onEndBuilding();
         msg = r.getDurationString();
-        assertFalse(msg, msg.endsWith(" and counting"));
+        assertFalse(msg.endsWith(" and counting"), msg);
       } finally {
         LocaleProvider.setProvider(providerToRestore);
       }

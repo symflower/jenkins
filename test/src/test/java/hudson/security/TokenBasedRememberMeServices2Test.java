@@ -5,10 +5,10 @@ import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.xml.HasXPath.hasXPath;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.User;
 import java.nio.charset.StandardCharsets;
@@ -22,9 +22,9 @@ import jenkins.security.seed.UserSeedProperty;
 import org.htmlunit.CookieManager;
 import org.htmlunit.util.Cookie;
 import org.htmlunit.xml.XmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -46,7 +46,7 @@ public class TokenBasedRememberMeServices2Test {
 
     private static boolean failureInduced;
 
-    @Before
+    @BeforeEach
     public void resetFailureInduced() {
         failureInduced = false;
     }

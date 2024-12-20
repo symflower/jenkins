@@ -34,7 +34,7 @@ import hudson.model.Item;
 import hudson.model.ListView;
 import hudson.model.View;
 import jenkins.model.Jenkins;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 
 /**

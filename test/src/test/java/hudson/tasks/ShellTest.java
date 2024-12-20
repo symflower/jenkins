@@ -1,9 +1,9 @@
 package hudson.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Functions;
 import hudson.Launcher.ProcStarter;
@@ -16,14 +16,14 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assume;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.FakeLauncher;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.PretendSlave;
 import org.jvnet.hudson.test.recipes.LocalData;
+import org.junit.jupiter.api.Assumptions;
 
 /**
  * Tests for the Shell tasks class
@@ -49,7 +49,7 @@ public class ShellTest {
 
     @Test
     public void testBasic() throws Exception {
-        Assume.assumeFalse("If we're on Windows, don't bother doing this", Functions.isWindows());
+        Assumptions.assumeFalse(Functions.isWindows(), "If we're on Windows, don't bother doing this");
 
         // TODO: define a FakeLauncher implementation with easymock so that this kind of assertions can be simplified.
         PretendSlave s = rule.createPretendSlave(p -> {
@@ -190,7 +190,7 @@ public class ShellTest {
     public void canLoadUnstableReturnFromDisk() {
         FreeStyleProject p = (FreeStyleProject) rule.jenkins.getItemByFullName("test");
         Shell shell = (Shell) p.getBuildersList().get(0);
-        assertEquals("unstable return", (Integer) 1, shell.getUnstableReturn());
+        assertEquals((Integer) 1, shell.getUnstableReturn(), "unstable return");
     }
 
 }

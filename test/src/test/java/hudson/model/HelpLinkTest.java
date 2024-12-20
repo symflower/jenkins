@@ -14,18 +14,18 @@ import org.htmlunit.html.DomNodeUtil;
 import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlElementUtil;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Click all the help links and make sure they resolve to some text, not 404.
  *
  * @author Kohsuke Kawaguchi
  */
-@Ignore
+@Disabled
 /*
     Excluding test to be able to ship 2.0 beta 1
     Jenkins confirms that this test is now taking 45mins to complete.
@@ -142,7 +142,7 @@ public class HelpLinkTest {
 
             statusListener.assertHasResponses();
             String contentAsString = statusListener.getResponses().get(0).getContentAsString();
-            Assert.assertTrue(contentAsString.contains(d.getHelpFile()));
+            Assertions.assertTrue(contentAsString.contains(d.getHelpFile()));
         } finally {
             Publisher.all().remove(d);
         }

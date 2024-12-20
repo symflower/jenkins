@@ -29,11 +29,11 @@ import static hudson.model.UpdateCenter.ConnectionStatus;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import net.sf.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
@@ -48,26 +48,26 @@ public class UpdateCenterConnectionStatusTest {
     public void doConnectionStatus_default_site() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("updateCenter/connectionStatus").getJSONObject();
 
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         JSONObject statusObj = response.getJSONObject("data");
-        Assert.assertTrue(statusObj.has("updatesite"));
-        Assert.assertTrue(statusObj.has("internet"));
+        Assertions.assertTrue(statusObj.has("updatesite"));
+        Assertions.assertTrue(statusObj.has("internet"));
 
         // The following is equivalent to the above
         response = jenkinsRule.getJSON("updateCenter/connectionStatus?siteId=default").getJSONObject();
 
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         statusObj = response.getJSONObject("data");
-        Assert.assertTrue(statusObj.has("updatesite"));
-        Assert.assertTrue(statusObj.has("internet"));
+        Assertions.assertTrue(statusObj.has("updatesite"));
+        Assertions.assertTrue(statusObj.has("internet"));
     }
 
     @Test
     public void doConnectionStatus_unknown_site() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("updateCenter/connectionStatus?siteId=blahblah").getJSONObject();
 
-        Assert.assertEquals("error", response.getString("status"));
-        Assert.assertEquals("Cannot check connection status of the update site with ID='blahblah'. This update center cannot be resolved", response.getString("message"));
+        Assertions.assertEquals("error", response.getString("status"));
+        Assertions.assertEquals("Cannot check connection status of the update site with ID='blahblah'. This update center cannot be resolved", response.getString("message"));
     }
 
     private UpdateSite updateSite = new UpdateSite(UpdateCenter.ID_DEFAULT, "http://xyz") {
@@ -82,13 +82,13 @@ public class UpdateCenterConnectionStatusTest {
         UpdateCenter updateCenter = new UpdateCenter(new TestConfig());
         UpdateCenter.ConnectionCheckJob job = updateCenter.newConnectionCheckJob(updateSite);
 
-        Assert.assertEquals(ConnectionStatus.PRECHECK, job.connectionStates.get(ConnectionStatus.INTERNET));
-        Assert.assertEquals(ConnectionStatus.PRECHECK, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
+        Assertions.assertEquals(ConnectionStatus.PRECHECK, job.connectionStates.get(ConnectionStatus.INTERNET));
+        Assertions.assertEquals(ConnectionStatus.PRECHECK, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
 
         job.run();
 
-        Assert.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.INTERNET));
-        Assert.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
+        Assertions.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.INTERNET));
+        Assertions.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
     }
 
     @Test
@@ -98,8 +98,8 @@ public class UpdateCenterConnectionStatusTest {
 
         job.run();
 
-        Assert.assertEquals(ConnectionStatus.FAILED, job.connectionStates.get(ConnectionStatus.INTERNET));
-        Assert.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
+        Assertions.assertEquals(ConnectionStatus.FAILED, job.connectionStates.get(ConnectionStatus.INTERNET));
+        Assertions.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
     }
 
     @Test
@@ -109,8 +109,8 @@ public class UpdateCenterConnectionStatusTest {
 
         job.run();
 
-        Assert.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.INTERNET));
-        Assert.assertEquals(ConnectionStatus.FAILED, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
+        Assertions.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.INTERNET));
+        Assertions.assertEquals(ConnectionStatus.FAILED, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
     }
 
     @Test
@@ -120,8 +120,8 @@ public class UpdateCenterConnectionStatusTest {
 
         job.run();
 
-        Assert.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.INTERNET));
-        Assert.assertEquals(ConnectionStatus.FAILED, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
+        Assertions.assertEquals(ConnectionStatus.OK, job.connectionStates.get(ConnectionStatus.INTERNET));
+        Assertions.assertEquals(ConnectionStatus.FAILED, job.connectionStates.get(ConnectionStatus.UPDATE_SITE));
     }
 
     private static class TestConfig extends UpdateCenter.UpdateCenterConfiguration {

@@ -3,9 +3,9 @@ package hudson.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Functions;
 import hudson.Launcher;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -113,8 +113,8 @@ public class ParametersAction2Test {
                 new StringParameterValue("undef", "undef")
         )));
 
-        assertFalse("undef parameter is not listed in getParameters",
-                hasParameterWithName(build.getAction(ParametersAction.class), "undef"));
+        assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "undef"),
+                "undef parameter is not listed in getParameters");
 
         p.removeProperty(ParametersDefinitionProperty.class);
         p.addProperty(new ParametersDefinitionProperty(Arrays.asList(
@@ -123,18 +123,18 @@ public class ParametersAction2Test {
                 new StringParameterDefinition("undef", "undef"))));
 
         // undef is still not listed even after being added to the job parameters definition
-        assertFalse("undef parameter is not listed in getParameters",
-                hasParameterWithName(build.getAction(ParametersAction.class), "undef"));
+        assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "undef"),
+                "undef parameter is not listed in getParameters");
 
         // remove bar and undef from parameters definition
         p.removeProperty(ParametersDefinitionProperty.class);
         p.addProperty(new ParametersDefinitionProperty(List.of(
                 new StringParameterDefinition("foo", "foo"))));
 
-        assertEquals("the build still have 2 parameters", 2, build.getAction(ParametersAction.class).getParameters().size());
+        assertEquals(2, build.getAction(ParametersAction.class).getParameters().size(), "the build still have 2 parameters");
 
         p.removeProperty(ParametersDefinitionProperty.class);
-        assertEquals("the build still have 2 parameters", 2, build.getAction(ParametersAction.class).getParameters().size());
+        assertEquals(2, build.getAction(ParametersAction.class).getParameters().size(), "the build still have 2 parameters");
     }
 
     @Test
@@ -154,10 +154,10 @@ public class ParametersAction2Test {
                     new StringParameterValue("whitelisted2", "y")
             )));
 
-            assertTrue("whitelisted1 parameter is listed in getParameters",
-                    hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"));
-            assertTrue("whitelisted2 parameter is listed in getParameters",
-                    hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"));
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"),
+                    "whitelisted1 parameter is listed in getParameters");
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"),
+                    "whitelisted2 parameter is listed in getParameters");
         } finally {
             System.clearProperty(ParametersAction.SAFE_PARAMETERS_SYSTEM_PROPERTY_NAME);
         }
@@ -184,22 +184,22 @@ public class ParametersAction2Test {
                     Arrays.asList("whitelisted1", "whitelisted2"));
             FreeStyleBuild build = j.assertBuildStatusSuccess(p.scheduleBuild2(0, new Cause.UserIdCause(), action));
 
-            assertTrue("whitelisted1 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"));
-            assertTrue("whitelisted2 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"));
-            assertFalse("whitelisted3 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"));
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"),
+                       "whitelisted1 parameter is listed in getParameters");
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"),
+                       "whitelisted2 parameter is listed in getParameters");
+            assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"),
+                       "whitelisted3 parameter is listed in getParameters");
             j.jenkins.reload();
             //Test again after reload
             p = j.jenkins.getItemByFullName(name, FreeStyleProject.class);
             build = p.getLastBuild();
-            assertTrue("whitelisted1 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"));
-            assertTrue("whitelisted2 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"));
-            assertFalse("whitelisted3 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"));
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"),
+                       "whitelisted1 parameter is listed in getParameters");
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"),
+                       "whitelisted2 parameter is listed in getParameters");
+            assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"),
+                       "whitelisted3 parameter is listed in getParameters");
         } finally {
             System.clearProperty(ParametersAction.SAFE_PARAMETERS_SYSTEM_PROPERTY_NAME);
         }
@@ -224,27 +224,27 @@ public class ParametersAction2Test {
                     new StringParameterValue("whitelisted3", "z"),
                     new StringParameterValue("whitelisted4", "w")
             )));
-            assertTrue("whitelisted1 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"));
-            assertTrue("whitelisted2 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"));
-            assertFalse("whitelisted3 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"));
-            assertFalse("whitelisted4 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted4"));
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"),
+                       "whitelisted1 parameter is listed in getParameters");
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"),
+                       "whitelisted2 parameter is listed in getParameters");
+            assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"),
+                       "whitelisted3 parameter is listed in getParameters");
+            assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted4"),
+                       "whitelisted4 parameter is listed in getParameters");
 
             System.setProperty(ParametersAction.SAFE_PARAMETERS_SYSTEM_PROPERTY_NAME, "whitelisted3,whitelisted4");
             j.jenkins.reload();
             p = j.jenkins.getItemByFullName(name, FreeStyleProject.class);
             build = p.getLastBuild();
-            assertTrue("whitelisted1 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"));
-            assertTrue("whitelisted2 parameter is listed in getParameters",
-                       hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"));
-            assertFalse("whitelisted3 parameter is listed in getParameters",
-                        hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"));
-            assertFalse("whitelisted4 parameter is listed in getParameters",
-                        hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted4"));
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted1"),
+                       "whitelisted1 parameter is listed in getParameters");
+            assertTrue(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted2"),
+                       "whitelisted2 parameter is listed in getParameters");
+            assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted3"),
+                        "whitelisted3 parameter is listed in getParameters");
+            assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "whitelisted4"),
+                        "whitelisted4 parameter is listed in getParameters");
 
         } finally {
             System.clearProperty(ParametersAction.SAFE_PARAMETERS_SYSTEM_PROPERTY_NAME);
@@ -262,10 +262,10 @@ public class ParametersAction2Test {
                 new StringParameterValue("bar", "bar")
         )));
 
-        assertFalse("foo parameter is not listed in getParameters",
-                hasParameterWithName(build.getAction(ParametersAction.class), "foo"));
-        assertFalse("bar parameter is not listed in getParameters",
-                hasParameterWithName(build.getAction(ParametersAction.class), "bar"));
+        assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "foo"),
+                "foo parameter is not listed in getParameters");
+        assertFalse(hasParameterWithName(build.getAction(ParametersAction.class), "bar"),
+                "bar parameter is not listed in getParameters");
     }
 
     @Test
@@ -280,10 +280,10 @@ public class ParametersAction2Test {
                     new StringParameterValue("bar", "bar")
             )));
 
-            assertTrue("foo parameter is listed in getParameters",
-                    hasParameterWithName(build2.getAction(ParametersAction.class), "foo"));
-            assertTrue("bar parameter is listed in getParameters",
-                    hasParameterWithName(build2.getAction(ParametersAction.class), "bar"));
+            assertTrue(hasParameterWithName(build2.getAction(ParametersAction.class), "foo"),
+                    "foo parameter is listed in getParameters");
+            assertTrue(hasParameterWithName(build2.getAction(ParametersAction.class), "bar"),
+                    "bar parameter is listed in getParameters");
         } finally {
             System.clearProperty(ParametersAction.SAFE_PARAMETERS_SYSTEM_PROPERTY_NAME);
         }
@@ -344,22 +344,22 @@ public class ParametersAction2Test {
         public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
                 throws InterruptedException, IOException {
             ParametersAction pa = build.getAction(ParametersAction.class);
-            assertEquals("foo value expected changed", "baz", pa.getParameter("foo").getValue());
+            assertEquals("baz", pa.getParameter("foo").getValue(), "foo value expected changed");
 
             if (expectLegacyBehavior) {
-                assertTrue("undef parameter is listed in getParameters", hasParameterWithName(pa.getParameters(), "undef"));
-                assertTrue("undef parameter is listed in iterator", hasParameterWithName(pa, "undef"));
-                assertTrue("undef in environment", build.getEnvironment(listener).containsKey("undef"));
-                assertTrue("UNDEF in environment", build.getEnvironment(listener).containsKey("UNDEF"));
+                assertTrue(hasParameterWithName(pa.getParameters(), "undef"), "undef parameter is listed in getParameters");
+                assertTrue(hasParameterWithName(pa, "undef"), "undef parameter is listed in iterator");
+                assertTrue(build.getEnvironment(listener).containsKey("undef"), "undef in environment");
+                assertTrue(build.getEnvironment(listener).containsKey("UNDEF"), "UNDEF in environment");
             } else {
-                assertFalse("undef parameter is not listed in getParameters", hasParameterWithName(pa.getParameters(), "undef"));
-                assertFalse("undef parameter is not listed in iterator", hasParameterWithName(pa, "undef"));
-                assertFalse("undef not in environment", build.getEnvironment(listener).containsKey("undef"));
-                assertFalse("UNDEF not in environment", build.getEnvironment(listener).containsKey("UNDEF"));
+                assertFalse(hasParameterWithName(pa.getParameters(), "undef"), "undef parameter is not listed in getParameters");
+                assertFalse(hasParameterWithName(pa, "undef"), "undef parameter is not listed in iterator");
+                assertFalse(build.getEnvironment(listener).containsKey("undef"), "undef not in environment");
+                assertFalse(build.getEnvironment(listener).containsKey("UNDEF"), "UNDEF not in environment");
             }
 
-            assertTrue("undef parameter is listed in getAllParameters", hasParameterWithName(pa.getAllParameters(), "undef"));
-            assertEquals("undef parameter direct access expected to work", "undef", pa.getParameter("undef").getValue());
+            assertTrue(hasParameterWithName(pa.getAllParameters(), "undef"), "undef parameter is listed in getAllParameters");
+            assertEquals("undef", pa.getParameter("undef").getValue(), "undef parameter direct access expected to work");
 
             return true;
         }

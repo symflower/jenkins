@@ -1,12 +1,12 @@
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:nicolas.deloof@gmail.com">Nicolas De Loof</a>
@@ -17,7 +17,7 @@ public class ItemsTest {
     private static ItemGroup<?> foo;
     private static ItemGroup<?> foo_bar;
 
-    @BeforeClass
+    @BeforeAll
     public static void itemGroups() {
         root = mock(ItemGroup.class);
         when(root.getFullName()).thenReturn("");

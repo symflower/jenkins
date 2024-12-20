@@ -25,9 +25,9 @@
 
 package hudson;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.model.Hudson;
 import java.io.File;
@@ -37,8 +37,8 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRecipe;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -48,7 +48,7 @@ import org.jvnet.hudson.test.recipes.LocalData;
 /**
  * @author Alan Harder
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class ClassicPluginStrategyTest {
 
     @Rule
@@ -93,14 +93,14 @@ public class ClassicPluginStrategyTest {
         for (int i = 0; en.hasMoreElements(); i++) {
             res = en.nextElement().toString();
             if (i < 2)
-                assertTrue("In current impl, " + res + "should be foo1 or foo2",
-                           res.contains("/foo1/") || res.contains("/foo2/"));
+                assertTrue(res.contains("/foo1/") || res.contains("/foo2/"),
+                           "In current impl, " + res + "should be foo1 or foo2");
             else
-                assertTrue("In current impl, " + res + "should be foo3", res.contains("/foo3/"));
+                assertTrue(res.contains("/foo3/"), "In current impl, " + res + "should be foo3");
         }
         res = p.classLoader.getResource("test-resource").toString();
-        assertTrue("In current impl, " + res + " should be foo1 or foo2",
-                   res.contains("/foo1/") || res.contains("/foo2/"));
+        assertTrue(res.contains("/foo1/") || res.contains("/foo2/"),
+                   "In current impl, " + res + " should be foo1 or foo2");
     }
 
     /**
@@ -117,7 +117,7 @@ public class ClassicPluginStrategyTest {
         for (int i = 0; en.hasMoreElements(); i++) {
             String res = en.nextElement().toString();
             if (i == 0)
-                assertTrue("expected foo4, found " + res, res.contains("/foo4/"));
+                assertTrue(res.contains("/foo4/"), "expected foo4, found " + res);
             else
                 fail("disabled dependency should not be included");
         }
@@ -136,6 +136,6 @@ public class ClassicPluginStrategyTest {
         ClassLoader cl = clazz.getClassLoader();
         URL url = cl.getResource("org/apache/http/impl/io/SocketInputBuffer.class");
         assertNotNull(url);
-        assertTrue("expected to find the class from foo1 plugin", url.toString().contains("plugins/foo1"));
+        assertTrue(url.toString().contains("plugins/foo1"), "expected to find the class from foo1 plugin");
     }
 }

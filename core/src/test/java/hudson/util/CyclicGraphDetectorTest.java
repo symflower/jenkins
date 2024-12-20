@@ -1,14 +1,14 @@
 package hudson.util;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.util.CyclicGraphDetector.CycleDetectedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -61,12 +61,12 @@ public class CyclicGraphDetectorTest {
         }
 
         void mustContainCycle(String... members) {
-            final CycleDetectedException e = assertThrows("Cycle expected",
-                    CycleDetectedException.class, this::check);
+            final CycleDetectedException e = assertThrows(CycleDetectedException.class,
+                    this::check, "Cycle expected");
 
             final String msg = "Expected cycle of " + Arrays.asList(members) + " but found " + e.cycle;
             for (String s : members) {
-                assertTrue(msg, e.cycle.contains(s));
+                assertTrue(e.cycle.contains(s), msg);
             }
         }
     }

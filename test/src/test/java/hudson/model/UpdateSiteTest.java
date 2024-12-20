@@ -24,12 +24,12 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.PluginWrapper;
 import hudson.model.UpdateSite.Data;
@@ -68,10 +68,10 @@ import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.Callback;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -114,7 +114,7 @@ public class UpdateSiteTest {
     /**
      * Startup a web server to access resources via HTTP.
      */
-    @Before
+    @BeforeEach
     public void setUpWebServer() throws Exception {
         server = new Server();
         ServerConnector connector = new ServerConnector(server);
@@ -140,7 +140,7 @@ public class UpdateSiteTest {
         baseUrl = new URI("http", null, "localhost", connector.getLocalPort(), RELATIVE_BASE, null, null).toURL();
     }
 
-    @After
+    @AfterEach
     public void shutdownWebserver() throws Exception {
         server.stop();
     }
@@ -158,7 +158,7 @@ public class UpdateSiteTest {
         assertEquals("http://nowhere.net/dummy.hpi", data.plugins.get("dummy").url);
 
         UpdateSite.Plugin htmlPublisherPlugin = data.plugins.get("htmlpublisher");
-        assertEquals("Wrong name of plugin found", "HTML Publisher", htmlPublisherPlugin.getDisplayName());
+        assertEquals("HTML Publisher", htmlPublisherPlugin.getDisplayName(), "Wrong name of plugin found");
     }
 
     @Test public void wikiUrlFromSingleSite() throws Exception {
@@ -191,7 +191,7 @@ public class UpdateSiteTest {
     }
 
     @Test public void lackOfDataDoesNotFailWarningsCode() {
-        assertNull("plugin data is not present", j.jenkins.getUpdateCenter().getSite("default").getData());
+        assertNull(j.jenkins.getUpdateCenter().getSite("default").getData(), "plugin data is not present");
 
         // nothing breaking?
         j.jenkins.getExtensionList(UpdateSiteWarningsMonitor.class).get(0).getActivePluginWarningsByPlugin();
@@ -202,21 +202,21 @@ public class UpdateSiteTest {
     @Test public void incompleteWarningsJson() throws Exception {
         UpdateSite site = getUpdateSite("/plugins/warnings-update-center-malformed.json");
         overrideUpdateSite(site);
-        assertEquals("number of warnings", 7, site.getData().getWarnings().size());
-        assertNotEquals("plugin data is present", Collections.emptyMap(), site.getData().plugins);
+        assertEquals(7, site.getData().getWarnings().size(), "number of warnings");
+        assertNotEquals(Collections.emptyMap(), site.getData().plugins, "plugin data is present");
     }
 
     @Issue("JENKINS-73760")
     @Test
     public void isLegacyDefault() {
-        assertFalse("isLegacyDefault should be false with null id", new UpdateSite(null, "url").isLegacyDefault());
+        assertFalse(new UpdateSite(null, "url").isLegacyDefault(), "isLegacyDefault should be false with null id");
         assertFalse(
-                "isLegacyDefault should be false when id is not default and url is http://updates.jenkins-ci.org/",
-                new UpdateSite("dummy", "http://updates.jenkins-ci.org/").isLegacyDefault());
+                new UpdateSite("dummy", "http://updates.jenkins-ci.org/").isLegacyDefault(),
+                "isLegacyDefault should be false when id is not default and url is http://updates.jenkins-ci.org/");
         assertTrue(
-                "isLegacyDefault should be true when id is default and url is http://updates.jenkins-ci.org/",
-                new UpdateSite(UpdateCenter.PREDEFINED_UPDATE_SITE_ID, "http://updates.jenkins-ci.org/").isLegacyDefault());
-        assertFalse("isLegacyDefault should be false with null url", new UpdateSite(null, null).isLegacyDefault());
+                new UpdateSite(UpdateCenter.PREDEFINED_UPDATE_SITE_ID, "http://updates.jenkins-ci.org/").isLegacyDefault(),
+                "isLegacyDefault should be true when id is default and url is http://updates.jenkins-ci.org/");
+        assertFalse(new UpdateSite(null, null).isLegacyDefault(), "isLegacyDefault should be false with null url");
     }
 
     @Test public void getAvailables() throws Exception {

@@ -26,7 +26,7 @@ package hudson.util;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 public class RingBufferLogHandlerTest {

@@ -24,9 +24,9 @@
 
 package lib.form;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.AbstractProject;
@@ -39,9 +39,9 @@ import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlTextArea;
 import org.htmlunit.html.HtmlTextInput;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
 import org.jvnet.hudson.test.TestExtension;
@@ -56,7 +56,7 @@ public class SecretTextareaTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         project = j.createFreeStyleProject();
         project.getBuildersList().add(TestBuilder.newDefault());

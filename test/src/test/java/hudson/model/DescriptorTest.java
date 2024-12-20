@@ -26,9 +26,9 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Launcher;
 import hudson.model.Descriptor.PropertyType;
@@ -41,9 +41,9 @@ import java.util.concurrent.Callable;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.htmlunit.FailingHttpStatusCodeException;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -63,7 +63,7 @@ public class DescriptorTest {
         PropertyType propertyType = descriptor.getPropertyType(instance, "command");
         AssertionError x = assertThrows(AssertionError.class, () -> propertyType.getItemTypeDescriptorOrDie());
         for (String text : new String[]{"hudson.tasks.CommandInterpreter", "getCommand", "java.lang.String", "collection"}) {
-            assertTrue(text + " mentioned in " + x, x.toString().contains(text));
+            assertTrue(x.toString().contains(text), text + " mentioned in " + x);
         }
     }
 
@@ -176,7 +176,7 @@ public class DescriptorTest {
         @TestExtension("nestedDescribableOverridingId") public static class DescriptorImpl extends Descriptor<Builder> {}
     }
 
-    @Ignore("never worked: TypePair.convertJSON looks for @DataBoundConstructor on D3 (Stapler does not grok Descriptor)")
+    @Disabled("never worked: TypePair.convertJSON looks for @DataBoundConstructor on D3 (Stapler does not grok Descriptor)")
     @Issue("JENKINS-28110")
     @Test public void nestedDescribableSharingClass() throws Exception {
         FreeStyleProject p = rule.createFreeStyleProject("p");

@@ -27,10 +27,10 @@ package hudson.util;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -41,7 +41,7 @@ import javax.crypto.SecretKey;
 import jenkins.model.Jenkins;
 import jenkins.security.ConfidentialStoreRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SecretTest {
 
@@ -105,10 +105,10 @@ public class SecretTest {
         String xml = Jenkins.XSTREAM.toXML(s);
         assertThat(xml, not(containsString(s.getPlainText())));
         // TODO MatchesPattern not available until Hamcrest 2.0
-        assertTrue(xml, xml.matches("<hudson[.]util[.]Secret>[{][A-Za-z0-9+/]+={0,2}[}]</hudson[.]util[.]Secret>"));
+        assertTrue(xml.matches("<hudson[.]util[.]Secret>[{][A-Za-z0-9+/]+={0,2}[}]</hudson[.]util[.]Secret>"), xml);
 
         Object o = Jenkins.XSTREAM.fromXML(xml);
-        assertEquals(xml, s, o);
+        assertEquals(s, o, xml);
     }
 
     public static class Foo {
@@ -139,8 +139,8 @@ public class SecretTest {
             cipher.init(Cipher.ENCRYPT_MODE, legacy);
             String old = Base64.getEncoder().encodeToString(cipher.doFinal((str + HistoricalSecrets.MAGIC).getBytes(StandardCharsets.UTF_8)));
             Secret s = Secret.fromString(old);
-            assertEquals("secret by the old key should decrypt", str, s.getPlainText());
-            assertNotEquals("but when encrypting, ConfidentialKey should be in use", old, s.getEncryptedValue());
+            assertEquals(str, s.getPlainText(), "secret by the old key should decrypt");
+            assertNotEquals(old, s.getEncryptedValue(), "but when encrypting, ConfidentialKey should be in use");
         }
     }
 

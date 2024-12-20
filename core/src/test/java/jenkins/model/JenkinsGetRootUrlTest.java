@@ -32,8 +32,8 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import java.net.URL;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest2;
@@ -48,7 +48,7 @@ public class JenkinsGetRootUrlTest {
     private StaplerRequest2 staplerRequest;
     private JenkinsLocationConfiguration config;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         jenkins = mock(Jenkins.class, Mockito.CALLS_REAL_METHODS);
         config = mock(JenkinsLocationConfiguration.class);

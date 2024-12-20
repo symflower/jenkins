@@ -37,13 +37,13 @@ import org.htmlunit.html.HtmlElementUtil;
 import org.htmlunit.html.HtmlInput;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlTableRow;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestPluginManager;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
@@ -69,7 +69,7 @@ public class PluginManagerInstalledGUITest {
                     }
                 };
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assertions.fail(e.getMessage());
                 return null;
             }
         }
@@ -169,7 +169,7 @@ public class PluginManagerInstalledGUITest {
                     return plugin;
                 }
             }
-            Assert.fail("No pluginManager/installed row for plugin " + pluginId);
+            Assertions.fail("No pluginManager/installed row for plugin " + pluginId);
             return null;
         }
 
@@ -198,12 +198,12 @@ public class PluginManagerInstalledGUITest {
 
         public void assertEnabled() {
             HtmlInput enableWidget = getEnableWidget();
-            Assert.assertTrue("Plugin '" + getId() + "' is expected to be enabled.", enableWidget.isChecked());
+            Assertions.assertTrue(enableWidget.isChecked(), "Plugin '" + getId() + "' is expected to be enabled.");
         }
 
         public void assertNotEnabled() {
             HtmlInput enableWidget = getEnableWidget();
-            Assert.assertFalse("Plugin '" + getId() + "' is not expected to be enabled.", enableWidget.isChecked());
+            Assertions.assertFalse(enableWidget.isChecked(), "Plugin '" + getId() + "' is not expected to be enabled.");
         }
 
         public void clickEnabledWidget() throws IOException {
@@ -219,7 +219,7 @@ public class PluginManagerInstalledGUITest {
                 return;
             }
 
-            Assert.fail("The enable/disable state of plugin '" + getId() + "' cannot be changed.");
+            Assertions.fail("The enable/disable state of plugin '" + getId() + "' cannot be changed.");
         }
 
         public void assertEnabledStateNotChangeable() {
@@ -230,23 +230,23 @@ public class PluginManagerInstalledGUITest {
                 return;
             }
 
-            Assert.fail("The enable/disable state of plugin '" + getId() + "' cannot be changed.");
+            Assertions.fail("The enable/disable state of plugin '" + getId() + "' cannot be changed.");
         }
 
         public void assertUninstallable() {
-            Assert.assertFalse("Plugin '" + getId() + "' cannot be uninstalled.", hasDependents());
+            Assertions.assertFalse(hasDependents(), "Plugin '" + getId() + "' cannot be uninstalled.");
         }
 
         public void assertNotUninstallable() {
-            Assert.assertTrue("Plugin '" + getId() + "' can be uninstalled.", hasDependents());
+            Assertions.assertTrue(hasDependents(), "Plugin '" + getId() + "' can be uninstalled.");
         }
 
         public void assertHasDependents() {
-            Assert.assertTrue("Plugin '" + getId() + "' is expected to have dependents.", hasDependents());
+            Assertions.assertTrue(hasDependents(), "Plugin '" + getId() + "' is expected to have dependents.");
         }
 
         public void assertHasNoDependents() {
-            Assert.assertFalse("Plugin '" + getId() + "' is expected to have no dependents.", hasDependents());
+            Assertions.assertFalse(hasDependents(), "Plugin '" + getId() + "' is expected to have no dependents.");
         }
 
         private boolean hasClassName(String className) {

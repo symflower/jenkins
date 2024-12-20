@@ -26,11 +26,11 @@ package hudson.model.labels;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import antlr.ANTLRException;
 import hudson.Functions;
@@ -48,7 +48,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.Future;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -208,7 +208,7 @@ public class LabelExpressionTest {
 
     @Test
     public void dataCompatibilityWithHostNameWithWhitespace() throws Exception {
-        assumeFalse("Windows can't have paths with colons, skipping", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Windows can't have paths with colons, skipping");
         DumbSlave slave = new DumbSlave("abc def (xyz) test", tempFolder.newFolder().getPath(), j.createComputerLauncher(null));
         slave.setRetentionStrategy(RetentionStrategy.NOOP);
         slave.setNodeDescription("dummy");
@@ -345,9 +345,9 @@ public class LabelExpressionTest {
 
     private void parseShouldFail(String expr, String message) {
         ANTLRException e = assertThrows(
-                expr + " should fail to parse",
                 ANTLRException.class,
-                () -> Label.parseExpression(expr));
+                () -> Label.parseExpression(expr),
+                expr + " should fail to parse");
         assertThat(e, instanceOf(IllegalArgumentException.class));
         assertEquals(message, e.getMessage());
     }

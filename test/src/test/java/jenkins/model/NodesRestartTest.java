@@ -2,7 +2,7 @@ package jenkins.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.Descriptor;
@@ -10,7 +10,7 @@ import hudson.model.Slave;
 import hudson.slaves.ComputerLauncher;
 import java.io.IOException;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsSessionRule;
 
 public class NodesRestartTest {

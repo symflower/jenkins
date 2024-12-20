@@ -10,7 +10,7 @@ import hudson.model.DependencyGraph;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.mockito.stubbing.Answer;

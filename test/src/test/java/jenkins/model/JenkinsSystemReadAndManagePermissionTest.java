@@ -2,16 +2,16 @@ package jenkins.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.TestExtension;
@@ -21,13 +21,13 @@ public class JenkinsSystemReadAndManagePermissionTest {
 
     private static final String SYSTEM_READER_AND_MANAGER = "systemReaderAndManager";
 
-    @BeforeClass
+    @BeforeAll
     public static void enablePermissions() {
         System.setProperty("jenkins.security.SystemReadPermission", "true");
         System.setProperty("jenkins.security.ManagePermission", "true");
     }
 
-    @AfterClass
+    @AfterAll
     public static void disablePermissions() {
         System.clearProperty("jenkins.security.SystemReadPermission");
         System.clearProperty("jenkins.security.ManagePermission");
@@ -38,7 +38,7 @@ public class JenkinsSystemReadAndManagePermissionTest {
 
     private JenkinsRule.WebClient webClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         j.jenkins.setSecurityRealm(j.createDummySecurityRealm());
         j.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy()
@@ -81,7 +81,7 @@ public class JenkinsSystemReadAndManagePermissionTest {
         Config config = GlobalConfiguration.all().get(Config.class);
 
         assertNotNull(config);
-        assertNull("shouldn't be allowed to change a GlobalConfiguration that needs Overall/Administer", config.getNumber());
+        assertNull(config.getNumber(), "shouldn't be allowed to change a GlobalConfiguration that needs Overall/Administer");
     }
 
     @TestExtension

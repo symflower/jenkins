@@ -1,14 +1,14 @@
 package jenkins.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import org.htmlunit.WebResponse;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.util.NameValuePair;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
 
@@ -20,7 +20,7 @@ public class FrameOptionsPageDecoratorTest {
     public void defaultHeaderPresent() throws IOException, SAXException {
         JenkinsRule.WebClient wc = j.createWebClient();
         HtmlPage page = wc.goTo("");
-        assertEquals("Expected different X-Frame-Options value", "sameorigin", getFrameOptionsFromResponse(page.getWebResponse()));
+        assertEquals("sameorigin", getFrameOptionsFromResponse(page.getWebResponse()), "Expected different X-Frame-Options value");
     }
 
     @Test
@@ -28,7 +28,7 @@ public class FrameOptionsPageDecoratorTest {
         FrameOptionsPageDecorator.enabled = false;
         JenkinsRule.WebClient wc = j.createWebClient();
         HtmlPage page = wc.goTo("");
-        assertNull("Expected X-Frame-Options unset", getFrameOptionsFromResponse(page.getWebResponse()));
+        assertNull(getFrameOptionsFromResponse(page.getWebResponse()), "Expected X-Frame-Options unset");
     }
 
     private static String getFrameOptionsFromResponse(WebResponse response) {

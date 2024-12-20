@@ -37,9 +37,9 @@ import hudson.model.Computer;
 import hudson.slaves.DumbSlave;
 import hudson.slaves.OfflineCause;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -52,7 +52,7 @@ public class DisconnectNodeCommandTest {
     @Rule
     public final JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         command = new CLICommandInvoker(j, "disconnect-node");
     }

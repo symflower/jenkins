@@ -27,9 +27,9 @@ package hudson.cli;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import hudson.Launcher;
 import hudson.Proc;
@@ -55,9 +55,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.TeeOutputStream;
 import org.htmlunit.WebResponse;
 import org.junit.ClassRule;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.Issue;
@@ -176,7 +176,7 @@ public class CLITest {
 
         WebResponse rsp = wc.goTo("cli-proxy/").getWebResponse();
         assertEquals(rsp.getContentAsString(), HttpURLConnection.HTTP_MOVED_TEMP, rsp.getStatusCode());
-        assertNull(rsp.getContentAsString(), rsp.getResponseHeaderValue("X-Jenkins"));
+        assertNull(rsp.getResponseHeaderValue("X-Jenkins"), rsp.getContentAsString());
 
         for (String transport : Arrays.asList("-http", "-webSocket")) {
 
@@ -192,7 +192,7 @@ public class CLITest {
         }
     }
 
-    @Ignore("TODO sometimes fails, in CI & locally")
+    @Disabled("TODO sometimes fails, in CI & locally")
     @Test
     @Issue("JENKINS-54310")
     public void readInputAtOnce() throws Exception {

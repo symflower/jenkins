@@ -26,7 +26,7 @@ package jenkins.xml;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,10 +38,10 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPathExpressionException;
 import jenkins.util.xml.XMLUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 public class XMLUtilsTest {
 
@@ -111,8 +111,8 @@ public class XMLUtilsTest {
         URL configUrl = getClass().getResource("/jenkins/xml/config.xml");
         File configFile = new File(configUrl.getFile());
 
-        Assert.assertEquals("1.480.1", XMLUtils.getValue("/hudson/version", configFile));
-        Assert.assertEquals("", XMLUtils.getValue("/hudson/unknown-element", configFile));
+        Assertions.assertEquals("1.480.1", XMLUtils.getValue("/hudson/version", configFile));
+        Assertions.assertEquals("", XMLUtils.getValue("/hudson/unknown-element", configFile));
     }
 
     @Test

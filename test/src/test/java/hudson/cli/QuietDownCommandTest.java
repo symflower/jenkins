@@ -32,7 +32,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import hudson.XmlFile;
 import hudson.model.FreeStyleBuild;
@@ -48,10 +48,10 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -79,7 +79,7 @@ public class QuietDownCommandTest {
     @Rule
     public final LoggerRule logging = new LoggerRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         command = new CLICommandInvoker(j, "quiet-down");
         j.jenkins.setSecurityRealm(j.createDummySecurityRealm());

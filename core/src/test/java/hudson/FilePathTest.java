@@ -26,14 +26,14 @@ package hudson;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,9 +79,9 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Chmod;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.mockito.Mockito;
@@ -100,8 +100,8 @@ public class FilePathTest {
         try (OutputStream out = OutputStream.nullOutputStream()) {
             f.copyTo(out);
         }
-        assertTrue("target does not exist", tmp.exists());
-        assertTrue("could not delete target " + tmp.getPath(), tmp.delete());
+        assertTrue(tmp.exists(), "target does not exist");
+        assertTrue(tmp.delete(), "could not delete target " + tmp.getPath());
     }
 
     /**
@@ -365,7 +365,7 @@ public class FilePathTest {
      * @throws Exception test failure
      */
     @Issue("JENKINS-10629")
-    @Ignore
+    @Disabled
     @Test public void archiveBigFile() throws Exception {
         final long largeFileSize = 9000000000L; // >8589934591 bytes
         final String filePrefix = "JENKINS-10629";
@@ -385,14 +385,14 @@ public class FilePathTest {
         // Compress archive
         final FilePath tmpDirPath = new FilePath(tmpDir);
         int tar = tmpDirPath.tar(Files.newOutputStream(tarFile.toPath()), tempFile.getName());
-        assertEquals("One file should have been compressed", 1, tar);
+        assertEquals(1, tar, "One file should have been compressed");
 
         // Decompress
         FilePath outDir = new FilePath(temp.newFolder(filePrefix + "_out"));
         final FilePath outFile = outDir.child(tempFile.getName());
         tmpDirPath.child(tarFile.getName()).untar(outDir, TarCompression.NONE);
-        assertEquals("Result file after the roundtrip differs from the initial file",
-                new FilePath(tempFile).digest(), outFile.digest());
+        assertEquals(new FilePath(tempFile).digest(),
+                outFile.digest(), "Result file after the roundtrip differs from the initial file");
     }
 
     @Test public void list() throws Exception {
@@ -592,7 +592,7 @@ public class FilePathTest {
             File firstDirectory = new File(tmp.getAbsolutePath() + "/very");
             Util.deleteRecursive(firstDirectory);
 
-            assertFalse("Could not delete directory!", firstDirectory.exists());
+            assertFalse(firstDirectory.exists(), "Could not delete directory!");
     }
 
     @Issue("JENKINS-16215")
@@ -645,8 +645,8 @@ public class FilePathTest {
         assertFalse(d.installIfNecessaryFrom(url, new StreamTaskListener(baos, Charset.defaultCharset()), message));
         verify(con).setIfModifiedSince(123000);
         String log = baos.toString(Charset.defaultCharset());
-        assertFalse(log, log.contains(message));
-        assertTrue(log, log.contains("504 Gateway Timeout"));
+        assertFalse(log.contains(message), log);
+        assertTrue(log.contains("504 Gateway Timeout"), log);
     }
 
     @Issue("JENKINS-23507")
@@ -806,7 +806,7 @@ public class FilePathTest {
         // Compress archive
         final FilePath tmpDirPath = new FilePath(srcFolder);
         int tarred = tmpDirPath.tar(Files.newOutputStream(archive.toPath()), "**");
-        assertEquals("One file should have been compressed", 3, tarred);
+        assertEquals(3, tarred, "One file should have been compressed");
 
         // Decompress
         final File dstFolder = temp.newFolder("dst");
@@ -834,7 +834,7 @@ public class FilePathTest {
         File f = temp.newFolder("folder");
         FilePath fp = new FilePath(f);
         int invalidMode = 01770; // Full permissions for owner and group plus sticky bit.
-        final IOException e = assertThrows("Setting sticky bit should fail", IOException.class, () -> chmodAndMode(fp, invalidMode));
+        final IOException e = assertThrows(IOException.class, () -> chmodAndMode(fp, invalidMode), "Setting sticky bit should fail");
         assertEquals("Invalid mode: " + invalidMode, e.getMessage());
     }
 
@@ -852,9 +852,9 @@ public class FilePathTest {
         FilePath y = filePath.createTempDir("jdk", "pkg");
         FilePath z = filePath.createTempDir("jdk", null);
 
-        assertNotNull("FilePath x should not be null", x);
-        assertNotNull("FilePath y should not be null", y);
-        assertNotNull("FilePath z should not be null", z);
+        assertNotNull(x, "FilePath x should not be null");
+        assertNotNull(y, "FilePath y should not be null");
+        assertNotNull(z, "FilePath z should not be null");
 
         assertTrue(x.getName().contains("jdk.dmg"));
         assertTrue(y.getName().contains("jdk.pkg"));
@@ -871,9 +871,9 @@ public class FilePathTest {
         Files.createFile(toDelete.resolve("bar"));
         FilePath f = new FilePath(toDelete.toFile());
         f.deleteRecursive();
-        assertTrue("symlink target should not be deleted", Files.exists(targetDir));
-        assertTrue("symlink target contents should not be deleted", Files.exists(targetContents));
-        assertFalse("could not delete target", Files.exists(toDelete));
+        assertTrue(Files.exists(targetDir), "symlink target should not be deleted");
+        assertTrue(Files.exists(targetContents), "symlink target contents should not be deleted");
+        assertFalse(Files.exists(toDelete), "could not delete target");
     }
 
     @Test
@@ -891,7 +891,7 @@ public class FilePathTest {
     }
 
     @Test public void deleteRecursiveOnWindows() throws Exception {
-        assumeTrue("Uses Windows-specific features", Functions.isWindows());
+        assumeTrue(Functions.isWindows(), "Uses Windows-specific features");
         Path targetDir = temp.newFolder("targetDir").toPath();
         Path targetContents = Files.createFile(targetDir.resolve("contents.txt"));
         Path toDelete = temp.newFolder("toDelete").toPath();
@@ -900,10 +900,10 @@ public class FilePathTest {
         Files.createFile(toDelete.resolve("bar"));
         FilePath f = new FilePath(toDelete.toFile());
         f.deleteRecursive();
-        assertTrue("junction target should not be deleted", Files.exists(targetDir));
-        assertTrue("junction target contents should not be deleted", Files.exists(targetContents));
-        assertFalse("could not delete junction", junction.exists());
-        assertFalse("could not delete target", Files.exists(toDelete));
+        assertTrue(Files.exists(targetDir), "junction target should not be deleted");
+        assertTrue(Files.exists(targetContents), "junction target contents should not be deleted");
+        assertFalse(junction.exists(), "could not delete junction");
+        assertFalse(Files.exists(toDelete), "could not delete target");
     }
 
     @Issue("JENKINS-13128")
@@ -917,9 +917,9 @@ public class FilePathTest {
         FilePath f = new FilePath(src);
         f.copyRecursiveTo(new FilePath(dst));
         Path destinationFile = dst.toPath().resolve("test-file");
-        assertTrue("file was not copied", Files.exists(destinationFile));
+        assertTrue(Files.exists(destinationFile), "file was not copied");
         Set<PosixFilePermission> destinationPermissions = Files.getPosixFilePermissions(destinationFile);
-        assertEquals("file permissions not copied", allRWX, destinationPermissions);
+        assertEquals(allRWX, destinationPermissions, "file permissions not copied");
     }
 
     @Issue("JENKINS-13128")
@@ -932,8 +932,8 @@ public class FilePathTest {
         FilePath f = new FilePath(src);
         f.copyRecursiveTo(new FilePath(dst));
         Path destinationFile = dst.toPath().resolve("test-file");
-        assertTrue("file was not copied", Files.exists(destinationFile));
-        assertEquals("file mtime was not preserved", mtime, Files.getLastModifiedTime(destinationFile));
+        assertTrue(Files.exists(destinationFile), "file was not copied");
+        assertEquals(mtime, Files.getLastModifiedTime(destinationFile), "file mtime was not preserved");
     }
 
     @Test

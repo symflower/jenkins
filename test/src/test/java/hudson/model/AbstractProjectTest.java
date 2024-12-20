@@ -30,12 +30,12 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.FilePath;
 import hudson.Functions;
@@ -83,7 +83,7 @@ import org.htmlunit.html.HtmlPage;
 import org.jenkinsci.plugins.matrixauth.AuthorizationType;
 import org.jenkinsci.plugins.matrixauth.PermissionEntry;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -118,11 +118,11 @@ public class AbstractProjectTest {
 
         FreeStyleBuild b = j.buildAndAssertSuccess(project);
 
-        assertTrue("Workspace should exist by now", b.getWorkspace().exists());
+        assertTrue(b.getWorkspace().exists(), "Workspace should exist by now");
 
         project.doDoWipeOutWorkspace();
 
-        assertFalse("Workspace should be gone by now", b.getWorkspace().exists());
+        assertFalse(b.getWorkspace().exists(), "Workspace should be gone by now");
     }
 
     /**
@@ -136,7 +136,7 @@ public class AbstractProjectTest {
 
         FreeStyleBuild b = j.buildAndAssertSuccess(project);
 
-        assertTrue("Workspace should exist by now", b.getWorkspace().exists());
+        assertTrue(b.getWorkspace().exists(), "Workspace should exist by now");
 
         // make sure that the action link is protected
         JenkinsRule.WebClient wc = j.createWebClient()
@@ -163,7 +163,7 @@ public class AbstractProjectTest {
 
         HtmlPage workspace = page.getAnchorByText("Workspace").click();
         String wipeOutLabel = ResourceBundle.getBundle("hudson/model/AbstractProject/sidepanel").getString("Wipe Out Workspace");
-        assertThrows("shouldn't find a link", ElementNotFoundException.class, () -> workspace.getAnchorByText(wipeOutLabel));
+        assertThrows(ElementNotFoundException.class, () -> workspace.getAnchorByText(wipeOutLabel), "shouldn't find a link");
     }
 
     /**
@@ -192,15 +192,15 @@ public class AbstractProjectTest {
 
         HtmlForm form = j.createWebClient().getPage(p, "configure").getFormByName("config");
         HtmlInput input = form.getInputByName("blockBuildWhenUpstreamBuilding");
-        assertFalse("blockBuildWhenUpstreamBuilding check box is checked.", input.isChecked());
+        assertFalse(input.isChecked(), "blockBuildWhenUpstreamBuilding check box is checked.");
 
         input.setChecked(true);
         j.submit(form);
-        assertTrue("blockBuildWhenUpstreamBuilding was not updated from configuration form", p.blockBuildWhenUpstreamBuilding());
+        assertTrue(p.blockBuildWhenUpstreamBuilding(), "blockBuildWhenUpstreamBuilding was not updated from configuration form");
 
         form = j.createWebClient().getPage(p, "configure").getFormByName("config");
         input = form.getInputByName("blockBuildWhenUpstreamBuilding");
-        assertTrue("blockBuildWhenUpstreamBuilding check box is not checked.", input.isChecked());
+        assertTrue(input.isChecked(), "blockBuildWhenUpstreamBuilding check box is not checked.");
     }
 
     /**

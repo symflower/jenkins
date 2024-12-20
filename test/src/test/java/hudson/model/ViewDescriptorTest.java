@@ -26,9 +26,9 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -37,7 +37,7 @@ import net.sf.json.JSONObject;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockFolder;
@@ -115,8 +115,8 @@ public class ViewDescriptorTest {
         HtmlPage editViewPage = client.getPage(myListView, "configure");
 
         //THEN the invisible property is not displayed on page
-        assertFalse("CustomInvisibleProperty should not be displayed on the View edition page UI.",
-                    editViewPage.asNormalizedText().contains("CustomInvisibleProperty"));
+        assertFalse(editViewPage.asNormalizedText().contains("CustomInvisibleProperty"),
+                    "CustomInvisibleProperty should not be displayed on the View edition page UI.");
 
 
         HtmlForm editViewForm = editViewPage.getFormByName("viewConfig");
@@ -127,8 +127,8 @@ public class ViewDescriptorTest {
         assertThat(client.getPage(myListView).asNormalizedText(), containsString("This list view is awesome !"));
 
         //AND THEN after View save, the invisible property is still persisted with the View.
-        assertNotNull("The CustomInvisibleProperty should be persisted on the View.",
-                      r.jenkins.getView("Rock").getProperties().get(CustomInvisibleProperty.class));
+        assertNotNull(r.jenkins.getView("Rock").getProperties().get(CustomInvisibleProperty.class),
+                      "The CustomInvisibleProperty should be persisted on the View.");
         assertEquals(
                 "You cannot see me.",
                 r.jenkins

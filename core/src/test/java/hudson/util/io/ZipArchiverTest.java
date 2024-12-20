@@ -1,6 +1,6 @@
 package hudson.util.io;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.FilePath;
 import java.io.IOException;
@@ -16,9 +16,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import org.junit.Assume;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 
@@ -81,7 +81,7 @@ public class ZipArchiverTest {
         }
     }
 
-    @Ignore("TODO fails to add empty directories to archive")
+    @Disabled("TODO fails to add empty directories to archive")
     @Issue("JENKINS-49296")
     @Test
     public void emptyDirectory() throws Exception {

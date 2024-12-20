@@ -24,15 +24,15 @@
 
 package hudson.pages;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.PageDecorator;
 import net.sf.json.JSONObject;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.kohsuke.stapler.StaplerRequest2;
@@ -44,7 +44,7 @@ public class SystemConfigurationTestCase {
 
     private PageDecoratorImpl pageDecoratorImpl;
 
-    @After
+    @AfterEach
     public void tearDown() {
         if (pageDecoratorImpl != null) {
             PageDecorator.ALL.remove(pageDecoratorImpl);
@@ -63,7 +63,7 @@ public class SystemConfigurationTestCase {
         HtmlForm form = page.getFormByName("config");
         form.getInputByName("_.decoratorId").setValue("this_is_a_profile");
         j.submit(form);
-        assertEquals("The decorator field was incorrect", "this_is_a_profile", pageDecoratorImpl.getDecoratorId());
+        assertEquals("this_is_a_profile", pageDecoratorImpl.getDecoratorId(), "The decorator field was incorrect");
     }
 
     private static class PageDecoratorImpl extends PageDecorator {

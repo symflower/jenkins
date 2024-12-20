@@ -15,10 +15,10 @@ import hudson.triggers.Trigger;
 import hudson.triggers.TriggerDescriptor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -31,12 +31,12 @@ public class TriggerTest {
     @Rule
     public LoggerRule l = new LoggerRule();
 
-    @Before
+    @BeforeEach
     public void quicker() {
         Trigger.CRON_THRESHOLD = 3;
     }
 
-    @After
+    @AfterEach
     public void def() {
         Trigger.CRON_THRESHOLD = 30;
     }

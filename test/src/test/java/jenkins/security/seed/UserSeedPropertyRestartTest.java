@@ -24,9 +24,9 @@
 
 package jenkins.security.seed;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import hudson.model.User;
 import java.net.URI;
@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;

@@ -8,13 +8,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import jenkins.security.SecurityListener;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 public class HudsonPrivateSecurityRealmSEC2566Test {
 
@@ -23,12 +23,12 @@ public class HudsonPrivateSecurityRealmSEC2566Test {
 
     private HudsonPrivateSecurityRealmTest.SpySecurityListenerImpl spySecurityListener;
 
-    @Before
+    @BeforeEach
     public void linkExtension() {
         spySecurityListener = ExtensionList.lookup(SecurityListener.class).get(HudsonPrivateSecurityRealmTest.SpySecurityListenerImpl.class);
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         Field field = HudsonPrivateSecurityRealm.class.getDeclaredField("ID_REGEX");
         field.setAccessible(true);
@@ -37,7 +37,7 @@ public class HudsonPrivateSecurityRealmSEC2566Test {
 
     @Test
     @Issue("SECURITY-2566")
-    @Ignore("too fragile to run")
+    @Disabled("too fragile to run")
     public void noTimingDifferenceForInternalSecurityRealm() throws Exception {
         final HudsonPrivateSecurityRealm realm = new HudsonPrivateSecurityRealm(false, false, null);
         j.jenkins.setSecurityRealm(realm);
@@ -85,6 +85,6 @@ public class HudsonPrivateSecurityRealmSEC2566Test {
         double incorrectAvg = Arrays.stream(incorrectUserTimings).sorted().skip(2).limit(16).average().orElse(0.0);
         double correctAvg = Arrays.stream(correctUserTimings).sorted().skip(2).limit(16).average().orElse(0.0);
         // expect roughly the same average times
-        Assert.assertEquals(correctAvg, incorrectAvg, correctAvg * 0.1);
+        Assertions.assertEquals(correctAvg, incorrectAvg, correctAvg * 0.1);
     }
 }

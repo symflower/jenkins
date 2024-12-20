@@ -24,8 +24,8 @@
 
 package hudson.util.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.Assume.assumeNoException;
 
 import hudson.FilePath;
@@ -46,9 +46,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 
@@ -129,7 +129,7 @@ public class TarArchiverTest {
         }
     }
 
-    @Ignore("TODO fails to add empty directories to archive")
+    @Disabled("TODO fails to add empty directories to archive")
     @Issue("JENKINS-73837")
     @Test
     public void emptyDirectory() throws Exception {

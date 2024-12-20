@@ -4,9 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.AdministrativeMonitor;
 import hudson.model.Item;
@@ -19,9 +19,9 @@ import org.htmlunit.ElementNotFoundException;
 import org.htmlunit.html.DomElement;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.xml.sax.SAXException;
@@ -34,7 +34,7 @@ public class TooManyJobsButNoViewTest {
     @Rule public JenkinsRule r = new JenkinsRule();
     private TooManyJobsButNoView mon;
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
         mon = AdministrativeMonitor.all().get(TooManyJobsButNoView.class);
     }
 
@@ -63,7 +63,7 @@ public class TooManyJobsButNoViewTest {
 
         // this should take us to the new view page
         URL url = r.submit(f, "yes").getUrl();
-        assertTrue(url.toExternalForm(), url.toExternalForm().endsWith("/newView"));
+        assertTrue(url.toExternalForm().endsWith("/newView"), url.toExternalForm());
 
         // since we didn't create a view, if we go back, we should see the warning again
         p = r.createWebClient().goTo("manage");

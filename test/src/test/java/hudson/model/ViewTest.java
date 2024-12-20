@@ -33,13 +33,13 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.cloudbees.hudson.plugins.folder.Folder;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -87,9 +87,9 @@ import org.htmlunit.javascript.host.svg.SVGElement;
 import org.htmlunit.util.NameValuePair;
 import org.jenkins.ui.icon.Icon;
 import org.jenkins.ui.icon.IconSet;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Email;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -172,9 +172,9 @@ public class ViewTest {
         wc.setThrowExceptionOnFailingStatusCode(false);
         // do it again and verify an error
         Page page = j.submit(form);
-        assertEquals("shouldn't be allowed to create two views of the same name.",
-                HttpURLConnection.HTTP_BAD_REQUEST,
-                page.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST,
+                page.getWebResponse().getStatusCode(),
+                "shouldn't be allowed to create two views of the same name.");
     }
 
     @Test public void privateView() throws Exception {
@@ -184,12 +184,12 @@ public class ViewTest {
         WebClient wc = j.createWebClient();
         HtmlPage userPage = wc.goTo("user/me");
         HtmlAnchor privateViewsLink = userPage.getAnchorByText("My Views");
-        assertNotNull("My Views link not available", privateViewsLink);
+        assertNotNull(privateViewsLink, "My Views link not available");
 
         HtmlPage privateViewsPage = privateViewsLink.click();
 
         Text viewLabel = privateViewsPage.getFirstByXPath("//div[@class='tabBar']//div[@class='tab active']/a/text()");
-        assertTrue("'All' view should be selected", viewLabel.getTextContent().contains(Hudson_ViewName()));
+        assertTrue(viewLabel.getTextContent().contains(Hudson_ViewName()), "'All' view should be selected");
 
         View listView = listView("listView");
 
@@ -248,12 +248,12 @@ public class ViewTest {
         form.getRadioButtonsByName("mode").get(0).setChecked(true);
 
         HtmlPage page = j.submit(form);
-        assertEquals("\"..\" should not be allowed.",
-                HttpURLConnection.HTTP_BAD_REQUEST,
-                page.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST,
+                page.getWebResponse().getStatusCode(),
+                "\"..\" should not be allowed.");
     }
 
-    @Ignore("verified manually in Winstone but org.mortbay.JettyResponse.sendRedirect (6.1.26) seems to mangle the location")
+    @Disabled("verified manually in Winstone but org.mortbay.JettyResponse.sendRedirect (6.1.26) seems to mangle the location")
     @Issue("JENKINS-18373")
     @Test public void unicodeName() throws Exception {
         HtmlForm form = j.createWebClient().goTo("newView").getFormByName("createItem");
@@ -272,7 +272,7 @@ public class ViewTest {
         view.description = "one";
         WebClient wc = j.createWebClient();
         String xml = wc.goToXml("view/v/config.xml").getWebResponse().getContentAsString();
-        assertTrue(xml, xml.contains("<description>one</description>"));
+        assertTrue(xml.contains("<description>one</description>"), xml);
         xml = xml.replace("<description>one</description>", "<description>two</description>");
         WebRequest req = new WebRequest(wc.createCrumbedUrl("view/v/config.xml"), HttpMethod.POST);
         req.setRequestBody(xml);
@@ -280,7 +280,7 @@ public class ViewTest {
         wc.getPage(req);
         assertEquals("two", view.getDescription());
         xml = new XmlFile(Jenkins.XSTREAM, new File(j.jenkins.getRootDir(), "config.xml")).asString();
-        assertTrue(xml, xml.contains("<description>two</description>"));
+        assertTrue(xml.contains("<description>two</description>"), xml);
     }
 
     @Issue("JENKINS-21017")
@@ -346,8 +346,8 @@ public class ViewTest {
     private void assertContainsItems(View view, Task... items) {
         for (Task job : items) {
             assertTrue(
-                    "Queued items for " + view.getDisplayName() + " should contain " + job.getDisplayName(),
-                    view.getQueueItems().contains(Queue.getInstance().getItem(job))
+                    view.getQueueItems().contains(Queue.getInstance().getItem(job)),
+                    "Queued items for " + view.getDisplayName() + " should contain " + job.getDisplayName()
             );
         }
     }
@@ -355,8 +355,8 @@ public class ViewTest {
     private void assertNotContainsItems(View view, Task... items) {
         for (Task job : items) {
             assertFalse(
-                    "Queued items for " + view.getDisplayName() + " should not contain " + job.getDisplayName(),
-                    view.getQueueItems().contains(Queue.getInstance().getItem(job))
+                    view.getQueueItems().contains(Queue.getInstance().getItem(job)),
+                    "Queued items for " + view.getDisplayName() + " should not contain " + job.getDisplayName()
             );
         }
     }
@@ -430,8 +430,8 @@ public class ViewTest {
     private void assertContainsNodes(View view, Node... slaves) {
         for (Node slave : slaves) {
             assertTrue(
-                    "Filtered executors for " + view.getDisplayName() + " should contain " + slave.getDisplayName(),
-                    view.getComputers().contains(slave.toComputer())
+                    view.getComputers().contains(slave.toComputer()),
+                    "Filtered executors for " + view.getDisplayName() + " should contain " + slave.getDisplayName()
             );
         }
     }
@@ -439,8 +439,8 @@ public class ViewTest {
     private void assertNotContainsNodes(View view, Node... slaves) {
         for (Node slave : slaves) {
             assertFalse(
-                    "Filtered executors for " + view.getDisplayName() + " should not contain " + slave.getDisplayName(),
-                    view.getComputers().contains(slave.toComputer())
+                    view.getComputers().contains(slave.toComputer()),
+                    "Filtered executors for " + view.getDisplayName() + " should not contain " + slave.getDisplayName()
             );
         }
     }
@@ -453,31 +453,31 @@ public class ViewTest {
         FreeStyleProject job3 = j.createFreeStyleProject("not-included");
         view.jobNames.add(job2.getDisplayName());
         view.jobNames.add(job1.getDisplayName());
-        assertEquals("View should return job " + job1.getDisplayName(), job1,  view.getItem("free"));
-        assertNotNull("View should return null.", view.getItem("not-included"));
+        assertEquals(job1, view.getItem("free"),  "View should return job " + job1.getDisplayName());
+        assertNotNull(view.getItem("not-included"), "View should return null.");
     }
 
     @Test
     public void testRename() throws Exception {
         ListView view = listView("foo");
         view.rename("renamed");
-        assertEquals("View should have name foo.", "renamed", view.getDisplayName());
+        assertEquals("renamed", view.getDisplayName(), "View should have name foo.");
         ListView view2 = listView("foo");
-        assertThrows("Attempt to rename job with a name used by another view with the same owner should throw exception", Descriptor.FormException.class, () -> view2.rename("renamed"));
-        assertEquals("View should not be renamed if required name has another view with the same owner", "foo", view2.getDisplayName());
+        assertThrows(Descriptor.FormException.class, () -> view2.rename("renamed"), "Attempt to rename job with a name used by another view with the same owner should throw exception");
+        assertEquals("foo", view2.getDisplayName(), "View should not be renamed if required name has another view with the same owner");
     }
 
     @Test
     public void testGetOwnerItemGroup() throws Exception {
         ListView view = listView("foo");
-        assertEquals("View should have owner jenkins.", j.jenkins.getItemGroup(), view.getOwner().getItemGroup());
+        assertEquals(j.jenkins.getItemGroup(), view.getOwner().getItemGroup(), "View should have owner jenkins.");
     }
 
     @Test
     public void testGetOwnerPrimaryView() throws Exception {
         ListView view = listView("foo");
         j.jenkins.setPrimaryView(view);
-        assertEquals("View should have primary view " + view.getDisplayName(), view, view.getOwner().getPrimaryView());
+        assertEquals(view, view.getOwner().getPrimaryView(), "View should have primary view " + view.getDisplayName());
     }
 
     @Test
@@ -491,7 +491,7 @@ public class ViewTest {
         if (j.jenkins.getServletContext().getAttribute("app") instanceof HudsonIsLoading) {
             Thread.sleep(500);
         }
-        assertTrue("View does not contains job free after load.", j.jenkins.getView(view.getDisplayName()).contains(j.jenkins.getItem(job.getName())));
+        assertTrue(j.jenkins.getView(view.getDisplayName()).contains(j.jenkins.getItem(job.getName())), "View does not contains job free after load.");
     }
 
     @Test
@@ -501,7 +501,7 @@ public class ViewTest {
         HtmlForm f = j.createWebClient().getPage(view, "configure").getFormByName("viewConfig");
         ((HtmlLabel) DomNodeUtil.selectSingleNode(f, ".//LABEL[text()='Test property']")).click();
         j.submit(f);
-        assertNotNull("View should contain ViewPropertyImpl property.", view.getProperties().get(PropertyImpl.class));
+        assertNotNull(view.getProperties().get(PropertyImpl.class), "View should contain ViewPropertyImpl property.");
     }
 
     private ListView listView(String name) throws IOException {
@@ -590,8 +590,8 @@ public class ViewTest {
             }
         });
         JenkinsRule.WebClient wc = j.createWebClient().withBasicCredentials("admin");
-        assertEquals("original ${rootURL}/checkJobName still supported", "<div/>", wc.goTo("checkJobName?value=stuff").getWebResponse().getContentAsString());
-        assertEquals("but now possible on a view in a folder", "<div/>", wc.goTo("job/d1/view/All/checkJobName?value=stuff").getWebResponse().getContentAsString());
+        assertEquals("<div/>", wc.goTo("checkJobName?value=stuff").getWebResponse().getContentAsString(), "original ${rootURL}/checkJobName still supported");
+        assertEquals("<div/>", wc.goTo("job/d1/view/All/checkJobName?value=stuff").getWebResponse().getContentAsString(), "but now possible on a view in a folder");
     }
 
     private void assertCheckJobName(ViewGroup context, String name, FormValidation.Kind expected) {
@@ -711,13 +711,13 @@ public class ViewTest {
         View view = j.getInstance().getView("nonexistent");
 
         // The view should still be nonexistent, as we gave it a user and not a view.
-        assertNull("Should not have created view.", view);
+        assertNull(view, "Should not have created view.");
 
         User.AllUsers.scanAll();
         boolean createUser = false;
         User badUser = User.getById("foo", createUser);
 
-        assertNull("Should not have created user.", badUser);
+        assertNull(badUser, "Should not have created user.");
     }
 
     @Test
@@ -755,13 +755,13 @@ public class ViewTest {
         View view = j.getInstance().getView("nonexistent");
 
         // The view should still be nonexistent, as we gave it a user and not a view.
-        assertNull("Should not have created view.", view);
+        assertNull(view, "Should not have created view.");
 
         User.AllUsers.scanAll();
         boolean createUser = false;
         User badUser = User.getById("foo", createUser);
 
-        assertNull("Should not have created user.", badUser);
+        assertNull(badUser, "Should not have created user.");
     }
 
     @Test
@@ -793,7 +793,7 @@ public class ViewTest {
         boolean createUser = false;
         User badUser = User.getById("foo", createUser);
 
-        assertNull("Should not have created user.", badUser);
+        assertNull(badUser, "Should not have created user.");
     }
 
     private static final String VALID_XML_BAD_FIELD_USER_XML =

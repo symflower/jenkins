@@ -24,14 +24,14 @@
 
 package hudson.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Mike Dillon, Alan Harder
@@ -50,9 +50,9 @@ public class CopyOnWriteMapTest {
         XStream2 xs = new XStream2();
 
         String out = xs.toXML(td);
-        assertEquals("empty maps", "<hudson.util.CopyOnWriteMapTest_-HashData>"
-                + "<map1/><map2/></hudson.util.CopyOnWriteMapTest_-HashData>",
-                out.replaceAll("\\s+", ""));
+        assertEquals("<hudson.util.CopyOnWriteMapTest_-HashData>"
+                + "<map1/><map2/></hudson.util.CopyOnWriteMapTest_-HashData>", out.replaceAll("\\s+", ""),
+                "empty maps");
         HashData td2 = (HashData) xs.fromXML(out);
         assertTrue(td2.map1.isEmpty());
         assertTrue(td2.map2.isEmpty());
@@ -60,11 +60,11 @@ public class CopyOnWriteMapTest {
         td.map1.put("foo1", "bar1");
         td.map2.put("foo2", "bar2");
         out = xs.toXML(td);
-        assertEquals("maps", "<hudson.util.CopyOnWriteMapTest_-HashData><map1>"
+        assertEquals("<hudson.util.CopyOnWriteMapTest_-HashData><map1>"
                 + "<entry><string>foo1</string><string>bar1</string></entry></map1>"
                 + "<map2><entry><string>foo2</string><string>bar2</string></entry>"
-                + "</map2></hudson.util.CopyOnWriteMapTest_-HashData>",
-                out.replaceAll("\\s+", ""));
+                + "</map2></hudson.util.CopyOnWriteMapTest_-HashData>", out.replaceAll("\\s+", ""),
+                "maps");
         td2 = (HashData) xs.fromXML(out);
         assertEquals("bar1", td2.map1.get("foo1"));
         assertEquals("bar2", td2.map2.get("foo2"));
@@ -94,10 +94,10 @@ public class CopyOnWriteMapTest {
         XStream2 xs = new XStream2();
 
         String out = xs.toXML(td);
-        assertEquals("empty maps", "<hudson.util.CopyOnWriteMapTest_-TreeData>"
+        assertEquals("<hudson.util.CopyOnWriteMapTest_-TreeData>"
                 + "<map1/><map2/>"
-                + "</hudson.util.CopyOnWriteMapTest_-TreeData>",
-                out.replaceAll("\\s+", ""));
+                + "</hudson.util.CopyOnWriteMapTest_-TreeData>", out.replaceAll("\\s+", ""),
+                "empty maps");
         TreeData td2 = (TreeData) xs.fromXML(out);
         assertTrue(td2.map1.isEmpty());
         assertTrue(td2.map2.isEmpty());
@@ -106,14 +106,14 @@ public class CopyOnWriteMapTest {
         td.map1.put("foo1", "bar1");
         td.map2.put("foo2", "bar2");
         out = xs.toXML(td);
-        assertEquals("maps", "<hudson.util.CopyOnWriteMapTest_-TreeData><map1>"
+        assertEquals("<hudson.util.CopyOnWriteMapTest_-TreeData><map1>"
                 + "<comparator class=\"java.lang.String$CaseInsensitiveComparator\"/>"
                 + "<entry><string>foo1</string><string>bar1</string></entry></map1>"
                 + "<map2><comparator class=\"java.lang.String$CaseInsensitiveComparator\""
                 + " reference=\"../../map1/comparator\"/>"
                 + "<entry><string>foo2</string><string>bar2</string></entry></map2>"
-                + "</hudson.util.CopyOnWriteMapTest_-TreeData>",
-                out.replaceAll(">\\s+<", "><"));
+                + "</hudson.util.CopyOnWriteMapTest_-TreeData>", out.replaceAll(">\\s+<", "><"),
+                "maps");
         td2 = (TreeData) xs.fromXML(out);
         assertEquals("bar1", td2.map1.get("foo1"));
         assertEquals("bar2", td2.map2.get("foo2"));

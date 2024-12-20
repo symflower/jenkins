@@ -28,12 +28,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -55,7 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.model.Jenkins;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 /**
@@ -74,7 +74,7 @@ public class XStream2Test {
         f.r1 = f.r2 = Result.FAILURE;
         String xml = Run.XSTREAM.toXML(f);
         // we should find two "FAILURE"s as they should be written out twice
-        assertEquals(xml, 3, xml.split("FAILURE").length);
+        assertEquals(3, xml.split("FAILURE").length, xml);
     }
 
     private static class Bar {
@@ -109,12 +109,12 @@ public class XStream2Test {
         String xml = xs.toXML(b);
         __Foo_Bar$Class b2 = (__Foo_Bar$Class) xs.fromXML(xml);
 
-        assertEquals(xml, b.under_1, b2.under_1);
-        assertEquals(xml, b.under__2, b2.under__2);
-        assertEquals(xml, b._leadUnder1, b2._leadUnder1);
-        assertEquals(xml, b.__leadUnder2, b2.__leadUnder2);
-        assertEquals(xml, b.$dollar, b2.$dollar);
-        assertEquals(xml, b.dollar$2, b2.dollar$2);
+        assertEquals(b.under_1, b2.under_1, xml);
+        assertEquals(b.under__2, b2.under__2, xml);
+        assertEquals(b._leadUnder1, b2._leadUnder1, xml);
+        assertEquals(b.__leadUnder2, b2.__leadUnder2, xml);
+        assertEquals(b.$dollar, b2.$dollar, xml);
+        assertEquals(b.dollar$2, b2.dollar$2, xml);
     }
 
     private static class Baz {
@@ -191,8 +191,8 @@ public class XStream2Test {
         a.m = m;
         String xml = xs.toXML(a);
         //System.out.println(xml);
-        assertFalse("shouldn't contain the class name", xml.contains("google"));
-        assertFalse("shouldn't contain the class name", xml.contains("class"));
+        assertFalse(xml.contains("google"), "shouldn't contain the class name");
+        assertFalse(xml.contains("class"), "shouldn't contain the class name");
         a = (ImmutableMapHolder) xs.fromXML(xml);
 
         assertSame(m.getClass(), a.m.getClass());    // should get back the exact same type, not just a random map
@@ -204,7 +204,7 @@ public class XStream2Test {
         a.m = m;
         String xml = xs.toXML(a);
         //System.out.println(xml);
-        assertTrue("XML should mention the class name", xml.contains('\"' + ImmutableMap.class.getName() + '\"'));
+        assertTrue(xml.contains('\"' + ImmutableMap.class.getName() + '\"'), "XML should mention the class name");
         a = (MapHolder) xs.fromXML(xml);
 
         assertSame(m.getClass(), a.m.getClass());    // should get back the exact same type, not just a random map
@@ -240,8 +240,8 @@ public class XStream2Test {
         a.l = l;
         String xml = xs.toXML(a);
         //System.out.println(xml);
-        assertFalse("shouldn't contain the class name", xml.contains("google"));
-        assertFalse("shouldn't contain the class name", xml.contains("class"));
+        assertFalse(xml.contains("google"), "shouldn't contain the class name");
+        assertFalse(xml.contains("class"), "shouldn't contain the class name");
         a = (ImmutableListHolder) xs.fromXML(xml);
 
         assertSame(l.getClass(), a.l.getClass());    // should get back the exact same type, not just a random list
@@ -253,7 +253,7 @@ public class XStream2Test {
         a.l = l;
         String xml = xs.toXML(a);
         //System.out.println(xml);
-        assertTrue("XML should mention the class name", xml.contains('\"' + ImmutableList.class.getName() + '\"'));
+        assertTrue(xml.contains('\"' + ImmutableList.class.getName() + '\"'), "XML should mention the class name");
         a = (ListHolder) xs.fromXML(xml);
 
         assertSame(l.getClass(), a.l.getClass());    // should get back the exact same type, not just a random list
@@ -277,7 +277,7 @@ public class XStream2Test {
         assertEquals(2, pt.y);
         String xml = xs.toXML(pt);
         //System.out.println(xml);
-        assertFalse("Shouldn't use the alias when writing back", xml.contains("legacy"));
+        assertFalse(xml.contains("legacy"), "Shouldn't use the alias when writing back");
     }
 
     public static class Point {
@@ -298,7 +298,7 @@ public class XStream2Test {
                                         + Hacked.class.getName()
                                         + "'/><action>oops</action></handler></dynamic-proxy>"))
                         .run());
-        assertFalse("should never have run that", Hacked.tripped);
+        assertFalse(Hacked.tripped, "should never have run that");
     }
 
     public static final class Hacked {
@@ -545,9 +545,9 @@ public class XStream2Test {
 
     @Test
     public void annotations() {
-        assertEquals("not registered, so sorry", "<hudson.util.XStream2Test_-C1/>", Jenkins.XSTREAM2.toXML(new C1()));
-        assertEquals("manually registered", "<C-2/>", Jenkins.XSTREAM2.toXML(new C2()));
-        assertEquals("manually processed", "<C-3/>", Jenkins.XSTREAM2.toXML(new C3()));
+        assertEquals("<hudson.util.XStream2Test_-C1/>", Jenkins.XSTREAM2.toXML(new C1()), "not registered, so sorry");
+        assertEquals("<C-2/>", Jenkins.XSTREAM2.toXML(new C2()), "manually registered");
+        assertEquals("<C-3/>", Jenkins.XSTREAM2.toXML(new C3()), "manually processed");
         assertThrows(CannotResolveClassException.class, () -> Jenkins.XSTREAM2.fromXML("<C-4/>"));
 
         Jenkins.XSTREAM2.processAnnotations(C5.class);

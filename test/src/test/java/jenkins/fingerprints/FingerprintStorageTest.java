@@ -36,7 +36,7 @@ import hudson.model.Fingerprint;
 import hudson.model.FingerprintCleanupThreadTest;
 import java.io.IOException;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class FingerprintStorageTest {

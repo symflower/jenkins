@@ -34,9 +34,9 @@ import static org.hamcrest.Matchers.equalTo;
 import hudson.model.FreeStyleProject;
 import hudson.model.labels.LabelAtom;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -49,7 +49,7 @@ public class ClearQueueCommandTest {
     @Rule
     public final JenkinsRule j = new JenkinsRule();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         command = new CLICommandInvoker(j, "clear-queue");
     }

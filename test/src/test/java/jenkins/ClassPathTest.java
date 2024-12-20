@@ -34,7 +34,7 @@ import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ErrorCollector;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.WarExploder;

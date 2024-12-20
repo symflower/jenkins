@@ -38,7 +38,7 @@ import java.util.Map;
 import jenkins.model.IdStrategy;
 import org.apache.commons.io.FileUtils;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TestName;
 
 public class UserIdMigratorTest {

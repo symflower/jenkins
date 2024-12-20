@@ -24,12 +24,12 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Random;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Stephen Connolly
@@ -46,7 +46,7 @@ public class ResourceListTest {
     private ResourceList y;
     private ResourceList z;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         entropy = new Random(0);
         a = new Resource("A" + entropy.nextLong());
@@ -78,12 +78,12 @@ public class ResourceListTest {
         z.r(a);
         ResourceList w = new ResourceList();
         w.w(a);
-        assertFalse("Empty vs Empty", x.isCollidingWith(y));
-        assertFalse("Empty vs Empty", y.isCollidingWith(x));
-        assertFalse("Empty vs Read", x.isCollidingWith(z));
-        assertFalse("Read vs Empty", z.isCollidingWith(x));
-        assertFalse("Empty vs Write", x.isCollidingWith(w));
-        assertFalse("Write vs Empty", w.isCollidingWith(x));
+        assertFalse(x.isCollidingWith(y), "Empty vs Empty");
+        assertFalse(y.isCollidingWith(x), "Empty vs Empty");
+        assertFalse(x.isCollidingWith(z), "Empty vs Read");
+        assertFalse(z.isCollidingWith(x), "Read vs Empty");
+        assertFalse(x.isCollidingWith(w), "Empty vs Write");
+        assertFalse(w.isCollidingWith(x), "Write vs Empty");
     }
 
     @Test
@@ -92,12 +92,12 @@ public class ResourceListTest {
         y.r(b);
         z.r(a);
 
-        assertFalse("Read-Read", x.isCollidingWith(y));
-        assertFalse("Read-Read", y.isCollidingWith(x));
-        assertFalse("Read-Read", x.isCollidingWith(z));
-        assertFalse("Read-Read", z.isCollidingWith(x));
-        assertFalse("Read-Read", z.isCollidingWith(y));
-        assertFalse("Read-Read", y.isCollidingWith(z));
+        assertFalse(x.isCollidingWith(y), "Read-Read");
+        assertFalse(y.isCollidingWith(x), "Read-Read");
+        assertFalse(x.isCollidingWith(z), "Read-Read");
+        assertFalse(z.isCollidingWith(x), "Read-Read");
+        assertFalse(z.isCollidingWith(y), "Read-Read");
+        assertFalse(y.isCollidingWith(z), "Read-Read");
     }
 
     @Test
@@ -106,12 +106,12 @@ public class ResourceListTest {
         y.r(b);
         z.w(a);
 
-        assertFalse("Read-Read different resources", x.isCollidingWith(y));
-        assertFalse("Read-Read different resources", y.isCollidingWith(x));
-        assertTrue("Read-Write same resource", x.isCollidingWith(z));
-        assertTrue("Read-Write same resource", z.isCollidingWith(x));
-        assertFalse("Read-Write different resources", z.isCollidingWith(y));
-        assertFalse("Read-Write different resources", y.isCollidingWith(z));
+        assertFalse(x.isCollidingWith(y), "Read-Read different resources");
+        assertFalse(y.isCollidingWith(x), "Read-Read different resources");
+        assertTrue(x.isCollidingWith(z), "Read-Write same resource");
+        assertTrue(z.isCollidingWith(x), "Read-Write same resource");
+        assertFalse(z.isCollidingWith(y), "Read-Write different resources");
+        assertFalse(y.isCollidingWith(z), "Read-Write different resources");
     }
 
     @Test
@@ -144,12 +144,12 @@ public class ResourceListTest {
         y.r(a3);
         y.r(a4);
         z.r(a);
-        assertFalse("Reads should never conflict", x.isCollidingWith(y));
-        assertFalse("Reads should never conflict", y.isCollidingWith(x));
-        assertFalse("Reads should never conflict", x.isCollidingWith(z));
-        assertFalse("Reads should never conflict", z.isCollidingWith(x));
-        assertFalse("Reads should never conflict", z.isCollidingWith(y));
-        assertFalse("Reads should never conflict", y.isCollidingWith(z));
+        assertFalse(x.isCollidingWith(y), "Reads should never conflict");
+        assertFalse(y.isCollidingWith(x), "Reads should never conflict");
+        assertFalse(x.isCollidingWith(z), "Reads should never conflict");
+        assertFalse(z.isCollidingWith(x), "Reads should never conflict");
+        assertFalse(z.isCollidingWith(y), "Reads should never conflict");
+        assertFalse(y.isCollidingWith(z), "Reads should never conflict");
     }
 
     @Test
@@ -159,12 +159,12 @@ public class ResourceListTest {
         y.w(a3);
         y.w(a4);
         z.w(a);
-        assertFalse("Sibling resources should not conflict", x.isCollidingWith(y));
-        assertFalse("Sibling resources should not conflict", y.isCollidingWith(x));
-        assertTrue("Taking parent resource assumes all children are taken too", x.isCollidingWith(z));
-        assertTrue("Taking parent resource assumes all children are taken too", z.isCollidingWith(x));
-        assertTrue("Taking parent resource assumes all children are taken too", z.isCollidingWith(y));
-        assertTrue("Taking parent resource assumes all children are taken too", y.isCollidingWith(z));
+        assertFalse(x.isCollidingWith(y), "Sibling resources should not conflict");
+        assertFalse(y.isCollidingWith(x), "Sibling resources should not conflict");
+        assertTrue(x.isCollidingWith(z), "Taking parent resource assumes all children are taken too");
+        assertTrue(z.isCollidingWith(x), "Taking parent resource assumes all children are taken too");
+        assertTrue(z.isCollidingWith(y), "Taking parent resource assumes all children are taken too");
+        assertTrue(y.isCollidingWith(z), "Taking parent resource assumes all children are taken too");
     }
 
     @Test
@@ -174,12 +174,12 @@ public class ResourceListTest {
         y.r(c3);
         y.r(c4);
         z.r(c);
-        assertFalse("Reads should never conflict", x.isCollidingWith(y));
-        assertFalse("Reads should never conflict", y.isCollidingWith(x));
-        assertFalse("Reads should never conflict", x.isCollidingWith(z));
-        assertFalse("Reads should never conflict", z.isCollidingWith(x));
-        assertFalse("Reads should never conflict", z.isCollidingWith(y));
-        assertFalse("Reads should never conflict", y.isCollidingWith(z));
+        assertFalse(x.isCollidingWith(y), "Reads should never conflict");
+        assertFalse(y.isCollidingWith(x), "Reads should never conflict");
+        assertFalse(x.isCollidingWith(z), "Reads should never conflict");
+        assertFalse(z.isCollidingWith(x), "Reads should never conflict");
+        assertFalse(z.isCollidingWith(y), "Reads should never conflict");
+        assertFalse(y.isCollidingWith(z), "Reads should never conflict");
     }
 
     @Test
@@ -189,28 +189,28 @@ public class ResourceListTest {
         y.w(c3);
         y.w(c4);
         z.w(c);
-        assertFalse("Sibling resources should not conflict", x.isCollidingWith(y));
-        assertFalse("Sibling resources should not conflict", y.isCollidingWith(x));
-        assertFalse("Using less than the limit of child resources should not be a problem", x.isCollidingWith(z));
-        assertFalse("Using less than the limit of child resources should not be a problem", z.isCollidingWith(x));
-        assertFalse("Using less than the limit of child resources should not be a problem", z.isCollidingWith(y));
-        assertFalse("Using less than the limit of child resources should not be a problem", y.isCollidingWith(z));
+        assertFalse(x.isCollidingWith(y), "Sibling resources should not conflict");
+        assertFalse(y.isCollidingWith(x), "Sibling resources should not conflict");
+        assertFalse(x.isCollidingWith(z), "Using less than the limit of child resources should not be a problem");
+        assertFalse(z.isCollidingWith(x), "Using less than the limit of child resources should not be a problem");
+        assertFalse(z.isCollidingWith(y), "Using less than the limit of child resources should not be a problem");
+        assertFalse(y.isCollidingWith(z), "Using less than the limit of child resources should not be a problem");
 
         ResourceList w = ResourceList.union(x, y);
 
-        assertFalse("Using less than the limit of child resources should not be a problem", w.isCollidingWith(z));
-        assertFalse("Using less than the limit of child resources should not be a problem", z.isCollidingWith(w));
+        assertFalse(w.isCollidingWith(z), "Using less than the limit of child resources should not be a problem");
+        assertFalse(z.isCollidingWith(w), "Using less than the limit of child resources should not be a problem");
 
-        assertFalse("Total count = 2, limit is 3", w.isCollidingWith(x));
-        assertFalse("Total count = 2, limit is 3", x.isCollidingWith(w));
+        assertFalse(w.isCollidingWith(x), "Total count = 2, limit is 3");
+        assertFalse(x.isCollidingWith(w), "Total count = 2, limit is 3");
 
         ResourceList v = ResourceList.union(x, x);  // write count is two
-        assertFalse("Total count = 3, limit is 3", v.isCollidingWith(x));
-        assertFalse("Total count = 3, limit is 3", x.isCollidingWith(v));
+        assertFalse(v.isCollidingWith(x), "Total count = 3, limit is 3");
+        assertFalse(x.isCollidingWith(v), "Total count = 3, limit is 3");
 
         v = ResourceList.union(v, x);  // write count is three
-        assertTrue("Total count = 4, limit is 3", v.isCollidingWith(x));
-        assertTrue("Total count = 4, limit is 3", x.isCollidingWith(v));
+        assertTrue(v.isCollidingWith(x), "Total count = 4, limit is 3");
+        assertTrue(x.isCollidingWith(v), "Total count = 4, limit is 3");
     }
 
     @Test
@@ -221,13 +221,13 @@ public class ResourceListTest {
 
         for (int i = 0; i < fWriteCount; i++) {
             x.w(e);
-            assertTrue("Total = W" + (i + 1) + ", Limit = W1", x.isCollidingWith(y));
-            assertTrue("Total = W" + (i + 1) + ", Limit = W1", y.isCollidingWith(x));
+            assertTrue(x.isCollidingWith(y), "Total = W" + (i + 1) + ", Limit = W1");
+            assertTrue(y.isCollidingWith(x), "Total = W" + (i + 1) + ", Limit = W1");
         }
         int j = entropy.nextInt(50) + 3;
         for (int i = 1; i < j; i++) {
-            assertTrue("Total = W" + (i + fWriteCount) + ", Limit = W1", x.isCollidingWith(y));
-            assertTrue("Total = W" + (i + fWriteCount) + ", Limit = W1", y.isCollidingWith(x));
+            assertTrue(x.isCollidingWith(y), "Total = W" + (i + fWriteCount) + ", Limit = W1");
+            assertTrue(y.isCollidingWith(x), "Total = W" + (i + fWriteCount) + ", Limit = W1");
             x.w(e);
         }
     }
@@ -236,14 +236,14 @@ public class ResourceListTest {
     public void multiWriteN() {
         y.w(f);
         for (int i = 0; i < f.numConcurrentWrite; i++) {
-            assertFalse("Total = W" + i + ", Limit = W" + f.numConcurrentWrite, x.isCollidingWith(y));
-            assertFalse("Total = W" + i + ", Limit = W" + f.numConcurrentWrite, y.isCollidingWith(x));
+            assertFalse(x.isCollidingWith(y), "Total = W" + i + ", Limit = W" + f.numConcurrentWrite);
+            assertFalse(y.isCollidingWith(x), "Total = W" + i + ", Limit = W" + f.numConcurrentWrite);
             x.w(f);
         }
         int j = entropy.nextInt(50) + 3;
         for (int i = 1; i < j; i++) {
-            assertTrue("Total = W" + (fWriteCount + i) + ", Limit = W" + fWriteCount, x.isCollidingWith(y));
-            assertTrue("Total = W" + (fWriteCount + i) + ", Limit = W" + fWriteCount, y.isCollidingWith(x));
+            assertTrue(x.isCollidingWith(y), "Total = W" + (fWriteCount + i) + ", Limit = W" + fWriteCount);
+            assertTrue(y.isCollidingWith(x), "Total = W" + (fWriteCount + i) + ", Limit = W" + fWriteCount);
             x.w(f);
         }
     }
@@ -252,14 +252,14 @@ public class ResourceListTest {
     public void multiRead1() {
         y.r(e);
         for (int i = 0; i < fWriteCount; i++) {
-            assertFalse("Total = R" + (i + 1) + ", Limit = W1", x.isCollidingWith(y));
-            assertFalse("Total = R" + (i + 1) + ", Limit = W1", y.isCollidingWith(x));
+            assertFalse(x.isCollidingWith(y), "Total = R" + (i + 1) + ", Limit = W1");
+            assertFalse(y.isCollidingWith(x), "Total = R" + (i + 1) + ", Limit = W1");
             x.r(e);
         }
         int j = entropy.nextInt(50) + 3;
         for (int i = 1; i < j; i++) {
-            assertFalse("Total = R" + (i + fWriteCount) + ", Limit = W1", x.isCollidingWith(y));
-            assertFalse("Total = R" + (i + fWriteCount) + ", Limit = W1", y.isCollidingWith(x));
+            assertFalse(x.isCollidingWith(y), "Total = R" + (i + fWriteCount) + ", Limit = W1");
+            assertFalse(y.isCollidingWith(x), "Total = R" + (i + fWriteCount) + ", Limit = W1");
             x.r(e);
         }
     }
@@ -268,14 +268,14 @@ public class ResourceListTest {
     public void multiReadN() {
         y.r(f);
         for (int i = 0; i < fWriteCount; i++) {
-            assertFalse("Total = R" + (i + 1) + ", Limit = W" + fWriteCount, x.isCollidingWith(y));
-            assertFalse("Total = R" + (i + 1) + ", Limit = W" + fWriteCount, y.isCollidingWith(x));
+            assertFalse(x.isCollidingWith(y), "Total = R" + (i + 1) + ", Limit = W" + fWriteCount);
+            assertFalse(y.isCollidingWith(x), "Total = R" + (i + 1) + ", Limit = W" + fWriteCount);
             x.r(f);
         }
         int j = entropy.nextInt(50) + 3;
         for (int i = 1; i < j; i++) {
-            assertFalse("Total = R" + (fWriteCount + i) + ", Limit = W" + fWriteCount, x.isCollidingWith(y));
-            assertFalse("Total = R" + (fWriteCount + i) + ", Limit = W" + fWriteCount, y.isCollidingWith(x));
+            assertFalse(x.isCollidingWith(y), "Total = R" + (fWriteCount + i) + ", Limit = W" + fWriteCount);
+            assertFalse(y.isCollidingWith(x), "Total = R" + (fWriteCount + i) + ", Limit = W" + fWriteCount);
             x.r(f);
         }
     }

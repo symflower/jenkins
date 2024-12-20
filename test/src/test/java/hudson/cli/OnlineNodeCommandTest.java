@@ -30,8 +30,8 @@ import static hudson.cli.CLICommandInvoker.Matcher.succeededSilently;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
@@ -45,10 +45,10 @@ import hudson.slaves.DumbSlave;
 import hudson.util.OneShotEvent;
 import java.io.IOException;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestBuilder;
@@ -65,7 +65,7 @@ public class OnlineNodeCommandTest {
 
     @Rule public final JenkinsRule j = new JenkinsRule();
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
         command = new CLICommandInvoker(j, "online-node");
     }
 

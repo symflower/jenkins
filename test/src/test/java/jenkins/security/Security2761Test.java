@@ -3,7 +3,7 @@ package jenkins.security;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import hudson.model.InvisibleAction;
 import hudson.model.UnprotectedRootAction;
@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -35,7 +35,7 @@ public class Security2761Test {
 
         assertThat(responseContent, not(containsString("<img src=x")));
         assertThat(responseContent, containsString("<span class=\"jenkins-visually-hidden\">&lt;img src=x"));
-        assertFalse("no alert expected", alerted.get());
+        assertFalse(alerted.get(), "no alert expected");
     }
 
     @TestExtension

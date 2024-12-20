@@ -35,11 +35,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assume.assumeThat;
 
 import hudson.ExtensionList;
@@ -65,8 +65,8 @@ import org.htmlunit.WebRequest;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.xml.XmlPage;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
@@ -77,7 +77,7 @@ import org.jvnet.hudson.test.MockFolder;
 import org.jvnet.hudson.test.SmokeTest;
 import org.jvnet.hudson.test.recipes.LocalData;
 
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class ComputerTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
@@ -92,10 +92,10 @@ public class ComputerTest {
 
         Jenkins.get().removeNode(delete);
 
-        assertFalse("Slave log should be deleted", logFile.exists());
-        assertFalse("Slave log directory should be deleted", logFile.getParentFile().exists());
+        assertFalse(logFile.exists(), "Slave log should be deleted");
+        assertFalse(logFile.getParentFile().exists(), "Slave log directory should be deleted");
 
-        assertTrue("Slave log should be kept", keep.toComputer().getLogFile().exists());
+        assertTrue(keep.toComputer().getLogFile().exists(), "Slave log should be kept");
     }
 
     /**
@@ -115,7 +115,7 @@ public class ComputerTest {
         form.getInputByName("_.name").setValue("nodeA");
 
         Page page = j.submit(form);
-        assertEquals(NOTE, HttpURLConnection.HTTP_BAD_REQUEST, page.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, page.getWebResponse().getStatusCode(), NOTE);
         assertThat(NOTE, page.getWebResponse().getContentAsString(),
                 containsString("Agent called ‘nodeA’ already exists"));
     }
@@ -241,7 +241,7 @@ public class ComputerTest {
         boolean createUser = false;
         User badUser = User.getById("foo", createUser);
 
-        assertNull("Should not have created user.", badUser);
+        assertNull(badUser, "Should not have created user.");
     }
 
     private static final String VALID_XML_BAD_FIELD_USER_XML =

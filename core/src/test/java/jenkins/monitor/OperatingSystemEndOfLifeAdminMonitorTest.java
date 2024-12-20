@@ -28,10 +28,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ import java.util.stream.Stream;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -129,7 +129,7 @@ public class OperatingSystemEndOfLifeAdminMonitorTest {
     @MethodSource
     public void testReadDocumentationUrls(String fileName, String pattern, String component) throws Exception {
         URL fileUrl = this.getClass().getResource(fileName);
-        assertTrue("Resource file '" + fileName + "' not found", fileUrl != null);
+        assertTrue(fileUrl != null, "Resource file '" + fileName + "' not found");
         File releaseFile = new File(fileUrl.toURI());
         assertThat(monitor.readDocumentationUrl(releaseFile, pattern), is(docsUrl(component)));
     }
@@ -160,7 +160,7 @@ public class OperatingSystemEndOfLifeAdminMonitorTest {
     @MethodSource
     public void testReadOperatingSystemNames(String fileName, String pattern, String job) throws Exception {
         URL fileUrl = this.getClass().getResource(fileName);
-        assertTrue("Resource file '" + fileName + "' not found", fileUrl != null);
+        assertTrue(fileUrl != null, "Resource file '" + fileName + "' not found");
         File releaseFile = new File(fileUrl.toURI());
         assertThat(monitor.readOperatingSystemName(releaseFile, pattern), is(job));
     }

@@ -30,9 +30,9 @@ import static org.hamcrest.Matchers.is;
 import hudson.model.InvisibleAction;
 import hudson.model.UnprotectedRootAction;
 import java.net.URI;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.HttpResponse;
@@ -43,7 +43,7 @@ public final class ProxyConfigurationTest {
     @Rule
     public JenkinsRule r = new JenkinsRule();
 
-    @Ignore("prone to timing out on CI")
+    @Disabled("prone to timing out on CI")
     @Test
     public void httpClientExecutor() throws Exception {
         for (int i = 0; i < 50_000; i++) {

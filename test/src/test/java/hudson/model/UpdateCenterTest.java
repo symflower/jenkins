@@ -27,7 +27,7 @@ package hudson.model;
 import static java.util.Objects.requireNonNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assume.assumeNoException;
 
 import java.io.ByteArrayInputStream;
@@ -40,7 +40,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import net.sf.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Quick test for {@link UpdateCenter}.

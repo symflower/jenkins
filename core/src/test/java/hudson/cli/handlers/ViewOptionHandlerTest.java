@@ -24,9 +24,9 @@
 
 package hudson.cli.handlers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -40,9 +40,9 @@ import hudson.model.ViewGroup;
 import hudson.security.ACL;
 import hudson.security.Permission;
 import jenkins.model.Jenkins;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.spi.Parameters;
 import org.kohsuke.args4j.spi.Setter;
@@ -65,12 +65,12 @@ public class ViewOptionHandlerTest {
 
     private AutoCloseable mocks;
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         mocks.close();
     }
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
 
         mocks = MockitoAnnotations.openMocks(this);
 
@@ -209,8 +209,8 @@ public class ViewOptionHandlerTest {
         Jenkins jenkins = mock(Jenkins.class);
         try (MockedStatic<Jenkins> mocked = mockStatic(Jenkins.class)) {
             mockJenkins(mocked, jenkins);
-            final IllegalArgumentException e = assertThrows("No exception thrown. Expected IllegalArgumentException",
-                    IllegalArgumentException.class, () -> assertNull(handler.getView(" ")));
+            final IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                    () -> assertNull(handler.getView(" ")), "No exception thrown. Expected IllegalArgumentException");
             assertEquals("No view named   inside view Jenkins", e.getMessage());
             verifyNoInteractions(setter);
         }

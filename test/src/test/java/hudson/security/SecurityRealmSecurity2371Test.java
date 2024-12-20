@@ -24,20 +24,20 @@
 
 package hudson.security;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
 import jenkins.model.Jenkins;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.util.Cookie;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Split from {@link SecurityRealmTest} because this is parameterized.
@@ -72,7 +72,7 @@ public class SecurityRealmSecurity2371Test {
             j.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy().grant(Jenkins.READ).everywhere().toEveryone().grant(Jenkins.ADMINISTER).everywhere().to(USERNAME));
             final JenkinsRule.WebClient webClient = j.createWebClient();
             webClient.goTo("");
-            assertThrows("anonymous session should not be able to go to /manage", FailingHttpStatusCodeException.class, () -> webClient.goTo("manage"));
+            assertThrows(FailingHttpStatusCodeException.class, () -> webClient.goTo("manage"), "anonymous session should not be able to go to /manage");
             final Cookie anonymousCookie = webClient.getCookieManager().getCookie(SESSION_COOKIE_NAME); // dynamic cookie names are only set when run through Winstone
             webClient.login(USERNAME);
             webClient.goTo("");
@@ -80,12 +80,12 @@ public class SecurityRealmSecurity2371Test {
 
             // Confirm the session cookie changed
             // We cannot just call #assertNotEquals(Cookie, Cookie) because it doesn't actually look at #getValue()
-            Assert.assertNotEquals(anonymousCookie.getValue(), aliceCookie.getValue());
+            Assertions.assertNotEquals(anonymousCookie.getValue(), aliceCookie.getValue());
 
             // Now ensure the old session was actually invalidated / is not associated with the new auth
             webClient.getCookieManager().clearCookies();
             webClient.getCookieManager().addCookie(anonymousCookie);
-            assertThrows("anonymous session should not be able to go to /manage", FailingHttpStatusCodeException.class, () -> webClient.goTo("manage"));
+            assertThrows(FailingHttpStatusCodeException.class, () -> webClient.goTo("manage"), "anonymous session should not be able to go to /manage");
         } finally {
             System.clearProperty(SecurityRealm.class.getName() + ".sessionFixationProtectionMode");
         }
@@ -109,7 +109,7 @@ public class SecurityRealmSecurity2371Test {
             final Cookie aliceCookie = webClient.getCookieManager().getCookie(SESSION_COOKIE_NAME);
 
             // Confirm the session cookie did not change
-            Assert.assertEquals(anonymousCookie.getValue(), aliceCookie.getValue());
+            Assertions.assertEquals(anonymousCookie.getValue(), aliceCookie.getValue());
         } finally {
             System.clearProperty(SecurityRealm.class.getName() + ".sessionFixationProtectionMode");
         }

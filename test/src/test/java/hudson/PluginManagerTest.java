@@ -32,13 +32,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.PluginManager.UberClassLoader;
 import hudson.model.DownloadService;
@@ -96,9 +96,8 @@ import org.htmlunit.Page;
 import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.FlagRule;
 import org.jvnet.hudson.test.Issue;
@@ -110,6 +109,7 @@ import org.jvnet.hudson.test.recipes.WithPlugin;
 import org.jvnet.hudson.test.recipes.WithPluginManager;
 import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.StaplerResponse2;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -271,7 +271,7 @@ public class PluginManagerTest {
     }
 
     @Test public void prevalidateConfig() throws Exception {
-        assumeFalse("TODO: Implement this test on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "TODO: Implement this test on Windows");
         PersistedList<UpdateSite> sites = r.jenkins.getUpdateCenter().getSites();
         sites.clear();
         URL url = PluginManagerTest.class.getResource("/plugins/htmlpublisher-update-center.json");
@@ -483,7 +483,7 @@ public class PluginManagerTest {
         assertTrue(timestamp.isFile());
         long lastMod = timestamp.lastModified();
         assertThrows(RestartRequiredException.class, () -> r.jenkins.getPluginManager().dynamicLoad(jpi));
-        assertEquals("should not have tried to delete & unpack", lastMod, timestamp.lastModified());
+        assertEquals(lastMod, timestamp.lastModified(), "should not have tried to delete & unpack");
     }
 
     @WithPlugin("htmlpublisher.jpi")
@@ -547,7 +547,7 @@ public class PluginManagerTest {
     }
 
     @Test public void uploadDependencyResolution() throws Exception {
-        assumeFalse("TODO: Implement this test for Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "TODO: Implement this test for Windows");
         PersistedList<UpdateSite> sites = r.jenkins.getUpdateCenter().getSites();
         sites.clear();
         URL url = PluginManagerTest.class.getResource("/plugins/upload-test-update-center.json");
@@ -643,15 +643,15 @@ public class PluginManagerTest {
     @WithPlugin("legacy.hpi")
     public void doNotThrowWithUnknownPlugins() throws Exception {
         final UpdateCenter uc = Jenkins.get().getUpdateCenter();
-        Assert.assertNull("This test requires the plugin with ID 'legacy' to not exist in update sites", uc.getPlugin("legacy"));
+        Assertions.assertNull(uc.getPlugin("legacy"), "This test requires the plugin with ID 'legacy' to not exist in update sites");
 
         // ensure data is loaded - probably unnecessary, but closer to reality
-        Assert.assertSame(FormValidation.Kind.OK, uc.getSite("default").updateDirectlyNow().kind);
+        Assertions.assertSame(FormValidation.Kind.OK, uc.getSite("default").updateDirectlyNow().kind);
     }
 
     @Test @Issue("JENKINS-64840")
     public void searchMultipleUpdateSites() throws Exception {
-        assumeFalse("TODO: Implement this test for Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "TODO: Implement this test for Windows");
         PersistedList<UpdateSite> sites = r.jenkins.getUpdateCenter().getSites();
         sites.clear();
         URL url = PluginManagerTest.class.getResource("/plugins/search-test-update-center1.json");
@@ -673,21 +673,21 @@ public class PluginManagerTest {
         JSONObject json = response.getJSONObject();
         assertTrue(json.has("data"));
         JSONArray data = json.getJSONArray("data");
-        assertEquals("Should be one search hit for dummy", 1, data.size());
+        assertEquals(1, data.size(), "Should be one search hit for dummy");
 
         //token-macro plugin is found in the first site (didn't work before the fix)
         response = r.getJSON("pluginManager/pluginsSearch?query=token&limit=5");
         json = response.getJSONObject();
         assertTrue(json.has("data"));
         data = json.getJSONArray("data");
-        assertEquals("Should be one search hit for token", 1, data.size());
+        assertEquals(1, data.size(), "Should be one search hit for token");
 
         //hello-world plugin is found in the first site and hello-huston in the second (didn't work before the fix)
         response = r.getJSON("pluginManager/pluginsSearch?query=hello&limit=5");
         json = response.getJSONObject();
         assertTrue(json.has("data"));
         data = json.getJSONArray("data");
-        assertEquals("Should be two search hits for hello", 2, data.size());
+        assertEquals(2, data.size(), "Should be two search hits for hello");
     }
 
     @Issue("JENKINS-70599")
@@ -719,9 +719,9 @@ public class PluginManagerTest {
                         .connectTimeout(Duration.ofSeconds(2))
                         .build();
         HttpResponse<String> responseGet = clientGet.send(httpGet, HttpResponse.BodyHandlers.ofString());
-        assertEquals("Bad response for crumb issuer", 200, responseGet.statusCode());
+        assertEquals(200, responseGet.statusCode(), "Bad response for crumb issuer");
         String body = responseGet.body();
-        assertTrue("crumbRequestField not in response", body.contains("crumbRequestField"));
+        assertTrue(body.contains("crumbRequestField"), "crumbRequestField not in response");
         org.json.JSONObject jsonObject = new org.json.JSONObject(body);
         String crumb = (String) jsonObject.get("crumb");
         String crumbRequestField = (String) jsonObject.get("crumbRequestField");
@@ -746,7 +746,7 @@ public class PluginManagerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         // Redirect reported 404 before bug was fixed
-        assertEquals("Bad response for installNecessaryPlugins", 200, response.statusCode());
+        assertEquals(200, response.statusCode(), "Bad response for installNecessaryPlugins");
     }
 
     @Test

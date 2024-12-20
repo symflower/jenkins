@@ -6,11 +6,11 @@ import org.apache.commons.io.IOUtils;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.htmlunit.WebResponse;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Tests about the behavior expected setting different values in the escape-by-default directive and the
@@ -90,7 +90,7 @@ public class Security857Test {
         req.setRequestBody(jelly);
         WebResponse response = wc.getPage(req).getWebResponse();
 
-        Assert.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(200, response.getStatusCode());
         return response.getContentAsString();
     }
 
@@ -103,11 +103,11 @@ public class Security857Test {
     private void checkResponse(String response, Boolean escape) {
         String evidence = "<script> alert";
         if (escape == null) {
-            Assert.assertFalse("There is no escape-by-default tag in the jelly (true is assumed) but there are unescaped characters in the response.", response.contains(evidence));
+            Assertions.assertFalse(response.contains(evidence), "There is no escape-by-default tag in the jelly (true is assumed) but there are unescaped characters in the response.");
         } else if (escape) {
-            Assert.assertFalse("Set explicitly the <?jelly escape-by-default='true' in the jelly but there are unescaped characters in the response. Jenkins is not escaping the characters and it should to.", response.contains(evidence));
+            Assertions.assertFalse(response.contains(evidence), "Set explicitly the <?jelly escape-by-default='true' in the jelly but there are unescaped characters in the response. Jenkins is not escaping the characters and it should to.");
         } else {
-            Assert.assertTrue("Set explicitly the <?jelly escape-by-default='false' in the jelly but there are escaped characters in the response. Jenkins is escaping the characters and it shouldn't to.", response.contains(evidence));
+            Assertions.assertTrue(response.contains(evidence), "Set explicitly the <?jelly escape-by-default='false' in the jelly but there are escaped characters in the response. Jenkins is escaping the characters and it shouldn't to.");
         }
     }
 }

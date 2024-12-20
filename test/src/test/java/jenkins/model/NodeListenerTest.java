@@ -16,9 +16,9 @@ import hudson.cli.UpdateNodeCommand;
 import hudson.model.Node;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class NodeListenerTest {
@@ -27,7 +27,7 @@ public class NodeListenerTest {
 
     private NodeListener mock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mock = mock(NodeListener.class);
         ExtensionList.lookup(NodeListener.class).add(mock);

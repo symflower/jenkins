@@ -1,7 +1,7 @@
 package hudson.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import hudson.model.Items;
@@ -15,10 +15,10 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import jenkins.security.ClassFilterImpl;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -47,12 +47,12 @@ public class XStream2Security383Test {
 
     private AutoCloseable mocks;
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         mocks.close();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
     }
@@ -78,7 +78,7 @@ public class XStream2Security383Test {
             Files.writeString(tempJobDir.toPath().resolve("config.xml"), exploitXml, StandardCharsets.UTF_8);
 
             assertThrows(IOException.class, () -> Items.load(j.jenkins, tempJobDir));
-            assertFalse("no file should be created here", exploitFile.exists());
+            assertFalse(exploitFile.exists(), "no file should be created here");
         } finally {
             exploitFile.delete();
         }
@@ -107,7 +107,7 @@ public class XStream2Security383Test {
             when(req.getParameter("name")).thenReturn("foo");
 
             assertThrows(IOException.class, () -> j.jenkins.doCreateItem(req, rsp));
-            assertFalse("no file should be created here", exploitFile.exists());
+            assertFalse(exploitFile.exists(), "no file should be created here");
         } finally {
             exploitFile.delete();
         }

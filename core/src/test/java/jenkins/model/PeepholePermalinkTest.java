@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import hudson.model.PermalinkProjectAction;
 import hudson.model.Run;
 import java.util.stream.Collectors;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public final class PeepholePermalinkTest {
 

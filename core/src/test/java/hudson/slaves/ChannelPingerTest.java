@@ -1,7 +1,7 @@
 package hudson.slaves;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,24 +24,24 @@ public class ChannelPingerTest {
 
     private AutoCloseable mocks;
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         mocks.close();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mocks = MockitoAnnotations.openMocks(this);
     }
 
-    @Before
+    @BeforeEach
     public void preserveSystemProperties() {
         preserveSystemProperty("hudson.slaves.ChannelPinger.pingInterval");
         preserveSystemProperty("hudson.slaves.ChannelPinger.pingIntervalSeconds");
         preserveSystemProperty("hudson.slaves.ChannelPinger.pingTimeoutSeconds");
     }
 
-    @After
+    @AfterEach
     public void restoreSystemProperties() {
         for (Map.Entry<String, String> entry : savedSystemProperties.entrySet()) {
             if (entry.getValue() != null) {

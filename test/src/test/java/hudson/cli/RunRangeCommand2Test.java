@@ -30,8 +30,8 @@ import static hudson.cli.CLICommandInvoker.Matcher.succeeded;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Functions;
 import hudson.model.FreeStyleBuild;
@@ -41,9 +41,9 @@ import hudson.model.labels.LabelAtom;
 import hudson.tasks.BatchFile;
 import hudson.tasks.Shell;
 import jenkins.model.Jenkins;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**
@@ -55,7 +55,7 @@ public class RunRangeCommand2Test {
 
     @Rule public final JenkinsRule j = new JenkinsRule();
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
         command = new CLICommandInvoker(j, new RunRangeCommandTest.DummyRangeCommand());
     }
 

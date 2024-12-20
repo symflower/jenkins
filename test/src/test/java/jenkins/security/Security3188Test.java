@@ -11,11 +11,11 @@ import hudson.tasks.CommandInterpreter;
 import hudson.tasks.Shell;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Assertions;
 
 public class Security3188Test {
 
@@ -40,7 +40,7 @@ public class Security3188Test {
             String jsCode = "document.querySelector('pre.console-output a:nth-child(2)').dispatchEvent(new MouseEvent('mouseover'));";
             page.executeJavaScript(jsCode);
 
-            Assert.assertFalse("Alert not expected", alerts.get());
+            Assertions.assertFalse(alerts.get(), "Alert not expected");
         }
     }
 

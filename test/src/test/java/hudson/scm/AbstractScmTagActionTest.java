@@ -24,7 +24,7 @@
 
 package hudson.scm;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -40,7 +40,7 @@ import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlImage;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class AbstractScmTagActionTest {

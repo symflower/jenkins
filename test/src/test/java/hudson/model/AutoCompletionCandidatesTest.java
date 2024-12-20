@@ -1,6 +1,6 @@
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.matrix.AxisList;
 import hudson.matrix.MatrixConfiguration;
@@ -9,7 +9,7 @@ import hudson.matrix.TextAxis;
 import java.util.Arrays;
 import java.util.TreeSet;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**

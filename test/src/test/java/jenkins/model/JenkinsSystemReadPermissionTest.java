@@ -5,11 +5,11 @@ import static org.hamcrest.Matchers.is;
 
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 
@@ -22,17 +22,17 @@ public class JenkinsSystemReadPermissionTest {
 
     private JenkinsRule.WebClient webClient;
 
-    @BeforeClass
+    @BeforeAll
     public static void enablePermission() {
         System.setProperty("jenkins.security.SystemReadPermission", "true");
     }
 
-    @AfterClass
+    @AfterAll
     public static void disablePermission() {
         System.clearProperty("jenkins.security.SystemReadPermission");
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         j.jenkins.setSecurityRealm(j.createDummySecurityRealm());
         j.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy()

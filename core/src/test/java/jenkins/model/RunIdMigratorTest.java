@@ -24,11 +24,11 @@
 
 package jenkins.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Functions;
 import hudson.Util;
@@ -45,11 +45,11 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 
 public class RunIdMigratorTest {
@@ -59,17 +59,17 @@ public class RunIdMigratorTest {
     private static TimeZone defaultTimezone;
 
     /** Ensures that legacy timestamps are interpreted in a predictable time zone. */
-    @BeforeClass public static void timezone() {
+    @BeforeAll public static void timezone() {
         defaultTimezone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
     }
 
-    @AfterClass public static void tearDown() {
+    @AfterAll public static void tearDown() {
         TimeZone.setDefault(defaultTimezone);
     }
 
     // TODO could use LoggerRule only if it were extracted to an independent library
-    @BeforeClass public static void logging() {
+    @BeforeAll public static void logging() {
         RunIdMigrator.LOGGER.setLevel(Level.ALL);
         Handler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);
@@ -79,7 +79,7 @@ public class RunIdMigratorTest {
     private RunIdMigrator migrator;
     private File dir;
 
-    @Before public void init() {
+    @BeforeEach public void init() {
         migrator = new RunIdMigrator();
         dir = tmp.getRoot();
     }
@@ -95,7 +95,7 @@ public class RunIdMigratorTest {
     }
 
     @Test public void legacy() throws Exception {
-        assumeFalse("Symlinks don't work well on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Symlinks don't work well on Windows");
         write(
                 "2014-01-02_03-04-05/build.xml",
                 "<?xml version='1.0' encoding='UTF-8'?>\n"
@@ -137,7 +137,7 @@ public class RunIdMigratorTest {
     }
 
     @Test public void reRunMigration() throws Exception {
-        assumeFalse("Symlinks don't work well on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Symlinks don't work well on Windows");
         write("2014-01-02_03-04-04/build.xml", "<run>\n  <number>98</number>\n</run>");
         link("98", "2014-01-02_03-04-04");
         write(
@@ -176,7 +176,7 @@ public class RunIdMigratorTest {
     }
 
     @Test public void reverseImmediately() throws Exception {
-        assumeFalse("Symlinks don't work well on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Symlinks don't work well on Windows");
         File root = dir;
         dir = new File(dir, "jobs/somefolder/jobs/someproject/promotions/OK/builds");
         write(
@@ -204,7 +204,7 @@ public class RunIdMigratorTest {
     }
 
     @Test public void reverseAfterNewBuilds() throws Exception {
-        assumeFalse("Symlinks don't work well on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Symlinks don't work well on Windows");
         File root = dir;
         dir = new File(dir, "jobs/someproject/modules/test$test/builds");
         write(
@@ -227,7 +227,7 @@ public class RunIdMigratorTest {
     }
 
     @Test public void reverseMatrixAfterNewBuilds() throws Exception {
-        assumeFalse("Symlinks don't work well on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Symlinks don't work well on Windows");
         File root = dir;
         dir = new File(dir, "jobs/someproject/Environment=prod/builds");
         write(
@@ -250,7 +250,7 @@ public class RunIdMigratorTest {
     }
 
     @Test public void reverseMavenAfterNewBuilds() throws Exception {
-        assumeFalse("Symlinks don't work well on Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Symlinks don't work well on Windows");
         File root = dir;
         dir = new File(dir, "jobs/someproject/test$test/builds");
         write(

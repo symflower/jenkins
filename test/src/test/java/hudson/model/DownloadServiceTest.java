@@ -1,7 +1,7 @@
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.DownloadService.Downloadable;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import net.sf.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.WithoutJenkins;
 
 /**

@@ -28,17 +28,17 @@ import static hudson.cli.CLICommandInvoker.Matcher.failedWith;
 import static hudson.cli.CLICommandInvoker.Matcher.succeededSilently;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.FreeStyleProject;
 import hudson.model.Item;
 import hudson.model.User;
 import jenkins.model.Jenkins;
 import org.hamcrest.Matchers;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -50,7 +50,7 @@ public class CopyJobCommandTest {
     private CLICommand copyJobCommand;
     private CLICommandInvoker command;
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
         copyJobCommand = new CopyJobCommand();
         command = new CLICommandInvoker(j, copyJobCommand);
     }

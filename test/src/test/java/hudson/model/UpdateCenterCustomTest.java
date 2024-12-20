@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.instanceOf;
 
 import jakarta.servlet.ServletContext;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 /**

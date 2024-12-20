@@ -4,8 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import hudson.EnvVars;
 import hudson.Launcher;
@@ -24,9 +24,9 @@ import jenkins.security.ApiTokenProperty;
 import jenkins.security.apitoken.ApiTokenPropertyConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -42,7 +42,7 @@ public class CLIEnvVarTest {
     private File home;
     private File jar;
 
-    @Before
+    @BeforeEach
     public void grabCliJar() throws IOException {
         home = tmp.newFolder();
         jar = tmp.newFile("jenkins-cli.jar");

@@ -27,8 +27,8 @@ package hudson.util;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.json.JSONObject;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
@@ -44,13 +44,13 @@ public class JSONObjectResponseTest {
         HttpResponses.JSONObjectResponse response = new HttpResponses.JSONObjectResponse(data);
         JSONObject payload = response.getJsonObject();
 
-        Assert.assertEquals("ok", payload.getString("status"));
+        Assertions.assertEquals("ok", payload.getString("status"));
         JSONObject payloadData = payload.getJSONObject("data");
-        Assert.assertEquals("1", payloadData.getString("val_1"));
+        Assertions.assertEquals("1", payloadData.getString("val_1"));
 
         // change it to an error
         response.error("a message");
-        Assert.assertEquals("error", payload.getString("status"));
-        Assert.assertEquals("a message", payload.getString("message"));
+        Assertions.assertEquals("error", payload.getString("status"));
+        Assertions.assertEquals("a message", payload.getString("message"));
     }
 }

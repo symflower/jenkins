@@ -24,7 +24,7 @@
 
 package jenkins.security.stapler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.For;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.TestExtension;

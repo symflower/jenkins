@@ -24,12 +24,12 @@
 
 package hudson.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.EnvVars;
 import hudson.model.Cause.LegacyCodeCause;
@@ -61,7 +61,7 @@ import org.htmlunit.html.HtmlButton;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.ExtractResourceSCM;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -93,7 +93,7 @@ public class MavenTest {
         Maven m = p.getBuildersList().get(Maven.class);
         assertNotNull(m);
         assertEquals("a", m.targets);
-        assertNull("found " + m.mavenName, m.mavenName);
+        assertNull(m.mavenName, "found " + m.mavenName);
         assertEquals("b.pom", m.pom);
         assertEquals("c=d", m.properties);
         assertEquals("-e", m.jvmOptions);
@@ -238,7 +238,7 @@ public class MavenTest {
 
         {
             GlobalMavenConfig globalMavenConfig = GlobalMavenConfig.get();
-            assertNotNull("No global Maven Config available", globalMavenConfig);
+            assertNotNull(globalMavenConfig, "No global Maven Config available");
             globalMavenConfig.setSettingsProvider(new FilePathSettingsProvider("/tmp/settings.xml"));
             globalMavenConfig.setGlobalSettingsProvider(new FilePathGlobalSettingsProvider("/tmp/global-settings.xml"));
 
@@ -303,7 +303,7 @@ public class MavenTest {
         FreeStyleProject p = j.createFreeStyleProject();
         p.updateByXml((Source) new StreamSource(getClass().getResourceAsStream("MavenTest/doPassBuildVariablesOptionally.xml")));
         FreeStyleBuild build = j.buildAndAssertSuccess(p);
-        assertTrue("Build variables injection should be enabled by default when loading from XML", p.getBuildersList().get(Maven.class).isInjectBuildVariables());
+        assertTrue(p.getBuildersList().get(Maven.class).isInjectBuildVariables(), "Build variables injection should be enabled by default when loading from XML");
         j.assertLogContains("-DNAME=VALUE", build);
 
         p.getBuildersList().clear();
@@ -318,7 +318,7 @@ public class MavenTest {
         build = j.buildAndAssertSuccess(p);
         j.assertLogContains("-DNAME=VALUE", build);
 
-        assertFalse("Build variables injection should be disabled by default", new Maven("", "").isInjectBuildVariables());
+        assertFalse(new Maven("", "").isInjectBuildVariables(), "Build variables injection should be disabled by default");
     }
 
     @Test public void doAlwaysPassProperties() throws Exception {

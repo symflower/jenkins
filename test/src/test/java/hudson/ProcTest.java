@@ -1,8 +1,8 @@
 package hudson;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Launcher.LocalLauncher;
 import hudson.Launcher.RemoteLauncher;
@@ -20,7 +20,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import jenkins.security.MasterToSlaveCallable;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -99,13 +99,13 @@ public class ProcTest {
 
     @Test
     public void ioPumpingWithLocalLaunch() throws Exception {
-        assumeFalse("TODO: Implement this test for Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "TODO: Implement this test for Windows");
         doIoPumpingTest(new LocalLauncher(new StreamTaskListener(System.out, Charset.defaultCharset())));
     }
 
     @Test
     public void ioPumpingWithRemoteLaunch() throws Exception {
-        assumeFalse("TODO: Implement this test for Windows", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "TODO: Implement this test for Windows");
         doIoPumpingTest(new RemoteLauncher(
                 new StreamTaskListener(System.out, Charset.defaultCharset()),
                 createSlaveChannel(), true));

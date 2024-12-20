@@ -27,11 +27,11 @@ package hudson.tasks;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Functions;
 import hudson.Launcher;
@@ -57,9 +57,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import jenkins.model.Jenkins;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.LocalData;
@@ -96,7 +96,7 @@ public class FingerprinterTest {
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         Fingerprinter.enableFingerprintsInDependencyGraph = true;
     }
@@ -234,7 +234,7 @@ public class FingerprinterTest {
         j.jenkins.rebuildDependencyGraph();
 
         RunList<FreeStyleBuild> builds = freestyleProject.getBuilds();
-        assertEquals("There should only be one FreestyleBuild", 1, builds.size());
+        assertEquals(1, builds.size(), "There should only be one FreestyleBuild");
         FreeStyleBuild build = builds.iterator().next();
         assertEquals(Result.SUCCESS, build.getResult());
         List<AbstractProject> downstream = j.jenkins.getDependencyGraph().getDownstream(matrixProject);

@@ -24,8 +24,8 @@
 
 package hudson.bugs;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.Slave;
 import hudson.model.User;
@@ -42,7 +42,7 @@ import org.htmlunit.Page;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.xml.XmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Email;
 import org.jvnet.hudson.test.InboundAgentRule;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -101,7 +101,7 @@ public class JnlpAccessWithSecuredHudsonTest {
         try {
             r.createWebClient().goTo("computer/test/jenkins-agent.jnlp?encrypt=true", "application/octet-stream");
             Channel channel = slave.getComputer().getChannel();
-            assertFalse("SECURITY-206", channel.isRemoteClassLoadingAllowed());
+            assertFalse(channel.isRemoteClassLoadingAllowed(), "SECURITY-206");
             r.jenkins.getExtensionList(AdminWhitelistRule.class).get(AdminWhitelistRule.class).setMasterKillSwitch(false);
             final File f = new File(r.jenkins.getRootDir(), "config.xml");
             assertTrue(f.exists());

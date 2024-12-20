@@ -1,8 +1,8 @@
 package hudson.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
+import org.junit.jupiter.api.Assertions;
 
 public class SecretUtilTest {
 
@@ -11,7 +11,7 @@ public class SecretUtilTest {
     public void decrypt() {
         String data = "{}";
         Secret secret = Secret.decrypt(data);
-        Assert.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
+        Assertions.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
     }
 
 
@@ -20,7 +20,7 @@ public class SecretUtilTest {
     public void decryptJustSpace() {
         String data = " ";
         Secret secret = Secret.decrypt(data);
-        Assert.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
+        Assertions.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
     }
 
     @Issue("JENKINS-47500")
@@ -28,7 +28,7 @@ public class SecretUtilTest {
     public void decryptWithSpace() {
         String data = "{ }";
         Secret secret = Secret.decrypt(data);
-        Assert.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
+        Assertions.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
     }
 
     @Issue("JENKINS-47500")
@@ -36,6 +36,6 @@ public class SecretUtilTest {
     public void decryptWithSpaces() {
         String data = "{     }";
         Secret secret = Secret.decrypt(data);
-        Assert.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
+        Assertions.assertNull(secret); // expected to not throw ArrayIndexOutOfBoundsException
     }
 }

@@ -13,9 +13,9 @@ import hudson.model.ResourceList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Level;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -31,7 +31,7 @@ public class BuildKeepsRunningWhenFaultySubTasksTest {
     public static final String ERROR_MESSAGE = "My unexpected exception";
 
     // When using SubTaskContributor (FailingSubTaskContributor) the build never ends
-    @Ignore("Too flaky; sometimes the build fails with java.util.concurrent.ExecutionException: java.lang.InterruptedException\n" +
+    @Disabled("Too flaky; sometimes the build fails with java.util.concurrent.ExecutionException: java.lang.InterruptedException\n" +
             "\tat hudson.remoting.AsyncFutureImpl.get(AsyncFutureImpl.java:80)\n" +
             "\tat org.jvnet.hudson.test.JenkinsRule.assertBuildStatus(JenkinsRule.java:1484)\n" +
             "\tat org.jvnet.hudson.test.JenkinsRule.assertBuildStatusSuccess(JenkinsRule.java:1512)\n" +

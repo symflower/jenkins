@@ -24,14 +24,14 @@
 
 package hudson.security;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.model.Hudson;
 import hudson.model.Messages;
 import jenkins.model.Jenkins;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Email;
 import org.jvnet.hudson.test.JenkinsRule;
 

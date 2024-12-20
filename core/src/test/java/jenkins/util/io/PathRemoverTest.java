@@ -31,12 +31,12 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -61,7 +61,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.Timeout;
 import org.jvnet.hudson.test.Issue;
@@ -80,7 +80,7 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveFile(file.toPath());
 
-        assertFalse("Unable to delete file: " + file, file.exists());
+        assertFalse(file.exists(), "Unable to delete file: " + file);
     }
 
     @Test
@@ -127,12 +127,12 @@ public class PathRemoverTest {
         File dir = tmp.newFolder();
         File file = new File(dir, "file.tmp");
         touchWithFileName(file);
-        assertTrue("Unable to make file read-only: " + file, file.setWritable(false));
+        assertTrue(file.setWritable(false), "Unable to make file read-only: " + file);
 
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveFile(file.toPath());
 
-        assertFalse("Unable to delete file: " + file, file.exists());
+        assertFalse(file.exists(), "Unable to delete file: " + file);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveFile(file.toPath());
 
-        assertFalse("Unable to delete file: " + file, file.exists());
+        assertFalse(file.exists(), "Unable to delete file: " + file);
     }
 
     @Test
@@ -157,8 +157,8 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveFile(link);
 
-        assertTrue("Unable to delete symbolic link: " + link, Files.notExists(link, LinkOption.NOFOLLOW_LINKS));
-        assertTrue("Should not have deleted target file: " + file, file.exists());
+        assertTrue(Files.notExists(link, LinkOption.NOFOLLOW_LINKS), "Unable to delete symbolic link: " + link);
+        assertTrue(file.exists(), "Should not have deleted target file: " + file);
     }
 
     @Test
@@ -172,9 +172,9 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveFile(path);
 
-        assertTrue("Unable to delete file: " + path, Files.notExists(path));
+        assertTrue(Files.notExists(path), "Unable to delete file: " + path);
         assertFalse(test.exists());
-        assertTrue("Should not have deleted directory: " + folder, Files.exists(folder));
+        assertTrue(Files.exists(folder), "Should not have deleted directory: " + folder);
     }
 
     @Test
@@ -190,9 +190,9 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveFile(toDelete);
 
-        assertTrue("Unable to delete file: " + toDelete, Files.notExists(toDelete));
-        assertTrue("Should not have deleted directory: " + realParent, Files.exists(realParent));
-        assertTrue("Should not have deleted symlink: " + symParent, Files.exists(symParent, LinkOption.NOFOLLOW_LINKS));
+        assertTrue(Files.notExists(toDelete), "Unable to delete file: " + toDelete);
+        assertTrue(Files.exists(realParent), "Should not have deleted directory: " + realParent);
+        assertTrue(Files.exists(symParent, LinkOption.NOFOLLOW_LINKS), "Should not have deleted symlink: " + symParent);
     }
 
     @Test
@@ -377,9 +377,9 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveRecursive(path);
 
-        assertTrue("Unable to delete directory: " + path, Files.notExists(path));
+        assertTrue(Files.notExists(path), "Unable to delete directory: " + path);
         for (File file : Arrays.asList(d1, d1f1, f2)) {
-            assertTrue("Should not have deleted target: " + file, file.exists());
+            assertTrue(file.exists(), "Should not have deleted target: " + file);
         }
     }
 
@@ -397,7 +397,7 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveRecursive(path);
 
-        assertTrue("Unable to delete directory: " + folder, Files.notExists(path));
+        assertTrue(Files.notExists(path), "Unable to delete directory: " + folder);
     }
 
     @Test
@@ -416,7 +416,7 @@ public class PathRemoverTest {
         PathRemover remover = PathRemover.newSimpleRemover();
         remover.forceRemoveRecursive(d1p);
 
-        assertTrue("Unable to delete directory: " + d1p, Files.notExists(d1p));
+        assertTrue(Files.notExists(d1p), "Unable to delete directory: " + d1p);
         assertFalse(d1.exists());
     }
 
@@ -448,7 +448,7 @@ public class PathRemoverTest {
 
     private static void mkdirs(File... dirs) {
         for (File dir : dirs) {
-            assertTrue("Could not mkdir " + dir, dir.mkdir());
+            assertTrue(dir.mkdir(), "Could not mkdir " + dir);
             assertTrue(dir.isDirectory());
         }
     }

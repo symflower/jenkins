@@ -24,8 +24,8 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import hudson.util.FormValidation;
 import java.net.URL;
@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import net.sf.json.JSONObject;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.WithoutJenkins;
@@ -58,7 +58,7 @@ public class DownloadService2Test {
 
     private static void assertRoots(String expected, String file) throws Exception {
         URL resource = DownloadService2Test.class.getResource(file);
-        assertNotNull(file, resource);
+        assertNotNull(resource, file);
         JSONObject json = JSONObject.fromObject(DownloadService.loadJSONHTML(resource));
         Set<String> keySet = json.keySet();
         assertEquals(expected, new TreeSet<>(keySet).toString());

@@ -26,10 +26,10 @@ package jenkins.security.stapler;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.model.UnprotectedRootAction;
@@ -42,7 +42,7 @@ import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.kohsuke.stapler.Stapler;
@@ -61,7 +61,7 @@ public abstract class StaplerAbstractTest {
     protected static boolean filteredDoActionTriggered = false;
     protected static boolean filteredFieldTriggered = false;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         j = rule;
         j.jenkins.setCrumbIssuer(null);
@@ -146,30 +146,30 @@ public abstract class StaplerAbstractTest {
     //================================= testing methods =================================
 
     protected void assertGetMethodRequestWasBlockedAndResetFlag() {
-        assertTrue("No get method request was blocked", filteredGetMethodTriggered);
+        assertTrue(filteredGetMethodTriggered, "No get method request was blocked");
         filteredGetMethodTriggered = false;
     }
 
     protected void assertDoActionRequestWasBlockedAndResetFlag() {
-        assertTrue("No do action request was blocked", filteredDoActionTriggered);
+        assertTrue(filteredDoActionTriggered, "No do action request was blocked");
         filteredDoActionTriggered = false;
     }
 
     protected void assertFieldRequestWasBlockedAndResetFlag() {
-        assertTrue("No field request was blocked", filteredFieldTriggered);
+        assertTrue(filteredFieldTriggered, "No field request was blocked");
         filteredFieldTriggered = false;
     }
 
     protected void assertGetMethodActionRequestWasNotBlocked() {
-        assertFalse("There was at least one get method request that was blocked", filteredGetMethodTriggered);
+        assertFalse(filteredGetMethodTriggered, "There was at least one get method request that was blocked");
     }
 
     protected void assertDoActionRequestWasNotBlocked() {
-        assertFalse("There was at least one do action request that was blocked", filteredDoActionTriggered);
+        assertFalse(filteredDoActionTriggered, "There was at least one do action request that was blocked");
     }
 
     protected void assertFieldRequestWasNotBlocked() {
-        assertFalse("There was at least one field request that was blocked", filteredFieldTriggered);
+        assertFalse(filteredFieldTriggered, "There was at least one field request that was blocked");
     }
 
     protected void assertReachable(String url, HttpMethod method) throws IOException {
@@ -210,8 +210,8 @@ public abstract class StaplerAbstractTest {
 
     protected void assertNotReachable(String url) throws IOException {
         try (JenkinsRule.WebClient wc = j.createWebClient()) {
-            FailingHttpStatusCodeException e = assertThrows("Url " + url + " is reachable but should not be, a not-found error is expected", FailingHttpStatusCodeException.class, () -> wc.getPage(new URL(j.getURL(), url)));
-            assertEquals("Url " + url + " returns an error different from 404", 404, e.getResponse().getStatusCode());
+            FailingHttpStatusCodeException e = assertThrows(FailingHttpStatusCodeException.class, () -> wc.getPage(new URL(j.getURL(), url)), "Url " + url + " is reachable but should not be, a not-found error is expected");
+            assertEquals(404, e.getResponse().getStatusCode(), "Url " + url + " returns an error different from 404");
         }
     }
 }

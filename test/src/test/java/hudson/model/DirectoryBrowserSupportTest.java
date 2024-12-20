@@ -33,11 +33,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.sun.management.UnixOperatingSystemMXBean;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -88,9 +88,8 @@ import org.htmlunit.Page;
 import org.htmlunit.UnexpectedPage;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.util.NameValuePair;
-import org.junit.Assume;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Email;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -99,6 +98,7 @@ import org.jvnet.hudson.test.TestBuilder;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.StaplerResponse2;
+import org.junit.jupiter.api.Assumptions;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -142,7 +142,7 @@ public class DirectoryBrowserSupportTest {
     @Email("http://www.nabble.com/Status-Code-400-viewing-or-downloading-artifact-whose-filename-contains-two-consecutive-periods-tt21407604.html")
     @Test
     public void doubleDots2() throws Exception {
-        Assume.assumeFalse("can't test this on Windows", Functions.isWindows());
+        Assumptions.assumeFalse(Functions.isWindows(), "can't test this on Windows");
 
         // create a problematic file name in the workspace
         FreeStyleProject p = j.createFreeStyleProject();
@@ -196,10 +196,10 @@ public class DirectoryBrowserSupportTest {
         });
         j.buildAndAssertSuccess(p);
         String text = j.createWebClient().goTo("job/" + p.getName() + "/ws/**/*.java").asNormalizedText();
-        assertTrue(text, text.contains("X.java"));
-        assertTrue(text, text.contains("XTest.java"));
-        assertFalse(text, text.contains("pom.xml"));
-        assertFalse(text, text.contains("x.txt"));
+        assertTrue(text.contains("X.java"), text);
+        assertTrue(text.contains("XTest.java"), text);
+        assertFalse(text.contains("pom.xml"), text);
+        assertFalse(text.contains("x.txt"), text);
     }
 
     @Issue("JENKINS-19752")
@@ -219,7 +219,7 @@ public class DirectoryBrowserSupportTest {
         InputStream is = readzip.getInputStream(readzip.getEntry("archive/artifact.out"));
 
         // ZipException in case of JENKINS-19752
-        assertNotEquals("Downloaded zip file must not be empty", is.read(), -1);
+        assertNotEquals(is.read(), -1, "Downloaded zip file must not be empty");
 
         is.close();
         readzip.close();
@@ -244,7 +244,7 @@ public class DirectoryBrowserSupportTest {
     @Test
     @Issue({"JENKINS-64632", "JENKINS-61121"})
     public void zipDownloadFileLeakMx() throws Exception {
-        Assume.assumeFalse(Functions.isWindows());
+        Assumptions.assumeFalse(Functions.isWindows());
 
         int numOfClicks = 10;
         int totalRuns = 10;
@@ -294,7 +294,7 @@ public class DirectoryBrowserSupportTest {
 
         String summary = String.join("\n", messages);
         System.out.println("Summary of the test: \n" + summary);
-        assertTrue("There should be no difference greater than " + numOfClicks + ", but the output was: \n" + summary, freeFromLeak);
+        assertTrue(freeFromLeak, "There should be no difference greater than " + numOfClicks + ", but the output was: \n" + summary);
     }
 
     private long getOpenFdCount() {
@@ -315,7 +315,7 @@ public class DirectoryBrowserSupportTest {
 
         HtmlPage page = j.createWebClient().goTo("job/" + p.getName() + "/lastSuccessfulBuild/artifact/test.html");
         for (String header : new String[]{"Content-Security-Policy", "X-WebKit-CSP", "X-Content-Security-Policy"}) {
-            assertEquals("Header set: " + header, DirectoryBrowserSupport.DEFAULT_CSP_VALUE, page.getWebResponse().getResponseHeaderValue(header));
+            assertEquals(DirectoryBrowserSupport.DEFAULT_CSP_VALUE, page.getWebResponse().getResponseHeaderValue(header), "Header set: " + header);
         }
 
         String propName = DirectoryBrowserSupport.class.getName() + ".CSP";
@@ -795,7 +795,7 @@ public class DirectoryBrowserSupportTest {
     @Test
     @Issue("SECURITY-904")
     public void junctionAndSymlink_outsideWorkspace_areNotAllowed_windowsJunction() throws Exception {
-        Assume.assumeTrue(Functions.isWindows());
+        Assumptions.assumeTrue(Functions.isWindows());
 
         FreeStyleProject p = j.createFreeStyleProject();
 
@@ -1110,7 +1110,7 @@ public class DirectoryBrowserSupportTest {
     @Test
     @Issue("SECURITY-2481")
     public void windows_cannotViewAbsolutePath() throws Exception {
-        Assume.assumeTrue("can only be tested this on Windows", Functions.isWindows());
+        Assumptions.assumeTrue(Functions.isWindows(), "can only be tested this on Windows");
 
         Path targetTmpPath = Files.createTempFile("sec2481", "tmp");
         String content = "random data provided as fixed value";
@@ -1141,8 +1141,8 @@ public class DirectoryBrowserSupportTest {
         assertEquals(Result.SUCCESS, p.scheduleBuild2(0).get().getResult());
 
         String text = j.createWebClient().goTo("job/" + p.getName() + "/ws/").asNormalizedText();
-        assertTrue(text, text.contains("anotherDir"));
-        assertFalse(text, text.contains("subdir"));
+        assertTrue(text.contains("anotherDir"), text);
+        assertFalse(text.contains("subdir"), text);
     }
 
     @Test
@@ -1171,10 +1171,10 @@ public class DirectoryBrowserSupportTest {
         assertEquals(Result.SUCCESS, p.scheduleBuild2(0).get().getResult());
 
         String text = j.createWebClient().goTo("job/" + p.getName() + "/ws/**/*.txt").asNormalizedText();
-        assertTrue(text, text.contains("one.txt"));
-        assertTrue(text, text.contains("two.txt"));
-        assertFalse(text, text.contains("three.txt"));
-        assertFalse(text, text.contains("four.txt"));
+        assertTrue(text.contains("one.txt"), text);
+        assertTrue(text.contains("two.txt"), text);
+        assertFalse(text.contains("three.txt"), text);
+        assertFalse(text.contains("four.txt"), text);
     }
 
     @Test
@@ -1230,8 +1230,8 @@ public class DirectoryBrowserSupportTest {
         assertEquals(Result.SUCCESS, p.scheduleBuild2(0).get().getResult());
 
         String text = j.createWebClient().goTo("job/" + p.getName() + "/ws/*plain*", "text/plain").getWebResponse().getContentAsString();
-        assertTrue(text, text.contains("anotherDir"));
-        assertFalse(text, text.contains("subdir"));
+        assertTrue(text.contains("anotherDir"), text);
+        assertFalse(text.contains("subdir"), text);
     }
 
     @Test

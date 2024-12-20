@@ -7,7 +7,7 @@ import hudson.ExtensionList;
 import hudson.model.UnprotectedRootAction;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class IdentityRootActionTest {

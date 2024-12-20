@@ -24,10 +24,10 @@
 
 package jenkins.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.AbstractProject;
 import hudson.model.FreeStyleProject;
@@ -36,7 +36,7 @@ import java.io.StringReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.LocalData;
@@ -55,8 +55,8 @@ public class BuildDiscarderPropertyTest {
         r.configRoundtrip(p);
         verifyBuildDiscarder(p);
         String xml = p.getConfigFile().asString();
-        assertFalse(xml, xml.contains("<logRotator class="));
-        assertTrue(xml, xml.contains("<" + BuildDiscarderProperty.class.getName() + ">"));
+        assertFalse(xml.contains("<logRotator class="), xml);
+        assertTrue(xml.contains("<" + BuildDiscarderProperty.class.getName() + ">"), xml);
     }
 
     private void verifyBuildDiscarder(FreeStyleProject p) {
@@ -86,7 +86,7 @@ public class BuildDiscarderPropertyTest {
         verifyLogRotatorSanity(p);
 
         // another sanity check
-        assertTrue(xml, xml.contains("<logRotator class=\"" + LogRotator.class.getName() + "\">"));
+        assertTrue(xml.contains("<logRotator class=\"" + LogRotator.class.getName() + "\">"), xml);
     }
 
     private static void verifyLogRotatorSanity(AbstractProject<?, ?> p) {

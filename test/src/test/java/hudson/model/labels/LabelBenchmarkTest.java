@@ -1,6 +1,6 @@
 package hudson.model.labels;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.Label;
 import hudson.slaves.DumbSlave;
@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import jenkins.benchmark.jmh.JmhBenchmark;
 import jenkins.benchmark.jmh.JmhBenchmarkState;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.infra.Blackhole;

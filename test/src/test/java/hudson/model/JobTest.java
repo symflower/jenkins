@@ -27,12 +27,12 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.FilePath;
@@ -66,7 +66,7 @@ import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlFormUtil;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.FailureBuilder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -105,8 +105,8 @@ public class JobTest {
         startLatch.countDown();
         stopLatch.await();
 
-        assertTrue(test1.message, test2.passed);
-        assertTrue(test2.message, test2.passed);
+        assertTrue(test2.passed, test1.message);
+        assertTrue(test2.passed, test2.message);
     }
 
     public static class BuildNumberSyncTester implements Runnable {
@@ -253,7 +253,7 @@ public class JobTest {
     private static void tryConfigDotXml(JenkinsRule.WebClient wc, int status, String msg) throws Exception {
         // Verify we can GET the config.xml:
         Page p = wc.goTo("job/testJob/config.xml", "application/xml");
-        assertEquals("Retrieving config.xml should be ok", HttpURLConnection.HTTP_OK, p.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_OK, p.getWebResponse().getStatusCode(), "Retrieving config.xml should be ok");
 
         // This page is a simple form to POST to /job/testJob/config.xml
         // But it posts invalid data so we expect 500 if we have permission, 403 if not
@@ -262,7 +262,7 @@ public class JobTest {
         assertEquals(msg, status, p.getWebResponse().getStatusCode());
 
         p = wc.goTo("logout");
-        assertEquals("To logout should be ok", HttpURLConnection.HTTP_OK, p.getWebResponse().getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_OK, p.getWebResponse().getStatusCode(), "To logout should be ok");
     }
 
     @LocalData @Issue("JENKINS-6371")
@@ -291,7 +291,7 @@ public class JobTest {
         j.jenkins.setProjectNamingStrategy(new ProjectNamingStrategy.PatternProjectNamingStrategy("DUMMY.*", false));
         try {
             final FreeStyleProject p = j.createFreeStyleProject("DUMMY_project");
-            assertNotNull("no project created", p);
+            assertNotNull(p, "no project created");
             assertThrows(Failure.class, () -> j.createFreeStyleProject("project"));
         } finally {
             // set it back to the default naming strategy, otherwise all other tests would fail to create jobs!
@@ -439,14 +439,14 @@ public class JobTest {
     @Issue("JENKINS-30502")
     @Test
     public void testAllowTrimmingByUser() throws Exception {
-        assumeFalse("Unix-only test.", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Unix-only test.");
         tryRename("myJob3 ", "myJob3", "myJob3");
     }
 
     @Issue("JENKINS-30502")
     @Test
     public void testRenameWithLeadingSpaceTrimsLeadingSpace() throws Exception {
-        assumeFalse("Unix-only test.", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Unix-only test.");
         tryRename(" myJob4", " foo", "foo");
     }
 
@@ -454,7 +454,7 @@ public class JobTest {
     @Test
     public void testRenameWithLeadingSpaceTrimsTrailingSpace()
             throws Exception {
-        assumeFalse("Unix-only test.", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Unix-only test.");
         tryRename(" myJob5", "foo ", "foo");
     }
 
@@ -462,7 +462,7 @@ public class JobTest {
     @Test
     public void testRenameWithTrailingSpaceTrimsTrailingSpace()
             throws Exception {
-        assumeFalse("Unix-only test.", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Unix-only test.");
         tryRename("myJob6 ", "foo ", "foo");
     }
 
@@ -470,7 +470,7 @@ public class JobTest {
     @Test
     public void testRenameWithTrailingSpaceTrimsLeadingSpace()
             throws Exception {
-        assumeFalse("Unix-only test.", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Unix-only test.");
         tryRename("myJob7 ", " foo", "foo");
     }
 
@@ -488,7 +488,7 @@ public class JobTest {
     @Issue("JENKINS-35160")
     @Test
     public void interruptOnDelete() throws Exception {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         j.jenkins.setNumExecutors(2);
         Queue.getInstance().maintain();
         final FreeStyleProject p = j.createFreeStyleProject();
@@ -510,7 +510,7 @@ public class JobTest {
 
     @Issue("SECURITY-1868")
     @Test public void noXssPossible() throws Exception {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         String desiredNodeName = "agent is a better name2 <script>alert(123)</script>";
         String initialNodeName = "agent is a better name";
 

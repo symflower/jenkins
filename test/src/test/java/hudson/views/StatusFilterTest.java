@@ -8,7 +8,7 @@ import hudson.model.TopLevelItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 public class StatusFilterTest {

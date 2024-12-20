@@ -27,13 +27,13 @@ package jenkins.model.lazy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,10 +49,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import jenkins.model.lazy.AbstractLazyLoadRunMap.Direction;
 import jenkins.util.Timer;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 /**
@@ -110,12 +110,12 @@ public class AbstractLazyLoadRunMapTest {
         }
     };
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         AbstractLazyLoadRunMap.LOGGER.setLevel(Level.OFF);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         a = aBuilder.add(1).add(3).add(5).make();
 
@@ -221,7 +221,7 @@ public class AbstractLazyLoadRunMapTest {
         assertNull(m.search(3, Direction.EXACT));
         assertNull(m.search(0, Direction.EXACT));
         assertSame(a, m.search(1, Direction.EXACT));
-        assertSame("#2 should not have been reloaded by searching for #3", b, m.search(2, Direction.EXACT));
+        assertSame(b, m.search(2, Direction.EXACT), "#2 should not have been reloaded by searching for #3");
         assertNull(m.search(3, Direction.EXACT));
     }
 
@@ -288,7 +288,7 @@ public class AbstractLazyLoadRunMapTest {
         Set<Map.Entry<Integer, Build>> entries = a.entrySet();
         assertEquals("[]", a.getLoadedBuilds().keySet().toString());
         assertFalse(entries.isEmpty());
-        assertEquals("5 since it is the latest", "[5]", a.getLoadedBuilds().keySet().toString());
+        assertEquals("[5]", a.getLoadedBuilds().keySet().toString(), "5 since it is the latest");
         assertEquals(5, a.getById("5").n);
         assertEquals("[5]", a.getLoadedBuilds().keySet().toString());
         assertEquals(1, a.getByNumber(1).n);
@@ -308,7 +308,7 @@ public class AbstractLazyLoadRunMapTest {
         assertTrue(iterator.hasNext());
         entry = iterator.next();
         assertEquals(3, entry.getKey().intValue());
-        assertEquals(".next() precomputes the one after that too", "[5, 3, 1]", a.getLoadedBuilds().keySet().toString());
+        assertEquals("[5, 3, 1]", a.getLoadedBuilds().keySet().toString(), ".next() precomputes the one after that too");
         assertEquals(3, entry.getValue().n);
         assertEquals("[5, 3, 1]", a.getLoadedBuilds().keySet().toString());
         assertTrue(iterator.hasNext());

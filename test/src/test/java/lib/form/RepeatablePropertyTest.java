@@ -26,8 +26,8 @@ package lib.form;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import hudson.Extension;
 import hudson.ExtensionList;
@@ -47,9 +47,9 @@ import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlTextInput;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -64,7 +64,7 @@ public class RepeatablePropertyTest {
 
     private RootActionImpl rootAction;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         rootAction = ExtensionList.lookupSingleton(RootActionImpl.class);
     }
@@ -122,7 +122,7 @@ public class RepeatablePropertyTest {
     private void assertFormContents(final String viewName, final ArrayList<ExcitingObject> expected) throws Exception {
         final HtmlForm form = getForm(viewName);
         final List<HtmlTextInput> inputs = toTextInputList(form.getElementsByAttribute("input", "type", "text"));
-        assertEquals("size", expected.size(), inputs.size());
+        assertEquals(expected.size(), inputs.size(), "size");
         for (int i = 0; i < expected.size(); i++)
             assertEquals(expected.get(i).greatProperty, inputs.get(i).getValue());
     }

@@ -26,8 +26,8 @@ package jenkins.model;
 
 import static hudson.cli.CLICommandInvoker.Matcher.succeededSilently;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.cli.CLICommandInvoker;
 import hudson.cli.CreateJobCommand;
@@ -40,7 +40,7 @@ import java.nio.charset.StandardCharsets;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;

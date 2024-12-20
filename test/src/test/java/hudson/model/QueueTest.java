@@ -34,15 +34,15 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.ExtensionList;
@@ -115,10 +115,9 @@ import org.htmlunit.html.DomElement;
 import org.htmlunit.html.DomNode;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.xml.XmlPage;
-import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
@@ -131,6 +130,7 @@ import org.jvnet.hudson.test.TestExtension;
 import org.jvnet.hudson.test.recipes.LocalData;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -239,7 +239,7 @@ public class QueueTest {
     public void queue_id_to_run_mapping() throws Exception {
         FreeStyleProject testProject = r.createFreeStyleProject("test");
         FreeStyleBuild build = r.buildAndAssertSuccess(testProject);
-        Assert.assertNotEquals(Run.QUEUE_ID_UNKNOWN, build.getQueueId());
+        Assertions.assertNotEquals(Run.QUEUE_ID_UNKNOWN, build.getQueueId());
     }
 
     /**
@@ -324,26 +324,26 @@ public class QueueTest {
         assertNotNull(ca);
         StringBuilder causes = new StringBuilder();
         for (Cause c : ca.getCauses()) causes.append(c.getShortDescription()).append("\n");
-        assertEquals("Build causes should have all items, even duplicates",
-                "Started by user SYSTEM\nStarted by user SYSTEM\n"
+        assertEquals("Started by user SYSTEM\nStarted by user SYSTEM\n"
                 + "Started by an SCM change\nStarted by an SCM change\nStarted by an SCM change\n"
                 + "Started by timer\nStarted by timer\n"
                 + "Started by remote host 1.2.3.4 with note: test\n"
                 + "Started by remote host 1.2.3.4 with note: test\n"
                 + "Started by remote host 4.3.2.1 with note: test\n"
                 + "Started by remote host 1.2.3.4 with note: foo\n",
-                causes.toString());
+                causes.toString(),
+                "Build causes should have all items, even duplicates");
 
         // View for build should group duplicates
         JenkinsRule.WebClient wc = r.createWebClient();
         String buildPage = wc.getPage(build, "").asNormalizedText();
-        assertTrue("Build page should combine duplicates and show counts: " + buildPage,
-                   buildPage.contains("Started by user SYSTEM (2 times)\n"
+        assertTrue(buildPage.contains("Started by user SYSTEM (2 times)\n"
                         + "Started by an SCM change (3 times)\n"
                         + "Started by timer (2 times)\n"
                         + "Started by remote host 1.2.3.4 with note: test (2 times)\n"
                         + "Started by remote host 4.3.2.1 with note: test\n"
-                        + "Started by remote host 1.2.3.4 with note: foo"));
+                        + "Started by remote host 1.2.3.4 with note: foo"),
+                   "Build page should combine duplicates and show counts: " + buildPage);
         System.out.println(new XmlFile(new File(build.getRootDir(), "build.xml")).asString());
     }
 
@@ -548,7 +548,7 @@ public class QueueTest {
        // become permanently blocked
        q.scheduleMaintenance().get();
 
-       assertEquals("Queue should contain two blocked items but didn't.", 2, q.getBlockedItems().size());
+       assertEquals(2, q.getBlockedItems().size(), "Queue should contain two blocked items but didn't.");
 
        //Ensure orderly shutdown
        q.clear();
@@ -582,7 +582,7 @@ public class QueueTest {
        // become permanently blocked
        q.scheduleMaintenance().get();
 
-       assertEquals("Queue should contain two blocked items but didn't.", 2, q.getBlockedItems().size());
+       assertEquals(2, q.getBlockedItems().size(), "Queue should contain two blocked items but didn't.");
 
        //Ensure orderly shutdown
        q.clear();
@@ -856,7 +856,7 @@ public class QueueTest {
                     break; // executor is dead due to exception
              }
              if (e.isIdle()) {
-                 assertTrue("Node went to idle before project had" + project2.getDisplayName() + " been started", v.isDone());
+                 assertTrue(v.isDone(), "Node went to idle before project had" + project2.getDisplayName() + " been started");
              }
              Thread.sleep(1000);
         }
@@ -868,7 +868,7 @@ public class QueueTest {
             //project2 should not be in pendings
             List<Queue.BuildableItem> items = Queue.getInstance().getPendingItems();
             for (Queue.BuildableItem item : items) {
-                assertNotEquals("Project " + project2.getDisplayName() + " stuck in pendings", item.task.getName(), project2.getName());
+                assertNotEquals(item.task.getName(), project2.getName(), "Project " + project2.getDisplayName() + " stuck in pendings");
             }
         }
         for (var p : r.jenkins.allItems(FreeStyleProject.class)) {
@@ -893,14 +893,14 @@ public class QueueTest {
         p.setAssignedNode(slave);
 
         QueueTaskFuture<FreeStyleBuild> f = p.scheduleBuild2(0);
-        assertThrows("Should time out (as the agent is offline)", TimeoutException.class, () -> f.get(3, TimeUnit.SECONDS));
+        assertThrows(TimeoutException.class, () -> f.get(3, TimeUnit.SECONDS), "Should time out (as the agent is offline)");
 
         Queue.Item item = Queue.getInstance().getItem(p);
         assertNotNull(item);
         Queue.getInstance().doCancelItem(item.getId());
         assertNull(Queue.getInstance().getItem(p));
 
-        assertThrows("Should not get (as it is cancelled)", CancellationException.class, () -> f.get(10, TimeUnit.SECONDS));
+        assertThrows(CancellationException.class, () -> f.get(10, TimeUnit.SECONDS), "Should not get (as it is cancelled)");
     }
 
     @Test public void waitForStartAndCancelBeforeStart() throws Exception {
@@ -924,7 +924,7 @@ public class QueueTest {
         assertThrows(CancellationException.class, f::waitForStart);
     }
 
-    @Ignore("TODO flakes in CI")
+    @Disabled("TODO flakes in CI")
     @Issue("JENKINS-27871")
     @Test public void testBlockBuildWhenUpstreamBuildingLock() throws Exception {
         final String prefix = "JENKINS-27871";
@@ -953,9 +953,9 @@ public class QueueTest {
         final FreeStyleBuild buildB = taskB.get(60, TimeUnit.SECONDS);
         final FreeStyleBuild buildC = taskC.get(60, TimeUnit.SECONDS);
         long buildBEndTime = buildB.getStartTimeInMillis() + buildB.getDuration();
-        assertTrue("Project B build should be finished before the build of project C starts. " +
-                "B finished at " + buildBEndTime + ", C started at " + buildC.getStartTimeInMillis(),
-                buildC.getStartTimeInMillis() >= buildBEndTime);
+        assertTrue(buildC.getStartTimeInMillis() >= buildBEndTime,
+                "Project B build should be finished before the build of project C starts. " +
+                "B finished at " + buildBEndTime + ", C started at " + buildC.getStartTimeInMillis());
     }
 
     @Issue({"SECURITY-186", "SECURITY-618"})
@@ -1063,8 +1063,8 @@ public class QueueTest {
     public void load_queue_xml() {
         Queue q = r.getInstance().getQueue();
         Queue.Item[] items = q.getItems();
-        assertEquals(Arrays.asList(items).toString(), 11, items.length);
-        assertEquals("Loading the queue should not generate saves", 0, QueueSaveSniffer.count);
+        assertEquals(11, items.length, Arrays.asList(items).toString());
+        assertEquals(0, QueueSaveSniffer.count, "Loading the queue should not generate saves");
 
         // Clear the queue
         assertTrue(r.jenkins.getQueue().cancel(r.jenkins.getItemByFullName("a", FreeStyleProject.class)));

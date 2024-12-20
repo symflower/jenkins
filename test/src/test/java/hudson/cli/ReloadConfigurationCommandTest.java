@@ -44,10 +44,10 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import jenkins.model.Jenkins;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 
@@ -60,7 +60,7 @@ public class ReloadConfigurationCommandTest {
 
     @Rule public final JenkinsRule j = new JenkinsRule();
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
         j.jenkins.setSecurityRealm(j.createDummySecurityRealm());
         ReloadConfigurationCommand cmd = new ReloadConfigurationCommand();
 
@@ -162,7 +162,7 @@ public class ReloadConfigurationCommandTest {
         assertThat(view.getIncludeRegex(), equalTo("newIncludeRegex"));
     }
 
-    @Ignore // Until fixed JENKINS-8217
+    @Disabled // Until fixed JENKINS-8217
     @Test
     public void reloadDescriptorConfig() throws Exception {
         Mailer.DescriptorImpl desc = j.jenkins.getExtensionList(Mailer.DescriptorImpl.class).get(0);

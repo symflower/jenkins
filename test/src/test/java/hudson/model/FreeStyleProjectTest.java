@@ -28,11 +28,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.ExtensionList;
 import hudson.diagnosis.OldDataMonitor;
@@ -50,8 +50,8 @@ import org.htmlunit.WebRequest;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.FailureBuilder;
 import org.jvnet.hudson.test.Issue;
@@ -65,7 +65,7 @@ import org.kohsuke.stapler.jelly.JellyFacet;
 /**
  * @author Kohsuke Kawaguchi
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class FreeStyleProjectTest {
 
     @Rule
@@ -208,7 +208,7 @@ public class FreeStyleProjectTest {
         boolean createUser = false;
         User badUser = User.getById("foo", createUser);
 
-        assertNull("Should not have created user.", badUser);
+        assertNull(badUser, "Should not have created user.");
     }
 
     private static final String VALID_XML_BAD_FIELD_USER_XML =
@@ -255,9 +255,9 @@ public class FreeStyleProjectTest {
     public void cannotCreateJobWithTrailingDot_withoutOtherJob() throws Exception {
         assertThat(j.jenkins.getItems(), hasSize(0));
         Failure e = assertThrows(
-                "Adding the job should have thrown an exception during checkGoodName",
                 Failure.class,
-                () -> j.jenkins.createProjectFromXML("jobA.", new ByteArrayInputStream("<project/>".getBytes(StandardCharsets.UTF_8))));
+                () -> j.jenkins.createProjectFromXML("jobA.", new ByteArrayInputStream("<project/>".getBytes(StandardCharsets.UTF_8))),
+                "Adding the job should have thrown an exception during checkGoodName");
         assertEquals(Messages.Hudson_TrailingDot(), e.getMessage());
         assertThat(j.jenkins.getItems(), hasSize(0));
     }
@@ -269,9 +269,9 @@ public class FreeStyleProjectTest {
         j.createFreeStyleProject("jobA");
         assertThat(j.jenkins.getItems(), hasSize(1));
         Failure e = assertThrows(
-                "Adding the job should have thrown an exception during checkGoodName",
                 Failure.class,
-                () -> j.jenkins.createProjectFromXML("jobA.", new ByteArrayInputStream("<project/>".getBytes(StandardCharsets.UTF_8))));
+                () -> j.jenkins.createProjectFromXML("jobA.", new ByteArrayInputStream("<project/>".getBytes(StandardCharsets.UTF_8))),
+                "Adding the job should have thrown an exception during checkGoodName");
         assertEquals(Messages.Hudson_TrailingDot(), e.getMessage());
         assertThat(j.jenkins.getItems(), hasSize(1));
     }

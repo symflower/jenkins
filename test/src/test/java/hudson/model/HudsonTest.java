@@ -24,11 +24,11 @@
 
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.Node.Mode;
 import hudson.search.SearchTest;
@@ -51,8 +51,8 @@ import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Email;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -63,7 +63,7 @@ import org.jvnet.hudson.test.recipes.LocalData;
 /**
  * @author Kohsuke Kawaguchi
  */
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class HudsonTest {
 
     @Rule
@@ -173,7 +173,7 @@ public class HudsonTest {
         WebClient wc = j.createWebClient();
         HtmlPage page = wc.goTo("computer/(built-in)/");
         for (HtmlAnchor a : page.getAnchors()) {
-            assertFalse(a.getHrefAttribute(), a.getHrefAttribute().endsWith("delete"));
+            assertFalse(a.getHrefAttribute().endsWith("delete"), a.getHrefAttribute());
         }
 
         wc.setThrowExceptionOnFailingStatusCode(false);
@@ -212,9 +212,9 @@ public class HudsonTest {
         pv.setAccessible(true);
         String value = null;
         pv.set(j.jenkins, value);
-        assertNull("null primaryView", j.jenkins.getView(value));
+        assertNull(j.jenkins.getView(value), "null primaryView");
         value = "some bogus name";
         pv.set(j.jenkins, value);
-        assertNull("invalid primaryView", j.jenkins.getView(value));
+        assertNull(j.jenkins.getView(value), "invalid primaryView");
     }
 }

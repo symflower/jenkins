@@ -27,10 +27,10 @@ package hudson.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.Extension;
 import hudson.ExtensionList;
@@ -57,7 +57,7 @@ import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
@@ -110,10 +110,10 @@ public class ItemGroupMixInTest {
     r.jenkins.reload();
 
     // Folder
-    assertNotNull("Folder failed to load.", r.jenkins.getItemByFullName("folder"));
-    assertNull("Job should have failed to load.", r.jenkins.getItemByFullName("folder/job1"));
-    assertNotNull("Other job in folder should have loaded.", r.jenkins.getItemByFullName("folder/job2"));
-    assertNotNull("Other job in folder should have loaded.", r.jenkins.getItemByFullName("folder/job3"));
+    assertNotNull(r.jenkins.getItemByFullName("folder"), "Folder failed to load.");
+    assertNull(r.jenkins.getItemByFullName("folder/job1"), "Job should have failed to load.");
+    assertNotNull(r.jenkins.getItemByFullName("folder/job2"), "Other job in folder should have loaded.");
+    assertNotNull(r.jenkins.getItemByFullName("folder/job3"), "Other job in folder should have loaded.");
   }
 
   /**
@@ -299,7 +299,7 @@ public class ItemGroupMixInTest {
     boolean createUser = false;
     User badUser = User.getById("foo", createUser);
 
-    assertNull("Should not have created user.", badUser);
+    assertNull(badUser, "Should not have created user.");
   }
 
   private static final String VALID_XML_BAD_FIELD_USER_XML =

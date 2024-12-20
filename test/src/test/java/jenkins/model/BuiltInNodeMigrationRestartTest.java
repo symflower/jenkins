@@ -11,15 +11,15 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.Description;
 import org.jvnet.hudson.test.HudsonHomeLoader;
 import org.jvnet.hudson.test.JenkinsRecipe;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsSessionRule;
 import org.jvnet.hudson.test.recipes.LocalData;
+import org.junit.jupiter.api.Assertions;
 
 public class BuiltInNodeMigrationRestartTest {
     @Rule
@@ -28,14 +28,14 @@ public class BuiltInNodeMigrationRestartTest {
     @Test
     public void testNewInstanceWithoutConfiguration() throws Throwable {
         r.then(j -> {
-            Assert.assertTrue(j.jenkins.getRenameMigrationDone());
-            Assert.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertTrue(j.jenkins.getRenameMigrationDone());
+            Assertions.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
         r.then(j -> {
-            Assert.assertTrue(j.jenkins.getRenameMigrationDone());
-            Assert.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertTrue(j.jenkins.getRenameMigrationDone());
+            Assertions.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
     }
 
@@ -43,14 +43,14 @@ public class BuiltInNodeMigrationRestartTest {
     @LocalDataOnce
     public void migratedInstanceStartsWithNewTerminology() throws Throwable {
         r.then(j -> {
-            Assert.assertTrue(j.jenkins.getRenameMigrationDone());
-            Assert.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertTrue(j.jenkins.getRenameMigrationDone());
+            Assertions.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
         r.then(j -> {
-            Assert.assertTrue(j.jenkins.getRenameMigrationDone());
-            Assert.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertTrue(j.jenkins.getRenameMigrationDone());
+            Assertions.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
     }
 
@@ -58,25 +58,25 @@ public class BuiltInNodeMigrationRestartTest {
     @LocalDataOnce
     public void oldDataStartsWithOldTerminology() throws Throwable {
         r.then(j -> {
-            Assert.assertFalse(j.jenkins.getRenameMigrationDone());
-            Assert.assertTrue(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertTrue(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertFalse(j.jenkins.getRenameMigrationDone());
+            Assertions.assertTrue(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertTrue(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
         r.then(j -> {
-            Assert.assertFalse(j.jenkins.getRenameMigrationDone());
-            Assert.assertTrue(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertTrue(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertFalse(j.jenkins.getRenameMigrationDone());
+            Assertions.assertTrue(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertTrue(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
 
             j.jenkins.performRenameMigration();
 
-            Assert.assertTrue(j.jenkins.getRenameMigrationDone());
-            Assert.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertTrue(j.jenkins.getRenameMigrationDone());
+            Assertions.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
         r.then(j -> {
-            Assert.assertTrue(j.jenkins.getRenameMigrationDone());
-            Assert.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
-            Assert.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
+            Assertions.assertTrue(j.jenkins.getRenameMigrationDone());
+            Assertions.assertFalse(j.jenkins.nodeRenameMigrationNeeded);
+            Assertions.assertFalse(Objects.requireNonNull(j.jenkins.getAdministrativeMonitor(BuiltInNodeMigration.class.getName())).isActivated());
         });
     }
 

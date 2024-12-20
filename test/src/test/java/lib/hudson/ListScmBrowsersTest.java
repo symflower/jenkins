@@ -3,7 +3,7 @@ package lib.hudson;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.matrix.MatrixProject;
 import hudson.model.Item;
@@ -16,7 +16,7 @@ import org.htmlunit.html.HtmlOption;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlSelect;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
 
@@ -45,7 +45,7 @@ public class ListScmBrowsersTest {
         for (HtmlSelect select : selects) {
             Set<String> title = new HashSet<>();
             for (HtmlOption o : select.getOptions()) {
-                assertTrue("Duplicate entry: " + o.getText(), title.add(o.getText()));
+                assertTrue(title.add(o.getText()), "Duplicate entry: " + o.getText());
             }
         }
     }

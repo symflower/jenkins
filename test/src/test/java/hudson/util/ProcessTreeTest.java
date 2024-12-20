@@ -1,9 +1,9 @@
 package hudson.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.EnvVars;
@@ -22,15 +22,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
-import org.junit.After;
-import org.junit.Assume;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.ExtractResourceSCM;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestBuilder;
 import org.jvnet.hudson.test.TestExtension;
+import org.junit.jupiter.api.Assumptions;
 
 public class ProcessTreeTest {
 
@@ -38,7 +38,7 @@ public class ProcessTreeTest {
     public JenkinsRule j = new JenkinsRule();
     private Process process;
 
-    @After
+    @AfterEach
     public void tearDown() {
         ProcessTree.vetoersExist = null;
         if (null != process)
@@ -76,7 +76,7 @@ public class ProcessTreeTest {
     @Issue("JENKINS-22641")
     public void processProperlyKilledUnix() throws Exception {
         ProcessTree.enabled = true;
-        Assume.assumeFalse("This test does not involve windows", Functions.isWindows());
+        Assumptions.assumeFalse(Functions.isWindows(), "This test does not involve windows");
 
         FreeStyleProject sleepProject = j.createFreeStyleProject();
         FreeStyleProject processJob = j.createFreeStyleProject();
@@ -100,10 +100,10 @@ public class ProcessTreeTest {
         try {
             j.buildAndAssertSuccess(p);
 
-            assertTrue("Process should be running", spawner.proc.isAlive());
+            assertTrue(spawner.proc.isAlive(), "Process should be running");
         } finally {
             spawner.proc.kill();
-            assertFalse("Process should be dead", spawner.proc.isAlive());
+            assertFalse(spawner.proc.isAlive(), "Process should be dead");
         }
     }
 
@@ -143,7 +143,7 @@ public class ProcessTreeTest {
 
         ProcessTree processTree = ProcessTree.get();
         processTree.killAll(Map.of("cookie", "testKeepDaemonsAlive"));
-        assertThrows("Process should have been excluded from the killing", IllegalThreadStateException.class, () -> process.exitValue());
+        assertThrows(IllegalThreadStateException.class, () -> process.exitValue(), "Process should have been excluded from the killing");
     }
 
     @Test
@@ -174,7 +174,7 @@ public class ProcessTreeTest {
         StringWriter out = new StringWriter();
         s.createLauncher(new StreamTaskListener(out)).kill(Map.of("cookie", "testKeepDaemonsAlive"));
 
-        assertThrows("Process should have been excluded from the killing", IllegalThreadStateException.class, () -> process.exitValue());
+        assertThrows(IllegalThreadStateException.class, () -> process.exitValue(), "Process should have been excluded from the killing");
     }
 
     @TestExtension({"considersKillingVetos", "considersKillingVetosOnSlave"})

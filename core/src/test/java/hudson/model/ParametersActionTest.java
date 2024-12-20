@@ -1,8 +1,8 @@
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 
 import hudson.EnvVars;
@@ -10,8 +10,8 @@ import hudson.model.queue.SubTask;
 import hudson.tasks.BuildWrapper;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 public class ParametersActionTest {
@@ -19,7 +19,7 @@ public class ParametersActionTest {
     private ParametersAction baseParamsAB;
     private StringParameterValue baseA;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         baseA = new StringParameterValue("a", "base-a");
         StringParameterValue baseB = new StringParameterValue("b", "base-b");

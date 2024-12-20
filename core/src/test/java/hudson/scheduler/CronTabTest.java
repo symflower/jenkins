@@ -27,9 +27,9 @@ package hudson.scheduler;
 import static java.util.Calendar.MONDAY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import antlr.ANTLRException;
 import java.text.DateFormat;
@@ -39,8 +39,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Timeout;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -84,7 +86,8 @@ public class CronTabTest {
         compare(new GregorianCalendar(2010, Calendar.AUGUST, 1, 0, 0), x.ceil(c));
     }
 
-    @Test(timeout = 1000)
+    @Test
+    @Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
     @Issue("JENKINS-12357")
     public void testCeil3_DoW7() throws Exception {
         // similar to testCeil3, but DoW=7 may stuck in an infinite loop
@@ -341,14 +344,16 @@ public class CronTabTest {
     }
 
     @Issue("SECURITY-790")
-    @Test(timeout = 1000L) public void testLongMonths() throws Exception {
+    @Test
+    @Timeout(value = 1000L, unit = TimeUnit.MILLISECONDS) public void testLongMonths() throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.JULY);
         new CronTab("0 0 31 7 *").floor(cal); // would infinite loop
     }
 
     @Issue("SECURITY-1193")
-    @Test(timeout = 1000L) public void testCeilLongMonths() throws Exception {
+    @Test
+    @Timeout(value = 1000L, unit = TimeUnit.MILLISECONDS) public void testCeilLongMonths() throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, Calendar.NOVEMBER);
         new CronTab("0 0 31 * *").ceil(cal); // would infinite loop

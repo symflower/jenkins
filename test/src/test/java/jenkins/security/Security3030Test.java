@@ -26,8 +26,8 @@ package jenkins.security;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import hudson.ExtensionList;
 import hudson.model.RootAction;
@@ -49,15 +49,15 @@ import org.apache.commons.fileupload2.core.FileUploadFileCountLimitException;
 import org.apache.commons.fileupload2.core.FileUploadSizeException;
 import org.htmlunit.HttpMethod;
 import org.htmlunit.WebRequest;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.RequestImpl;
 import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.verb.POST;
+import org.junit.jupiter.api.Assertions;
 
 public class Security3030Test {
     // TODO Consider parameterizing with Stapler (RequestImpl/StaplerRequest2FormAction) + Jenkins (MultipartFormDataParser/MultipartFormDataParserAction)
@@ -271,7 +271,7 @@ public class Security3030Test {
                 actual = null;
                 return processMultipartAndUnwrap(req);
             } else {
-                actualWrapped = Assert.assertThrows(expectedWrapped, () -> processMultipartAndUnwrap(req));
+                actualWrapped = Assertions.assertThrows(expectedWrapped, () -> processMultipartAndUnwrap(req));
 
                 // The client might still be sending us more of the request, but we have had enough of it already and
                 // have decided to stop processing it. Drain the read end of the socket so that the client can finish

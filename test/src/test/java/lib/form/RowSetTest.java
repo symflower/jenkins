@@ -1,6 +1,6 @@
 package lib.form;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.InvisibleAction;
 import hudson.model.RootAction;
@@ -8,7 +8,7 @@ import hudson.security.csrf.CrumbIssuer;
 import net.sf.json.JSONObject;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.StaplerRequest2;

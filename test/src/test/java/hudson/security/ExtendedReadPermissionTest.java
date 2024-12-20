@@ -1,6 +1,6 @@
 package hudson.security;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import hudson.model.Item;
 import java.net.HttpURLConnection;
@@ -8,12 +8,12 @@ import jenkins.model.Jenkins;
 import org.htmlunit.html.HtmlButton;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 
@@ -27,16 +27,16 @@ public class ExtendedReadPermissionTest {
 
     private static boolean enabled;
 
-    @BeforeClass public static void saveEnabled() {
+    @BeforeAll public static void saveEnabled() {
         // TODO potential race condition since other test suites might be running concurrently
         enabled = Item.EXTENDED_READ.getEnabled();
     }
 
-    @AfterClass public static void restoreEnabled() {
+    @AfterAll public static void restoreEnabled() {
         Item.EXTENDED_READ.setEnabled(enabled);
     }
 
-    @Before public void security() throws Exception {
+    @BeforeEach public void security() throws Exception {
         r.createFreeStyleProject("a");
         r.jenkins.setSecurityRealm(r.createDummySecurityRealm());
         r.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy().
@@ -62,7 +62,7 @@ public class ExtendedReadPermissionTest {
         assertNull(saveButton);
     }
 
-    @Ignore(
+    @Disabled(
             "This was actually testing a design of matrix-auth rather than core: that permissions, though formerly granted, are ignored if currently disabled."
                 + " Permission.enabled Javadoc only discusses visibility."
                 + " MockAuthorizationStrategy does not implement this check.")

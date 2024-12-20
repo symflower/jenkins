@@ -57,9 +57,9 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import jenkins.security.MasterToSlaveCallable;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -80,7 +80,7 @@ public class OldRemotingAgentTest {
 
     private File agentJar;
 
-    @Before
+    @BeforeEach
     public void extractAgent() throws Exception {
         agentJar = new File(tmpDir.getRoot(), "old-agent.jar");
         FileUtils.copyURLToFile(OldRemotingAgentTest.class.getResource("/old-remoting/remoting-minimum-supported.jar"), agentJar);

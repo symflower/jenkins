@@ -1,12 +1,12 @@
 package hudson.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.util.Collection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 /**
@@ -114,8 +114,8 @@ public class AbstractItemTest {
         NameNotEditableItem item = new NameNotEditableItem(null, "NameNotEditableItem");
 
         //WHEN
-        final IOException e = assertThrows("An item with isNameEditable false must throw exception when trying to rename it.",
-                IOException.class, () -> item.renameTo("NewName"));
+        final IOException e = assertThrows(IOException.class,
+                () -> item.renameTo("NewName"), "An item with isNameEditable false must throw exception when trying to rename it.");
 
         assertEquals("Trying to rename an item that does not support this operation.", e.getMessage());
         assertEquals("NameNotEditableItem", item.getName());
@@ -129,8 +129,8 @@ public class AbstractItemTest {
         NameNotEditableItem item = new NameNotEditableItem(null, "NameNotEditableItem");
 
         //WHEN
-        final Failure f = assertThrows("An item with isNameEditable false must throw exception when trying to call doConfirmRename.",
-                Failure.class, () -> item.doConfirmRename("MyNewName"));
+        final Failure f = assertThrows(Failure.class,
+                () -> item.doConfirmRename("MyNewName"), "An item with isNameEditable false must throw exception when trying to call doConfirmRename.");
         assertEquals("Trying to rename an item that does not support this operation.", f.getMessage());
         assertEquals("NameNotEditableItem", item.getName());
     }

@@ -24,7 +24,7 @@
 
 package jenkins.console;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.model.Descriptor;
 import hudson.model.FreeStyleBuild;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;

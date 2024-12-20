@@ -24,9 +24,9 @@
 
 package hudson.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hudson.model.InvisibleAction;
 import hudson.model.Item;
@@ -35,14 +35,14 @@ import java.net.HttpURLConnection;
 import jenkins.model.Jenkins;
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.HttpResponse;
+import org.junit.jupiter.api.Assertions;
 
 public class AccessDeniedException3Test {
 
@@ -60,7 +60,7 @@ public class AccessDeniedException3Test {
         realm.addGroups("user", groups);
         r.jenkins.setSecurityRealm(realm);
         r.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy());
-        FailingHttpStatusCodeException x = assertThrows("should not have been allowed to access anything", FailingHttpStatusCodeException.class, () -> r.createWebClient().login("user"));
+        FailingHttpStatusCodeException x = assertThrows(FailingHttpStatusCodeException.class, () -> r.createWebClient().login("user"), "should not have been allowed to access anything");
         assertEquals(HttpURLConnection.HTTP_FORBIDDEN, x.getStatusCode());
         assertNotNull(x.getResponse().getResponseHeaderValue("X-You-Are-In-Group-Disabled"));
     }
@@ -75,12 +75,12 @@ public class AccessDeniedException3Test {
         wc.setRedirectEnabled(true);
         wc.setThrowExceptionOnFailingStatusCode(false);
         final HtmlPage configure = wc.goTo("configure");
-        Assert.assertTrue(configure.getUrl().getPath().contains("login"));
-        Assert.assertTrue(configure.getUrl().getQuery().startsWith("from"));
+        Assertions.assertTrue(configure.getUrl().getPath().contains("login"));
+        Assertions.assertTrue(configure.getUrl().getQuery().startsWith("from"));
 
         final HtmlPage configureSecurity = wc.goTo("configureSecurity/");
-        Assert.assertTrue(configureSecurity.getUrl().getPath().contains("login"));
-        Assert.assertTrue(configureSecurity.getUrl().getQuery().startsWith("from"));
+        Assertions.assertTrue(configureSecurity.getUrl().getPath().contains("login"));
+        Assertions.assertTrue(configureSecurity.getUrl().getQuery().startsWith("from"));
     }
 
     @Issue("JENKINS-5303")
@@ -90,12 +90,12 @@ public class AccessDeniedException3Test {
         r.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy().grant(Jenkins.READ).everywhere().toEveryone());
         JenkinsRule.WebClient wc = r.createWebClient().login("user");
         FailingHttpStatusCodeException x = assertThrows(FailingHttpStatusCodeException.class, () -> wc.goTo("fails/accessDeniedException3"));
-        assertEquals("should send a 403 from AccessDeniedException3", HttpURLConnection.HTTP_FORBIDDEN, x.getStatusCode());
-        assertEquals("should report X-You-Are-Authenticated-As from AccessDeniedException3", "user", x.getResponse().getResponseHeaderValue("X-You-Are-Authenticated-As"));
+        assertEquals(HttpURLConnection.HTTP_FORBIDDEN, x.getStatusCode(), "should send a 403 from AccessDeniedException3");
+        assertEquals("user", x.getResponse().getResponseHeaderValue("X-You-Are-Authenticated-As"), "should report X-You-Are-Authenticated-As from AccessDeniedException3");
 
         x = assertThrows(FailingHttpStatusCodeException.class, () -> wc.goTo("fails/accessDeniedException2"));
-        assertEquals("should send a 403 from AccessDeniedException2", HttpURLConnection.HTTP_FORBIDDEN, x.getStatusCode());
-        assertEquals("should report X-You-Are-Authenticated-As from AccessDeniedException2", "user", x.getResponse().getResponseHeaderValue("X-You-Are-Authenticated-As"));
+        assertEquals(HttpURLConnection.HTTP_FORBIDDEN, x.getStatusCode(), "should send a 403 from AccessDeniedException2");
+        assertEquals("user", x.getResponse().getResponseHeaderValue("X-You-Are-Authenticated-As"), "should report X-You-Are-Authenticated-As from AccessDeniedException2");
     }
 
     @TestExtension("captureException")

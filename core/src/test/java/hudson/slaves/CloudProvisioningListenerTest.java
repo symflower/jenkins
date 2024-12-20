@@ -1,11 +1,11 @@
 package hudson.slaves;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import hudson.model.Messages;
 import hudson.model.queue.CauseOfBlockage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 public class CloudProvisioningListenerTest {

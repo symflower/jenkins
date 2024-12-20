@@ -27,18 +27,18 @@ package hudson.util;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 
 public class ArgumentListBuilderTest {
@@ -49,9 +49,9 @@ public class ArgumentListBuilderTest {
         builder.add("arg");
         builder.add("other", "arguments");
 
-        assertFalse("There should not be any masked arguments", builder.hasMaskedArguments());
+        assertFalse(builder.hasMaskedArguments(), "There should not be any masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, false, false }));
     }
 
@@ -61,9 +61,9 @@ public class ArgumentListBuilderTest {
         builder.add("arg");
         builder.addMasked("ismasked");
 
-        assertTrue("There should be masked arguments", builder.hasMaskedArguments());
+        assertTrue(builder.hasMaskedArguments(), "There should be masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, true }));
     }
 
@@ -75,9 +75,9 @@ public class ArgumentListBuilderTest {
         builder.add("non masked arg");
         builder.addMasked("ismasked2");
 
-        assertTrue("There should be masked arguments", builder.hasMaskedArguments());
+        assertTrue(builder.hasMaskedArguments(), "There should be masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, true, false, true }));
     }
 
@@ -88,9 +88,9 @@ public class ArgumentListBuilderTest {
         builder.add("arg");
         builder.prepend("first", "second");
 
-        assertTrue("There should be masked arguments", builder.hasMaskedArguments());
+        assertTrue(builder.hasMaskedArguments(), "There should be masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, false, true, false }));
     }
 
@@ -101,9 +101,9 @@ public class ArgumentListBuilderTest {
         builder.addMasked("ismasked");
         builder.add("arg");
 
-        assertTrue("There should be masked arguments", builder.hasMaskedArguments());
+        assertTrue(builder.hasMaskedArguments(), "There should be masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, false, true, false }));
     }
 
@@ -148,7 +148,7 @@ public class ArgumentListBuilderTest {
     }
 
     @Test
-    @Ignore("It's only for reproduce JENKINS-28790 issue. It's added to testToWindowsCommand")
+    @Disabled("It's only for reproduce JENKINS-28790 issue. It's added to testToWindowsCommand")
     @Issue("JENKINS-28790")
     public void testToWindowsCommandMasked() {
         ArgumentListBuilder builder = new ArgumentListBuilder().
@@ -184,9 +184,9 @@ public class ArgumentListBuilderTest {
         builder.add("arg2");
 
         ArgumentListBuilder clone = builder.clone();
-        assertTrue("There should be masked arguments", clone.hasMaskedArguments());
+        assertTrue(clone.hasMaskedArguments(), "There should be masked arguments");
         boolean[] array = clone.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(builder.toMaskArray()));
     }
 
@@ -205,9 +205,9 @@ public class ArgumentListBuilderTest {
         ArgumentListBuilder builder = new ArgumentListBuilder();
         builder.addKeyValuePairs(null, KEY_VALUES, MASKS);
 
-        assertTrue("There should be masked arguments", builder.hasMaskedArguments());
+        assertTrue(builder.hasMaskedArguments(), "There should be masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, true, false }));
 
     }
@@ -217,9 +217,9 @@ public class ArgumentListBuilderTest {
         ArgumentListBuilder builder = new ArgumentListBuilder();
         builder.addKeyValuePairs(null, KEY_VALUES);
 
-        assertFalse("There should not be any masked arguments", builder.hasMaskedArguments());
+        assertFalse(builder.hasMaskedArguments(), "There should not be any masked arguments");
         boolean[] array = builder.toMaskArray();
-        assertNotNull("The mask array should not be null", array);
+        assertNotNull(array, "The mask array should not be null");
         assertThat("The mask array was incorrect", array, is(new boolean[] { false, false, false }));
     }
 

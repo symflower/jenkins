@@ -24,13 +24,13 @@
 
 package jenkins.security;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Signature;
 import java.util.Base64;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RSADigitalSignatureConfidentialKeyTest {
 

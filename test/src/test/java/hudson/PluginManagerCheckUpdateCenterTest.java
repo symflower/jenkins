@@ -16,9 +16,8 @@ import java.util.logging.Logger;
 import jenkins.model.Jenkins;
 import org.htmlunit.Page;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
 import org.jvnet.hudson.test.TestExtension;
@@ -26,6 +25,7 @@ import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.StaplerResponse2;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 public class PluginManagerCheckUpdateCenterTest {
     @Rule
@@ -128,10 +128,10 @@ public class PluginManagerCheckUpdateCenterTest {
         String page = pageAfterClick.getWebResponse().getContentAsString();
 
         // Check what is shown in the web page
-        Assert.assertNotEquals(isSuccess, page.contains(Messages.PluginManager_CheckUpdateServerError(message)));
+        Assertions.assertNotEquals(isSuccess, page.contains(Messages.PluginManager_CheckUpdateServerError(message)));
 
         // Check the logs (attempted CHECK_UPDATE_ATTEMPTS times). The second argument, the exception does't matter to test the message in the log
-        Assert.assertNotEquals(isSuccess, logging.getMessages().stream().anyMatch(m -> m.contains(Messages.PluginManager_UpdateSiteError(PluginManager.CHECK_UPDATE_ATTEMPTS, ""))));
+        Assertions.assertNotEquals(isSuccess, logging.getMessages().stream().anyMatch(m -> m.contains(Messages.PluginManager_UpdateSiteError(PluginManager.CHECK_UPDATE_ATTEMPTS, ""))));
     }
 
     @TestExtension("updateSiteReturn502Test")

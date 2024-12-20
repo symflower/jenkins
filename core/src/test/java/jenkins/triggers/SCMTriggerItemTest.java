@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verify;
 import hudson.model.SCMedItem;
 import hudson.model.TaskListener;
 import jenkins.scm.SCMDecisionHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.mockito.MockedStatic;
 

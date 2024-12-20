@@ -2,11 +2,11 @@ package jenkins.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Functions;
 import hudson.init.InitMilestone;
@@ -21,12 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Stream;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.LoggerRule;
@@ -55,12 +55,12 @@ public class JenkinsBuildsAndWorkspacesDirectoriesTest {
     @ClassRule
     public static TemporaryFolder tmp = new TemporaryFolder();
 
-    @Before
+    @BeforeEach
     public void before() {
         clearSystemProperties();
     }
 
-    @After
+    @AfterEach
     public void after() {
         clearSystemProperties();
     }
@@ -108,7 +108,7 @@ public class JenkinsBuildsAndWorkspacesDirectoriesTest {
             } // else perhaps running as root
 
             for (String badValue : badValues) {
-                assertThrows(badValue + " should have been rejected", InvalidBuildsDir.class, () -> Jenkins.checkRawBuildsDir(badValue));
+                assertThrows(InvalidBuildsDir.class, () -> Jenkins.checkRawBuildsDir(badValue), badValue + " should have been rejected");
             }
         });
     }
@@ -221,13 +221,13 @@ public class JenkinsBuildsAndWorkspacesDirectoriesTest {
         );
     }
 
-    @Ignore("TODO calling restart seems to break Surefire")
+    @Disabled("TODO calling restart seems to break Surefire")
     @Issue("JENKINS-50164")
     @LocalData
     @Test
     public void fromPreviousCustomSetup() {
 
-        assumeFalse("Default Windows lifecycle does not support restart.", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "Default Windows lifecycle does not support restart.");
 
         // check starting point and change config for next run
         final String newBuildsDirValueBySysprop = "/tmp/${ITEM_ROOTDIR}/bluh";

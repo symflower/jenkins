@@ -1,6 +1,6 @@
 package hudson.console;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.Launcher;
 import hudson.MarkupText;
@@ -10,7 +10,7 @@ import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import org.htmlunit.html.HtmlPage;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestBuilder;
 
@@ -38,9 +38,9 @@ public class UrlAnnotatorTest {
 
         HtmlPage c = j.createWebClient().getPage(b, "console");
         String rsp = c.getWebResponse().getContentAsString();
-        assertTrue(rsp, rsp.contains("<a href='http://www.sun.com/'>http://www.sun.com/</a>"));
-        assertTrue(rsp, rsp.contains("<a href='http://www.kohsuke.org/'>http://www.kohsuke.org/</a>"));
-        assertTrue(rsp, rsp.contains("<a href='http://www.oracle.com/'>http://www.oracle.com/</a>"));
+        assertTrue(rsp.contains("<a href='http://www.sun.com/'>http://www.sun.com/</a>"), rsp);
+        assertTrue(rsp.contains("<a href='http://www.kohsuke.org/'>http://www.kohsuke.org/</a>"), rsp);
+        assertTrue(rsp.contains("<a href='http://www.oracle.com/'>http://www.oracle.com/</a>"), rsp);
     }
 
     /**

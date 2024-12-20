@@ -24,10 +24,10 @@
 
 package jenkins.model;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.LocalData;
 
@@ -37,12 +37,12 @@ public class BuiltInNodeMigrationPropertyTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    @BeforeClass
+    @BeforeAll
     public static void setProperty() {
         System.setProperty(KEY, OVERRIDE_VALUE);
     }
 
-    @AfterClass
+    @AfterAll
     public static void clearProperty() {
         System.clearProperty(KEY);
     }

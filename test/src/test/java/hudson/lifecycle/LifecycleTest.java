@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
 import java.util.logging.Level;
 import jenkins.model.Jenkins;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.RealJenkinsRule;
 

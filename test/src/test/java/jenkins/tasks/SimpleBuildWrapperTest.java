@@ -24,9 +24,9 @@
 
 package jenkins.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.EnvVars;
 import hudson.FilePath;
@@ -61,10 +61,9 @@ import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Locale;
-import org.junit.Assume;
 import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.CaptureEnvironmentBuilder;
@@ -73,6 +72,7 @@ import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestBuilder;
 import org.jvnet.hudson.test.TestExtension;
+import org.junit.jupiter.api.Assumptions;
 
 public class SimpleBuildWrapperTest {
 
@@ -87,7 +87,7 @@ public class SimpleBuildWrapperTest {
         p.getBuildersList().add(captureEnvironment);
         FreeStyleBuild b = r.buildAndAssertSuccess(p);
         String path = captureEnvironment.getEnvVars().get("PATH");
-        assertTrue(path, path.startsWith(b.getWorkspace().child("bin").getRemote() + File.pathSeparatorChar));
+        assertTrue(path.startsWith(b.getWorkspace().child("bin").getRemote() + File.pathSeparatorChar), path);
     }
 
     public static class WrapperWithEnvOverride extends SimpleBuildWrapper {
@@ -104,7 +104,7 @@ public class SimpleBuildWrapperTest {
     }
 
     @Test public void envOverrideExpand() throws Exception {
-        Assume.assumeFalse(Functions.isWindows());
+        Assumptions.assumeFalse(Functions.isWindows());
         FreeStyleProject p = r.createFreeStyleProject();
         p.getBuildWrappersList().add(new WrapperWithEnvOverrideExpand());
         SpecialEnvSlave slave = new SpecialEnvSlave(tmp.getRoot(), r.createComputerLauncher(null));

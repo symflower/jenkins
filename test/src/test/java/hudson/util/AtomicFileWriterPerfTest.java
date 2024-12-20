@@ -1,10 +1,12 @@
 package hudson.util;
 
 import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Timeout;
 
 public class AtomicFileWriterPerfTest {
 
@@ -24,9 +26,10 @@ public class AtomicFileWriterPerfTest {
      * So using slightly more than the worse value obtained above should avoid making this flaky and still catch
      * <strong>really</strong> bad performance regressions.
      */
-    @Ignore("TODO often fails in CI")
+    @Disabled("TODO often fails in CI")
     @Issue("JENKINS-34855")
-    @Test(timeout = 50 * 1000L)
+    @Test
+    @Timeout(value = 50 * 1000L, unit = TimeUnit.MILLISECONDS)
     public void poorManPerformanceTestBed() throws Exception {
         int count = 1000;
         while (count-- > 0) {

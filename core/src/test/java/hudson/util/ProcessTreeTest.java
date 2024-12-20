@@ -1,8 +1,8 @@
 package hudson.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import hudson.ChannelRule;
 import hudson.remoting.VirtualChannel;
@@ -11,9 +11,9 @@ import hudson.util.ProcessTree.ProcessCallable;
 import java.io.IOException;
 import java.io.Serializable;
 import jenkins.security.MasterToSlaveCallable;
-import org.junit.Assume;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assumptions;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -30,7 +30,7 @@ public class ProcessTreeTest {
     }
 
     @Test public void remoting() throws Exception {
-        Assume.assumeFalse("on some platforms where we fail to list any processes", ProcessTree.get() == ProcessTree.DEFAULT);
+        Assumptions.assumeFalse(ProcessTree.get() == ProcessTree.DEFAULT, "on some platforms where we fail to list any processes");
 
         Tag t = channels.french.call(new MyCallable());
 

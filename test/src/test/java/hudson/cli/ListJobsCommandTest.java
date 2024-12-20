@@ -37,9 +37,9 @@ import hudson.model.DirectlyModifiableView;
 import hudson.model.FreeStyleProject;
 import hudson.model.Label;
 import hudson.model.ListView;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockFolder;
@@ -50,7 +50,7 @@ public class ListJobsCommandTest {
     private CLICommand listJobsCommand;
     private CLICommandInvoker command;
 
-    @Before public void setUp() {
+    @BeforeEach public void setUp() {
         listJobsCommand = new ListJobsCommand();
         command = new CLICommandInvoker(j, listJobsCommand);
     }

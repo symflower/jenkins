@@ -29,13 +29,13 @@ import static org.hamcrest.Matchers.containsString;
 
 import hudson.model.Descriptor;
 import net.sf.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.kohsuke.stapler.MockStaplerRequestBuilder;
 import org.kohsuke.stapler.StaplerRequest2;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Tests of {@link GlobalDefaultViewConfiguration}.
@@ -62,7 +62,7 @@ public class GlobalDefaultViewConfigurationTest {
                     ex.getMessage(), containsString(Messages.GlobalDefaultViewConfiguration_ViewDoesNotExist(viewName)));
             return;
         }
-        Assert.fail("Expected FormException");
+        Assertions.fail("Expected FormException");
     }
 
 }

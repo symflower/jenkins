@@ -24,7 +24,7 @@
 
 package hudson.scm;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.FilePath;
 import hudson.Launcher;
@@ -36,7 +36,7 @@ import hudson.model.Node;
 import hudson.model.Result;
 import java.io.File;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 

@@ -28,8 +28,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assume.assumeThat;
 
 import hudson.security.GlobalMatrixAuthorizationStrategy;
@@ -38,9 +38,9 @@ import java.util.logging.Level;
 import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.LoggerRule;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,7 +57,7 @@ public class MyViewTest {
     @Rule
     public LoggerRule logs = new LoggerRule();
 
-    @Before
+    @BeforeEach
     public void setup() {
         rule.jenkins.setSecurityRealm(rule.createDummySecurityRealm());
     }
@@ -73,9 +73,9 @@ public class MyViewTest {
         rule.jenkins.addView(view);
         auth.add(Item.READ, "User1");
         SecurityContextHolder.getContext().setAuthentication(user.impersonate2());
-        assertFalse("View " + view.getDisplayName() + " should not contain job " + job.getDisplayName(), view.contains(job));
+        assertFalse(view.contains(job), "View " + view.getDisplayName() + " should not contain job " + job.getDisplayName());
         auth.add(Item.CONFIGURE, "User1");
-        assertTrue("View " + view.getDisplayName() + " contain job " + job.getDisplayName(), view.contains(job));
+        assertTrue(view.contains(job), "View " + view.getDisplayName() + " contain job " + job.getDisplayName());
     }
 
     @Test
@@ -107,11 +107,11 @@ public class MyViewTest {
         MyView view = new MyView("My", rule.jenkins);
         auth.add(Item.READ, "User1");
         SecurityContextHolder.getContext().setAuthentication(user.impersonate2());
-        assertFalse("View " + view.getDisplayName() + " should not contains job " + job.getDisplayName(), view.getItems().contains(job));
-        assertFalse("View " + view.getDisplayName() + " should not contains job " + job2.getDisplayName(), view.getItems().contains(job2));
+        assertFalse(view.getItems().contains(job), "View " + view.getDisplayName() + " should not contains job " + job.getDisplayName());
+        assertFalse(view.getItems().contains(job2), "View " + view.getDisplayName() + " should not contains job " + job2.getDisplayName());
         auth.add(Item.CONFIGURE, "User1");
-        assertTrue("View " + view.getDisplayName() + " should contain job " + job.getDisplayName(), view.getItems().contains(job));
-        assertTrue("View " + view.getDisplayName() + " should contain job " + job2.getDisplayName(), view.getItems().contains(job2));
+        assertTrue(view.getItems().contains(job), "View " + view.getDisplayName() + " should contain job " + job.getDisplayName());
+        assertTrue(view.getItems().contains(job2), "View " + view.getDisplayName() + " should contain job " + job2.getDisplayName());
     }
 
 

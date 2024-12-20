@@ -24,7 +24,7 @@
 
 package hudson.tools;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import hudson.EnvVars;
 import hudson.Functions;
@@ -38,9 +38,9 @@ import hudson.tasks.Maven.MavenInstallation;
 import hudson.tasks.Shell;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.JenkinsRule.WebClient;
@@ -108,7 +108,7 @@ public class ToolLocationNodePropertyTest {
             project.getBuildersList().add(new Shell("export"));
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         EnvVars env = new EnvVars();
         // we don't want Maven, Ant, etc. to be discovered in the path for this test to work,

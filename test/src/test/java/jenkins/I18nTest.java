@@ -29,12 +29,12 @@ import static org.hamcrest.Matchers.startsWith;
 
 import java.io.IOException;
 import net.sf.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:tom.fennelly@gmail.com">tom.fennelly@gmail.com</a>
@@ -47,14 +47,14 @@ public class I18nTest {
     @Test
     public void test_baseName_unspecified() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle").getJSONObject();
-        Assert.assertEquals("error", response.getString("status"));
-        Assert.assertEquals("Mandatory parameter 'baseName' not specified.", response.getString("message"));
+        Assertions.assertEquals("error", response.getString("status"));
+        Assertions.assertEquals("Mandatory parameter 'baseName' not specified.", response.getString("message"));
     }
 
     @Test
     public void test_baseName_unknown() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=com.acme.XyzWhatever").getJSONObject();
-        Assert.assertEquals("error", response.getString("status"));
+        Assertions.assertEquals("error", response.getString("status"));
         assertThat(response.getString("message"), startsWith("Can't find bundle for base name com.acme.XyzWhatever"));
     }
 
@@ -62,52 +62,52 @@ public class I18nTest {
     @Test
     public void test_baseName_plugin() throws Exception {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=org.jenkinsci.plugins.matrixauth.Messages").getJSONObject();
-        Assert.assertEquals(response.toString(), "ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"), response.toString());
         JSONObject data = response.getJSONObject("data");
-        Assert.assertEquals("Matrix-based security", data.getString("GlobalMatrixAuthorizationStrategy.DisplayName"));
+        Assertions.assertEquals("Matrix-based security", data.getString("GlobalMatrixAuthorizationStrategy.DisplayName"));
     }
 
     @Test
     public void test_valid() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=hudson.logging.Messages&language=de").getJSONObject();
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         JSONObject data = response.getJSONObject("data");
-        Assert.assertEquals("Initialisiere Log-Rekorder", data.getString("LogRecorderManager.init"));
+        Assertions.assertEquals("Initialisiere Log-Rekorder", data.getString("LogRecorderManager.init"));
     }
 
     @Issue("JENKINS-39034")
     @Test // variant testing
     public void test_valid_region_variant() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=jenkins.i18n.Messages&language=en_AU_variant").getJSONObject();
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         JSONObject data = response.getJSONObject("data");
-        Assert.assertEquals("value_au_variant", data.getString("Key"));
+        Assertions.assertEquals("value_au_variant", data.getString("Key"));
     }
 
     @Issue("JENKINS-39034")
     @Test //country testing with delimiter '-' instead of '_'
     public void test_valid_region() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=jenkins.i18n.Messages&language=en-AU").getJSONObject();
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         JSONObject data = response.getJSONObject("data");
-        Assert.assertEquals("value_au", data.getString("Key"));
+        Assertions.assertEquals("value_au", data.getString("Key"));
     }
 
     @Issue("JENKINS-39034")
     @Test //fallthrough to default language if variant does not exit
     public void test_valid_fallback() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=jenkins.i18n.Messages&language=en_NZ_variant").getJSONObject();
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         JSONObject data = response.getJSONObject("data");
-        Assert.assertEquals("value", data.getString("Key"));
+        Assertions.assertEquals("value", data.getString("Key"));
     }
 
     @Test // testing with unknown language falls through to default language
     public void test_unsupported_language() throws IOException, SAXException {
         JSONObject response = jenkinsRule.getJSON("i18n/resourceBundle?baseName=jenkins.i18n.Messages&language=xyz").getJSONObject();
-        Assert.assertEquals("ok", response.getString("status"));
+        Assertions.assertEquals("ok", response.getString("status"));
         JSONObject data = response.getJSONObject("data");
-        Assert.assertEquals("value", data.getString("Key"));
+        Assertions.assertEquals("value", data.getString("Key"));
     }
 
 }

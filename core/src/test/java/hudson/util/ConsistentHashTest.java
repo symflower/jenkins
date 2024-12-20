@@ -24,12 +24,12 @@
 
 package hudson.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,8 +37,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -179,7 +179,7 @@ public class ConsistentHashTest {
      * This test doesn't fail but it's written to measure the performance of the consistent hash function with large data set.
      */
     @Test
-    @Ignore("Helper test for performance, no assertion")
+    @Disabled("Helper test for performance, no assertion")
     public void speed() {
         Map<String, Integer> data = new CopyOnWriteMap.Hash<>();
         for (int i = 0; i < 1000; i++) {

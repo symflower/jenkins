@@ -28,7 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import hudson.Functions;
 import hudson.model.Computer;
@@ -44,15 +44,15 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import org.htmlunit.WebResponse;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.SimpleCommandLauncher;
 import org.jvnet.hudson.test.TestExtension;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author suren
@@ -65,10 +65,10 @@ public class SlaveComputerTest {
     public void testAgentLogs() throws Exception {
         DumbSlave node = j.createOnlineSlave();
         String log = node.getComputer().getLog();
-        Assert.assertTrue(log.contains("Remoting version: " + Launcher.VERSION));
-        Assert.assertTrue(log.contains("Launcher: " + SimpleCommandLauncher.class.getSimpleName()));
-        Assert.assertTrue(log.contains("Communication Protocol: Standard in/out"));
-        Assert.assertTrue(log.contains(String.format("This is a %s agent", Functions.isWindows() ? "Windows" : "Unix")));
+        Assertions.assertTrue(log.contains("Remoting version: " + Launcher.VERSION));
+        Assertions.assertTrue(log.contains("Launcher: " + SimpleCommandLauncher.class.getSimpleName()));
+        Assertions.assertTrue(log.contains("Communication Protocol: Standard in/out"));
+        Assertions.assertTrue(log.contains(String.format("This is a %s agent", Functions.isWindows() ? "Windows" : "Unix")));
     }
 
     @Test
@@ -76,8 +76,8 @@ public class SlaveComputerTest {
         //default auth
         DumbSlave nodeA = j.createOnlineSlave();
         String path = nodeA.getComputer().getAbsoluteRemotePath();
-        Assert.assertNotNull(path);
-        Assert.assertEquals(getRemoteFS(nodeA, null), path);
+        Assertions.assertNotNull(path);
+        Assertions.assertEquals(getRemoteFS(nodeA, null), path);
 
         //not auth
         String userAlice = "alice";
@@ -88,8 +88,8 @@ public class SlaveComputerTest {
         j.jenkins.setAuthorizationStrategy(authStrategy);
         try (ACLContext context = ACL.as(User.getById(userAlice, true))) {
             path = nodeA.getComputer().getAbsoluteRemotePath();
-            Assert.assertNull(path);
-            Assert.assertNull(getRemoteFS(nodeA, userAlice));
+            Assertions.assertNull(path);
+            Assertions.assertNull(getRemoteFS(nodeA, userAlice));
         }
 
         //with auth
@@ -97,8 +97,8 @@ public class SlaveComputerTest {
         authStrategy.grant(Computer.CONNECT, Jenkins.READ).everywhere().to(userBob);
         try (ACLContext context = ACL.as(User.getById(userBob, true))) {
             path = nodeA.getComputer().getAbsoluteRemotePath();
-            Assert.assertNotNull(path);
-            Assert.assertNotNull(getRemoteFS(nodeA, userBob));
+            Assertions.assertNotNull(path);
+            Assertions.assertNotNull(getRemoteFS(nodeA, userBob));
         }
     }
 
@@ -113,15 +113,15 @@ public class SlaveComputerTest {
             retries--;
             Thread.sleep(500);
         }
-        Assert.assertTrue(retries > 0);
+        Assertions.assertTrue(retries > 0);
         Thread.sleep(500);
 
-        Assert.assertFalse(nodeA.getComputer().isOffline());
-        Assert.assertTrue(nodeA.getComputer().isOnline());
+        Assertions.assertFalse(nodeA.getComputer().isOffline());
+        Assertions.assertTrue(nodeA.getComputer().isOnline());
 
         // Both listeners should fire and not cause the other not to fire.
-        Assert.assertEquals(1, IOExceptionOnOnlineListener.onOnlineCount);
-        Assert.assertEquals(1, RuntimeExceptionOnOnlineListener.onOnlineCount);
+        Assertions.assertEquals(1, IOExceptionOnOnlineListener.onOnlineCount);
+        Assertions.assertEquals(1, RuntimeExceptionOnOnlineListener.onOnlineCount);
 
         // We should get the stack trace too.
         assertThat(nodeA.getComputer().getLog(), allOf(
@@ -160,7 +160,7 @@ public class SlaveComputerTest {
     @Test
     @Issue("JENKINS-57111")
     public void startupShouldFailOnErrorOnlineListener() throws Exception {
-        assumeFalse("TODO: Windows container agents do not have enough resources to run this test", Functions.isWindows() && System.getenv("CI") != null);
+        assumeFalse(Functions.isWindows() && System.getenv("CI") != null, "TODO: Windows container agents do not have enough resources to run this test");
         DumbSlave nodeA = j.createSlave();
         assertThat(nodeA.getComputer(), instanceOf(SlaveComputer.class));
         int retries = 10;
@@ -168,13 +168,13 @@ public class SlaveComputerTest {
             retries--;
             Thread.sleep(500);
         }
-        Assert.assertTrue(retries > 0);
+        Assertions.assertTrue(retries > 0);
         Thread.sleep(500);
 
-        Assert.assertEquals(1, ErrorOnOnlineListener.onOnlineCount);
+        Assertions.assertEquals(1, ErrorOnOnlineListener.onOnlineCount);
 
-        Assert.assertTrue(nodeA.getComputer().isOffline());
-        Assert.assertFalse(nodeA.getComputer().isOnline());
+        Assertions.assertTrue(nodeA.getComputer().isOffline());
+        Assertions.assertFalse(nodeA.getComputer().isOnline());
     }
 
     @TestExtension(value = "startupShouldFailOnErrorOnlineListener")

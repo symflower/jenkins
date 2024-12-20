@@ -34,7 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import jenkins.model.GlobalConfiguration;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsSessionRule;
 import org.jvnet.hudson.test.TestExtension;
 

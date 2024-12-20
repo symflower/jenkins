@@ -27,8 +27,8 @@ package jenkins.security.stapler;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.List;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.TestExtension;
 import org.kohsuke.stapler.Ancestor;
 import org.kohsuke.stapler.HttpResponses;
@@ -58,7 +58,7 @@ public class PreventRoutingTest extends StaplerAbstractTest {
 
     @Test
     // TODO un-ignore once we use a Stapler release with the fix for this
-    @Ignore("Does not behave as intended before https://github.com/stapler/stapler/pull/149")
+    @Disabled("Does not behave as intended before https://github.com/stapler/stapler/pull/149")
     public void getTargetNull_isNotRoutable() throws Exception {
         assertNotReachable("target-null/legitRoutable");
     }

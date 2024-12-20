@@ -29,10 +29,10 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,9 +66,8 @@ import org.htmlunit.AlertHandler;
 import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TestName;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -79,6 +78,7 @@ import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.StaplerResponse2;
 import org.springframework.security.core.Authentication;
 import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Assertions;
 
 public class ListViewTest {
 
@@ -185,7 +185,7 @@ public class ListViewTest {
 
         job.renameTo("new_name");
 
-        assertFalse("old job name is still contained: " + view.jobNames, view.jobNames.contains("old_name"));
+        assertFalse(view.jobNames.contains("old_name"), "old job name is still contained: " + view.jobNames);
         assertTrue(view.contains(job));
         assertTrue(view.jobNamesContains(job));
     }
@@ -203,7 +203,7 @@ public class ListViewTest {
 
         job.renameTo("new_name");
 
-        assertFalse("old job name is still contained", view.jobNames.contains("old_name"));
+        assertFalse(view.jobNames.contains("old_name"), "old job name is still contained");
         assertTrue(view.contains(job));
         assertTrue(view.jobNamesContains(job));
     }
@@ -309,7 +309,7 @@ public class ListViewTest {
         HtmlPage page = webClient.goTo(view.getUrl() + "configure");
         HtmlForm form = page.getFormByName("viewConfig");
         j.assertGoodStatus(j.submit(form));
-        Assert.assertFalse("No alert expected", alerts.get());
+        Assertions.assertFalse(alerts.get(), "No alert expected");
     }
 
     @Test public void getItemsNames() throws Exception {

@@ -26,19 +26,19 @@ package hudson.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.Issue;
+import org.junit.jupiter.api.Assertions;
 
 public class ActionableTest {
 
@@ -84,27 +84,27 @@ public class ActionableTest {
         InvisibleAction invis = new InvisibleAction() {
         };
         myOverridden.addAction(invis);
-        Assert.assertArrayEquals(new Object[]{invis}, myOverridden.specialActions.toArray());
-        Assert.assertArrayEquals(new Object[]{invis}, myOverridden.getActions().toArray());
+        Assertions.assertArrayEquals(new Object[]{invis}, myOverridden.specialActions.toArray());
+        Assertions.assertArrayEquals(new Object[]{invis}, myOverridden.getActions().toArray());
 
         myOverridden.getActions().remove(invis);
-        Assert.assertArrayEquals(new Object[]{}, myOverridden.specialActions.toArray());
-        Assert.assertArrayEquals(new Object[]{}, myOverridden.getActions().toArray());
+        Assertions.assertArrayEquals(new Object[]{}, myOverridden.specialActions.toArray());
+        Assertions.assertArrayEquals(new Object[]{}, myOverridden.getActions().toArray());
 
         myOverridden.addAction(invis);
         myOverridden.removeAction(invis);
-        Assert.assertArrayEquals(new Object[]{}, myOverridden.specialActions.toArray());
-        Assert.assertArrayEquals(new Object[]{}, myOverridden.getActions().toArray());
+        Assertions.assertArrayEquals(new Object[]{}, myOverridden.specialActions.toArray());
+        Assertions.assertArrayEquals(new Object[]{}, myOverridden.getActions().toArray());
 
         InvisibleAction invis2 = new InvisibleAction() {};
         myOverridden.addOrReplaceAction(invis2);
-        Assert.assertArrayEquals(new Object[]{invis2}, myOverridden.specialActions.toArray());
-        Assert.assertArrayEquals(new Object[]{invis2}, myOverridden.getActions().toArray());
+        Assertions.assertArrayEquals(new Object[]{invis2}, myOverridden.specialActions.toArray());
+        Assertions.assertArrayEquals(new Object[]{invis2}, myOverridden.getActions().toArray());
 
         myOverridden.addOrReplaceAction(invis);
         myOverridden.addOrReplaceAction(invis);
-        Assert.assertArrayEquals(new Object[]{invis2, invis}, myOverridden.specialActions.toArray());
-        Assert.assertArrayEquals(new Object[]{invis2, invis}, myOverridden.getActions().toArray());
+        Assertions.assertArrayEquals(new Object[]{invis2, invis}, myOverridden.specialActions.toArray());
+        Assertions.assertArrayEquals(new Object[]{invis2, invis}, myOverridden.getActions().toArray());
     }
 
     @SuppressWarnings("deprecation")

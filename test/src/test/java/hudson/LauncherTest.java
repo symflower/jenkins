@@ -28,8 +28,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.console.LineTransformationOutputStream;
@@ -59,13 +59,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.SmokeTest;
 
-@Category(SmokeTest.class)
+@Tag("SmokeTest")
 public class LauncherTest {
 
     @Rule
@@ -273,7 +273,7 @@ public class LauncherTest {
         message = node.getDisplayName() + ": " + message;
         Launcher launcher = node.createLauncher(StreamTaskListener.fromStderr());
         Launcher.ProcStarter ps = launcher.launch();
-        assumeFalse("should not be platform-dependent, not bothering for now", Functions.isWindows());
+        assumeFalse(Functions.isWindows(), "should not be platform-dependent, not bothering for now");
         if (emitStderr) {
             ps.cmds("sh", "-c", "echo hello >&2").quiet(true);
         } else {
@@ -283,7 +283,7 @@ public class LauncherTest {
         ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
         TaskListener listener = new StreamTaskListener(baos2, Charset.defaultCharset());
         psCustomizer.run(ps, baos1, baos2, listener);
-        assertEquals(message, 0, ps.join());
+        assertEquals(0, ps.join(), message);
         if (outputIn2) {
             assertThat(message, baos2.toString(Charset.defaultCharset()), containsString("hello"));
             assertThat(message, baos1.toString(Charset.defaultCharset()), is(emptyString()));
